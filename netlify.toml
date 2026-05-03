@@ -1,0 +1,7 @@
+[build]
+  base = "frontend"
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
