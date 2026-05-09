@@ -1,41 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
 interface StatProps {
   value: number
   label: string
   suffix?: string
 }
 
+/**
+ * Affiche la valeur réelle au SSR / premier paint (SEO, prévisualisations Netlify).
+ * L’ancien compteur partait de 0 → crawlers et HTML statique montraient « 0+ ».
+ */
 export function StatCounter({ value, label, suffix = '' }: StatProps) {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    let start = 0
-    const end = value
-    const duration = 2000 // 2 seconds
-    const increment = end / (duration / 50)
-
-    const timer = setInterval(() => {
-      start += increment
-      if (start >= end) {
-        setCount(end)
-        clearInterval(timer)
-      } else {
-        setCount(Math.floor(start))
-      }
-    }, 50)
-
-    return () => clearInterval(timer)
-  }, [value])
-
   return (
-    <div className="text-center">
-      <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
-        {count}{suffix}
+    <div className="animate-in fade-in slide-in-from-bottom-2 text-center duration-700">
+      <p className="text-2xl font-bold text-white tabular-nums sm:text-3xl lg:text-4xl">
+        {value}
+        {suffix}
       </p>
-      <p className="text-xs sm:text-sm text-white/70 mt-2 font-medium">{label}</p>
+      <p className="mt-2 text-xs font-medium text-white/70 sm:text-sm">{label}</p>
     </div>
   )
 }
