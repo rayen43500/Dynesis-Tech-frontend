@@ -3,30 +3,33 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Search, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 const slides = [
   {
     id: 1,
     image: '/images/hero-slide-1.jpg',
-    title: 'Digital Solutions Innovation',
-    subtitle: 'Transform your business with cutting-edge technology',
-    cta: 'Start Your Project',
+    title: 'Maîtrisez la Transformation Digitale',
+    subtitle: 'Solutions innovantes et performantes pour vos projets',
+    ctaPrimary: 'S\'inscrire maintenant',
+    ctaSecondary: 'Calendrier des sessions',
   },
   {
     id: 2,
     image: '/images/hero-slide-2.jpg',
-    title: 'Web Design Excellence',
-    subtitle: 'Beautiful, responsive designs that engage your audience',
-    cta: 'Explore Services',
+    title: 'Excellence en Web Design',
+    subtitle: 'Des designs responsifs et captivants qui convertissent',
+    ctaPrimary: 'Découvrir nos projets',
+    ctaSecondary: 'Demander une démo',
   },
   {
     id: 3,
     image: '/images/hero-slide-3.jpg',
-    title: 'Development Expertise',
-    subtitle: 'Robust solutions built with modern technology',
-    cta: 'View Portfolio',
+    title: 'Développement Web Avancé',
+    subtitle: 'Technologies modernes pour des solutions robustes et scalables',
+    ctaPrimary: 'Commencer un projet',
+    ctaSecondary: 'Voir le portfolio',
   },
 ]
 
@@ -88,27 +91,42 @@ export function HeroSlider() {
 
       {/* Content */}
       <div className="relative z-10 h-full flex items-center justify-start px-4 sm:px-8 lg:px-16">
-        <div className="max-w-2xl space-y-6 animate-in fade-in slide-in-from-left-4 duration-700">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white text-balance drop-shadow-lg">
-            {slides[currentSlide].title}
-          </h1>
-          <p className="text-lg sm:text-xl text-white/80 text-balance drop-shadow-md max-w-xl">
-            {slides[currentSlide].subtitle}
-          </p>
+        <div className="max-w-3xl space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
+          {/* Title */}
+          <div className="space-y-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white text-balance drop-shadow-lg leading-tight">
+              {slides[currentSlide].title}
+            </h1>
+            <p className="text-lg sm:text-xl text-white/90 text-balance drop-shadow-md max-w-2xl leading-relaxed">
+              {slides[currentSlide].subtitle}
+            </p>
+          </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          {/* Primary CTA Button */}
+          <div>
             <Link href="/contact">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground text-base py-6 px-8 font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95">
-                {slides[currentSlide].cta}
-                <ChevronRight className="ml-2 h-5 w-5" />
+              <Button className="bg-primary hover:bg-primary/90 text-white text-base py-3 px-8 font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95">
+                {slides[currentSlide].ctaPrimary}
               </Button>
             </Link>
-            <Button
-              variant="outline"
-              className="bg-white/10 text-white border-white/40 hover:border-white/70 hover:bg-white/20 text-base py-6 px-8 font-semibold transition-all duration-300 backdrop-blur-sm"
-            >
-              Learn More
+          </div>
+
+          {/* Search Bar and Secondary CTA */}
+          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
+            {/* Search Input */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-foreground/40" />
+              <input
+                type="search"
+                placeholder="Chercher un service..."
+                className="w-full rounded-lg border border-white/30 bg-white/95 pl-12 pr-4 py-3 text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-300 text-base"
+              />
+            </div>
+
+            {/* Secondary CTA Button */}
+            <Button className="bg-orange-600 hover:bg-orange-700 text-white text-base py-3 px-6 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 whitespace-nowrap">
+              <Calendar className="h-5 w-5" />
+              {slides[currentSlide].ctaSecondary}
             </Button>
           </div>
         </div>
