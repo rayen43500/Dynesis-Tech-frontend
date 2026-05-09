@@ -80,7 +80,7 @@ export function HeroSlider() {
               fill
               className="object-cover"
               priority={index === 0}
-              quality={90}
+              quality={75}
             />
             {/* Dark Overlay for text readability */}
             <div className="absolute inset-0 bg-black/50" />
