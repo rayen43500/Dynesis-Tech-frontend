@@ -5,72 +5,14 @@ import { Button } from '@/components/ui/button'
 import { NewsletterForm } from '@/components/newsletter-form'
 import { StatCounter } from '@/components/stats-counter'
 import { TrustedBy } from '@/components/trusted-by'
+import { HeroSlider } from '@/components/hero-slider'
 
 export default function Home() {
   return (
     <div className="bg-background">
-      {/* Hero Section - Modern with Background */}
-      <section className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-40">
-        {/* Background Image with Overlay (better contrast) */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/hero-bg-light.jpg"
-            alt="Hero background"
-            fill
-            className="object-cover"
-            priority
-            quality={90}
-          />
-          {/* Dark scrim + subtle gradient for text readability */}
-          <div className="absolute inset-0 bg-black/55" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
-          {/* Subtle vignette */}
-          <div className="absolute inset-0 [background:radial-gradient(70%_60%_at_50%_40%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.45)_100%)]" />
-        </div>
+      {/* Hero Section with Slider */}
+      <HeroSlider />
 
-        <div className="relative z-10 mx-auto max-w-4xl">
-          <div className="space-y-8 animate-in fade-in slide-in-from-left-4 text-center">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white font-medium backdrop-blur-sm">
-                <Sparkles className="h-4 w-4" />
-                <span>AI-Powered Digital Solutions</span>
-              </div>
-              <h1 className="text-balance text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-tight drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)]">
-                Accelerate Your Digital Growth
-              </h1>
-              <p className="text-balance text-lg text-white/80 sm:text-xl leading-relaxed mx-auto max-w-2xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)]">
-                Transform your business with cutting-edge web design, development, and AI solutions. We deliver results that drive real growth.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center">
-              <Link href="/contact">
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground text-base py-6 px-8 font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95">
-                  Start Your Project <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/portfolio">
-                <Button
-                  variant="outline"
-                  className="bg-transparent text-white border-white/30 hover:border-white/60 hover:bg-white/10 text-base py-6 px-8 font-semibold transition-all duration-300"
-                >
-                  View Portfolio
-                </Button>
-              </Link>
-            </div>
-
-            {/* Stats with Animations */}
-            <div className="grid grid-cols-3 gap-4 border-t border-white/20 pt-8">
-              <StatCounter value={50} label="Projects" suffix="+" />
-              <StatCounter value={40} label="Clients" suffix="+" />
-              <StatCounter value={8} label="Years" suffix="+" />
-            </div>
-
-            {/* Trusted By Section */}
-            <TrustedBy />
-          </div>
-        </div>
-      </section>
 
       {/* Services Preview - Enhanced */}
       <section className="bg-muted/30 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
