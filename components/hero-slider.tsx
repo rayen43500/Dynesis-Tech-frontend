@@ -90,21 +90,23 @@ export function HeroSlider() {
         ))}
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex items-center justify-start px-4 sm:px-8 lg:px-16">
-        <div className="max-w-3xl space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
-          {/* Title & Subtitle */}
-          <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white text-balance drop-shadow-lg leading-tight">
+      {/* Content - Overlay Text on Image */}
+      <div className="relative z-10 h-full flex flex-col items-start justify-center px-4 sm:px-8 lg:px-16 py-16">
+        <div className="w-full max-w-4xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          {/* Title - Main Focus */}
+          <div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-balance drop-shadow-xl leading-tight tracking-tight">
               {slides[currentSlide].title}
             </h1>
-            <p className="text-lg sm:text-xl text-white/90 text-balance drop-shadow-md max-w-2xl leading-relaxed">
-              {slides[currentSlide].subtitle}
-            </p>
           </div>
 
+          {/* Subtitle - Secondary Information */}
+          <p className="text-lg sm:text-xl lg:text-2xl text-white/95 text-balance drop-shadow-lg max-w-3xl leading-relaxed font-light">
+            {slides[currentSlide].subtitle}
+          </p>
+
           {/* Primary CTA Button */}
-          <div>
+          <div className="pt-2">
             <Link href="/contact">
               <Button className="bg-primary hover:bg-primary/90 text-white text-base py-3 px-8 font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95">
                 {slides[currentSlide].ctaPrimary}
@@ -112,20 +114,20 @@ export function HeroSlider() {
             </Link>
           </div>
 
-          {/* Search Bar and Secondary CTA */}
-          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
+          {/* Search Bar and Secondary CTA - Row Layout */}
+          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl pt-4">
             {/* Search Input */}
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-foreground/40" />
               <input
                 type="search"
                 placeholder="Chercher un service..."
-                className="w-full rounded-lg border border-white/30 bg-white/95 pl-12 pr-4 py-3 text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-300 text-base"
+                className="w-full rounded-lg border-2 border-white/40 bg-white/98 pl-12 pr-4 py-3 text-foreground placeholder:text-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-300 text-base font-medium shadow-lg"
               />
             </div>
 
             {/* Secondary CTA Button */}
-            <Button className="bg-orange-600 hover:bg-orange-700 text-white text-base py-3 px-6 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 whitespace-nowrap">
+            <Button className="bg-orange-600 hover:bg-orange-700 text-white text-base py-3 px-6 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap">
               <Calendar className="h-5 w-5" />
               {slides[currentSlide].ctaSecondary}
             </Button>
