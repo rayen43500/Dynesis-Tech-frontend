@@ -80,11 +80,12 @@ export function HeroSlider() {
               fill
               className="object-cover"
               priority={index === 0}
-              quality={75}
+              quality={90}
             />
-            {/* Dark Overlay for text readability */}
+
+            {/* Dark Overlay for Text Readability */}
             <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
           </div>
         ))}
       </div>
@@ -92,7 +93,7 @@ export function HeroSlider() {
       {/* Content */}
       <div className="relative z-10 h-full flex items-center justify-start px-4 sm:px-8 lg:px-16">
         <div className="max-w-3xl space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
-          {/* Title */}
+          {/* Title & Subtitle */}
           <div className="space-y-4">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white text-balance drop-shadow-lg leading-tight">
               {slides[currentSlide].title}
@@ -132,46 +133,43 @@ export function HeroSlider() {
         </div>
       </div>
 
-      {/* Navigation Arrows - Left and Right */}
+      {/* Navigation Arrows */}
       <button
         onClick={goToPrevious}
-        className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white rounded-full p-3 transition-all duration-300 backdrop-blur-sm border border-white/30 hover:border-white/60"
+        className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/20 hover:bg-white/40 p-3 transition-all duration-300 backdrop-blur-sm"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-6 w-6" />
+        <ChevronLeft className="h-6 w-6 text-white" />
       </button>
 
       <button
         onClick={goToNext}
-        className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white rounded-full p-3 transition-all duration-300 backdrop-blur-sm border border-white/30 hover:border-white/60"
+        className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/20 hover:bg-white/40 p-3 transition-all duration-300 backdrop-blur-sm"
         aria-label="Next slide"
       >
-        <ChevronRight className="h-6 w-6" />
+        <ChevronRight className="h-6 w-6 text-white" />
       </button>
 
-      {/* Dot Indicators - Bottom Center */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-3 rounded-full transition-all duration-300 ${
               index === currentSlide
                 ? 'bg-white w-8'
-                : 'bg-white/50 hover:bg-white/70 w-2'
+                : 'bg-white/50 hover:bg-white/70 w-3'
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
 
-      {/* Optional: Resume Autoplay on Hover */}
-      <div
-        onMouseEnter={() => setIsAutoPlay(true)}
-        onMouseLeave={() => setIsAutoPlay(false)}
-        className="absolute inset-0 z-5 cursor-pointer"
-        aria-hidden="true"
-      />
+      {/* Right Side Text (Bottom Right) */}
+      <div className="absolute bottom-8 right-8 z-20 hidden lg:block text-white text-sm font-medium drop-shadow-lg">
+        Découvrir nos solutions
+      </div>
     </section>
   )
 }
