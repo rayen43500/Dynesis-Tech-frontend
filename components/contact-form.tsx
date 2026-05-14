@@ -83,119 +83,133 @@ export function ContactForm() {
   const showProjectField = formData.requestType === 'project'
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Success Message - Clear visual feedback with good hierarchy */}
       {success && (
-        <div className="animate-in fade-in slide-in-from-top flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 p-4">
+        <div className="animate-in fade-in slide-in-from-top flex items-start gap-4 rounded-lg border border-green-200 bg-green-50 p-5">
           <CheckCircle className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-          <div>
-            <h3 className="font-semibold text-green-900">Message sent successfully!</h3>
-            <p className="text-sm text-green-700">We&apos;ll get back to you shortly.</p>
+          <div className="space-y-1">
+            <h3 className="font-semibold text-green-900">Message envoyé avec succès!</h3>
+            <p className="text-sm text-green-700">Nous vous recontacterons bientôt.</p>
           </div>
         </div>
       )}
 
+      {/* Error Message - Clear visual hierarchy */}
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-5 text-sm text-red-700 font-medium">
           ✕ {error}
         </div>
       )}
 
-      {/* Name and Email - 2 columns on desktop */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      {/* Personal Information Section - Clear group with visual separation */}
+      <div className="space-y-6">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-            Full Name *
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            disabled={loading}
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            placeholder="John Doe"
-          />
+          <h2 className="text-base font-semibold text-foreground mb-4">Informations Personnelles</h2>
         </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-            Email Address *
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            disabled={loading}
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            placeholder="john@example.com"
-          />
+        {/* Name and Email - Grouped together */}
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div className="space-y-2.5">
+            <label htmlFor="name" className="block text-sm font-medium text-foreground">
+              Nom Complet <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              disabled={loading}
+              className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+              placeholder="John Doe"
+            />
+          </div>
+          <div className="space-y-2.5">
+            <label htmlFor="email" className="block text-sm font-medium text-foreground">
+              Email <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={loading}
+              className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+              placeholder="john@example.com"
+            />
+          </div>
+        </div>
+
+        {/* Phone and Company - Secondary information group */}
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div className="space-y-2.5">
+            <label htmlFor="phone" className="block text-sm font-medium text-foreground">
+              Téléphone
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+              placeholder="+33 1 23 45 67 89"
+            />
+          </div>
+          <div className="space-y-2.5">
+            <label htmlFor="company" className="block text-sm font-medium text-foreground">
+              Entreprise
+            </label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+              placeholder="Votre Entreprise"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Phone and Company */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      {/* Request Details Section */}
+      <div className="space-y-6 border-t border-border/30 pt-6">
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
-            Phone Number
+          <h2 className="text-base font-semibold text-foreground mb-4">Détails de la Demande</h2>
+        </div>
+        
+        {/* Request Type - Primary selector */}
+        <div className="space-y-2.5">
+          <label htmlFor="requestType" className="block text-sm font-medium text-foreground">
+            Type de Demande <span className="text-red-500">*</span>
           </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
+          <select
+            id="requestType"
+            name="requestType"
+            value={formData.requestType}
             onChange={handleChange}
             disabled={loading}
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            placeholder="+1 (555) 000-0000"
-          />
+            className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+          >
+            {requestTypeOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
-        <div>
-          <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
-            Company
-          </label>
-          <input
-            type="text"
-            id="company"
-            name="company"
-            value={formData.company}
-            onChange={handleChange}
-            disabled={loading}
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            placeholder="Your Company"
-          />
-        </div>
-      </div>
 
-      {/* Request Type */}
-      <div>
-        <label htmlFor="requestType" className="block text-sm font-medium text-foreground mb-2">
-          Type of Request *
-        </label>
-        <select
-          id="requestType"
-          name="requestType"
-          value={formData.requestType}
-          onChange={handleChange}
-          disabled={loading}
-          className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-        >
-          {requestTypeOptions.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Conditional Fields */}
+      {/* Conditional Fields - Contextual information */}
       {showInvoiceField && (
-        <div>
-          <label htmlFor="invoiceNumber" className="block text-sm font-medium text-foreground mb-2">
-            Invoice Number / Reference
+        <div className="space-y-2.5">
+          <label htmlFor="invoiceNumber" className="block text-sm font-medium text-foreground">
+            Numéro de Facture / Référence
           </label>
           <input
             type="text"
@@ -204,16 +218,16 @@ export function ContactForm() {
             value={formData.invoiceNumber}
             onChange={handleChange}
             disabled={loading}
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+            className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
             placeholder="INV-2024-0001"
           />
         </div>
       )}
 
       {showProjectField && (
-        <div>
-          <label htmlFor="projectDetails" className="block text-sm font-medium text-foreground mb-2">
-            Project Details
+        <div className="space-y-2.5">
+          <label htmlFor="projectDetails" className="block text-sm font-medium text-foreground">
+            Détails du Projet
           </label>
           <textarea
             id="projectDetails"
@@ -222,16 +236,16 @@ export function ContactForm() {
             onChange={handleChange}
             disabled={loading}
             rows={3}
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 resize-none"
-            placeholder="Tell us about your project..."
+            className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 resize-none"
+            placeholder="Décrivez votre projet..."
           />
         </div>
       )}
 
-      {/* Message */}
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-          Message *
+      {/* Main Message - Primary focus */}
+      <div className="space-y-2.5">
+        <label htmlFor="message" className="block text-sm font-medium text-foreground">
+          Message <span className="text-red-500">*</span>
         </label>
         <textarea
           id="message"
@@ -241,13 +255,13 @@ export function ContactForm() {
           required
           disabled={loading}
           rows={5}
-          className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 resize-none"
-          placeholder="Your message here..."
+          className="w-full rounded-lg border border-border/70 bg-card/80 px-4 py-3 text-foreground placeholder-foreground/50 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 resize-none"
+          placeholder="Votre message ici..."
         />
       </div>
 
-      {/* Newsletter Opt-in */}
-      <div className="flex items-center gap-3 rounded-lg border border-border bg-card/50 p-4">
+      {/* Newsletter Opt-in - Subtle secondary action */}
+      <div className="flex items-start gap-3.5 rounded-lg border border-border/30 bg-card/50 p-5">
         <input
           type="checkbox"
           id="subscribeNewsletter"
@@ -255,31 +269,33 @@ export function ContactForm() {
           checked={formData.subscribeNewsletter}
           onChange={handleChange}
           disabled={loading}
-          className="h-5 w-5 rounded border-border text-primary focus:ring-2 focus:ring-primary/20"
+          className="h-5 w-5 rounded border-border/70 text-primary focus:ring-2 focus:ring-primary/30 mt-0.5"
         />
-        <label htmlFor="subscribeNewsletter" className="text-sm text-foreground/70 cursor-pointer">
-          Subscribe to our newsletter for tech insights, updates, and exclusive offers
+        <label htmlFor="subscribeNewsletter" className="text-sm text-foreground/60 cursor-pointer leading-relaxed">
+          S&apos;abonner à notre newsletter pour recevoir des insights tech, mises à jour et offres exclusives
         </label>
       </div>
 
-      {/* Submit Button */}
-      <Button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 text-base font-medium transition-all"
-      >
-        {loading ? (
-          <>
-            <Loader className="mr-2 h-4 w-4 animate-spin" />
-            Sending...
-          </>
-        ) : (
-          <>
-            <Send className="mr-2 h-4 w-4" />
-            Send Message
-          </>
-        )}
-      </Button>
+      {/* Submit Button - Clear primary action with visual prominence */}
+      <div className="pt-4">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+        >
+          {loading ? (
+            <>
+              <Loader className="mr-2 h-4 w-4 animate-spin" />
+              Envoi en cours...
+            </>
+          ) : (
+            <>
+              <Send className="mr-2 h-4 w-4" />
+              Envoyer le Message
+            </>
+          )}
+        </Button>
+      </div>
     </form>
   )
 }

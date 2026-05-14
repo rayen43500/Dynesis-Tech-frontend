@@ -90,9 +90,9 @@ export function HeroSlider() {
         ))}
       </div>
 
-      {/* Content - Overlay Text on Image */}
-      <div className="relative z-10 h-full flex flex-col items-start justify-center px-4 sm:px-8 lg:px-16 py-16">
-        <div className="w-full max-w-4xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {/* Content - Overlay Text on Image with Strategic Whitespace */}
+      <div className="relative z-10 h-full flex flex-col items-start justify-center px-4 sm:px-8 lg:px-20 py-16">
+        <div className="w-full max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
           {/* Title - Main Focus */}
           <div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white text-balance drop-shadow-xl leading-tight tracking-tight">
