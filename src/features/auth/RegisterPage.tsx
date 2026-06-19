@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { endpoints } from '../../shared/api/endpoints';
 import { AuthLogo } from './AuthLogo';
@@ -16,6 +17,7 @@ function redirectToClientDashboard() {
 
 export function RegisterPage() {
   useAuthPageScrollLock();
+  const { t } = useTranslation();
 
   const quoteParams = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
@@ -85,7 +87,7 @@ export function RegisterPage() {
     setMessage(null);
     setEmailError(null);
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match.');
+      setMessage(t('auth.register.error.passwordMismatch'));
       return;
     }
 
@@ -99,9 +101,9 @@ export function RegisterPage() {
       }
     } catch (err: any) {
       if (err?.response?.status === 409) {
-        setEmailError('This email is already registered.');
+        setEmailError(t('auth.register.error.emailTaken'));
       } else {
-        setMessage('Unable to create account right now. Please try again.');
+        setMessage(t('auth.register.error.generic'));
       }
     } finally {
       setLoading(false);
@@ -115,14 +117,18 @@ export function RegisterPage() {
         <div className="auth-split">
         <div className="auth-split__left">
           <div className={`auth-form${showWelcomeBanner ? ' auth-form--welcome-banner' : ''}`}>
-            <h1 className="auth-title">Create Your Account</h1>
-            <p className="auth-subtitle">Start delivering premium digital products today.</p>
+            <h1 className="auth-title">{t('auth.register.title')}</h1>
+            <p className="auth-subtitle">{t('auth.register.subtitle')}</p>
 
             <div className="auth-form-content">
               {showWelcomeBanner ? (
                 <div ref={welcomeRef} className="auth-quote-banner">
-                  <p className="auth-quote-banner__title">👋 Welcome {quoteParams?.name || 'there'}!</p>
-                  <p className="auth-quote-banner__text">Create your account to track your project request.</p>
+                  <p className="auth-quote-banner__title">
+                    {t('auth.register.welcome.title', {
+                      name: quoteParams?.name || t('auth.register.welcome.fallbackName')
+                    })}
+                  </p>
+                  <p className="auth-quote-banner__text">{t('auth.register.welcome.text')}</p>
                 </div>
               ) : null}
 
@@ -130,7 +136,7 @@ export function RegisterPage() {
               <form onSubmit={handleSubmit}>
               <div className="auth-field">
                 <label className="auth-label" htmlFor="register-name">
-                  Full Name
+                  {t('auth.register.fullName.label')}
                 </label>
                 <div className="auth-input-wrap">
                   <span className="auth-input-icon">
@@ -141,7 +147,7 @@ export function RegisterPage() {
                     className="auth-input"
                     type="text"
                     autoComplete="name"
-                    placeholder="Enter your full name"
+                    placeholder={t('auth.register.fullName.placeholder')}
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
@@ -151,7 +157,7 @@ export function RegisterPage() {
 
               <div className="auth-field">
                 <label className="auth-label" htmlFor="register-email">
-                  Email
+                  {t('auth.register.email.label')}
                 </label>
                 <div className="auth-input-wrap">
                   <span className="auth-input-icon">
@@ -162,7 +168,7 @@ export function RegisterPage() {
                     className="auth-input"
                     type="email"
                     autoComplete="email"
-                    placeholder="Enter your email"
+                    placeholder={t('auth.register.email.placeholder')}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -173,7 +179,7 @@ export function RegisterPage() {
 
               <div className="auth-field">
                 <label className="auth-label" htmlFor="register-password">
-                  Password
+                  {t('auth.register.password.label')}
                 </label>
                 <div className="auth-input-wrap">
                   <span className="auth-input-icon">
@@ -184,7 +190,7 @@ export function RegisterPage() {
                     className="auth-input auth-input--password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
-                    placeholder="Enter your password"
+                    placeholder={t('auth.register.password.placeholder')}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -192,7 +198,7 @@ export function RegisterPage() {
                   <button
                     type="button"
                     className="auth-toggle-pw"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={showPassword ? t('auth.login.password.hide') : t('auth.login.password.show')}
                     onClick={() => setShowPassword((v) => !v)}
                   >
                     <IconEye open={showPassword} />
@@ -202,7 +208,7 @@ export function RegisterPage() {
 
               <div className="auth-field">
                 <label className="auth-label" htmlFor="register-confirm">
-                  Confirm Password
+                  {t('auth.register.confirmPassword.label')}
                 </label>
                 <div className="auth-input-wrap">
                   <span className="auth-input-icon">
@@ -213,7 +219,7 @@ export function RegisterPage() {
                     className="auth-input auth-input--password"
                     type={showConfirm ? 'text' : 'password'}
                     autoComplete="new-password"
-                    placeholder="Confirm your password"
+                    placeholder={t('auth.register.confirmPassword.placeholder')}
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -221,7 +227,7 @@ export function RegisterPage() {
                   <button
                     type="button"
                     className="auth-toggle-pw"
-                    aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                    aria-label={showConfirm ? t('auth.login.password.hide') : t('auth.login.password.show')}
                     onClick={() => setShowConfirm((v) => !v)}
                   >
                     <IconEye open={showConfirm} />
@@ -232,14 +238,14 @@ export function RegisterPage() {
               {message ? <p className="auth-error">{message}</p> : null}
 
               <button type="submit" className="auth-submit" disabled={loading}>
-                {loading ? 'Creating Account…' : 'Create Account'}
+                {loading ? t('auth.register.submitting') : t('auth.register.submit')}
               </button>
               </form>
               ) : null}
             </div>
 
             <p className="auth-bottom">
-              Already have an account? <Link to="/login">Sign In</Link>
+              {t('auth.register.hasAccount')} <Link to="/login">{t('auth.register.signInLink')}</Link>
             </p>
           </div>
         </div>

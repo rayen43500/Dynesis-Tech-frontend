@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useDevelopersDirectory } from './hooks';
 import { useI18n } from '../../app/providers/I18nProvider';
@@ -9,17 +10,18 @@ import { EmptyState } from '../../shared/ui/feedback/EmptyState';
 import './developers.css';
 
 export function DevelopersDirectoryPage() {
+  const { t } = useTranslation();
   const { language } = useI18n();
   const query = useDevelopersDirectory(language);
 
-  if (query.isLoading) return <LoadingState label="Loading developers…" />;
+  if (query.isLoading) return <LoadingState label={t('developers.directory.loading')} />;
 
   if (query.isError) {
     return (
       <EmptyState
-        title="Unable to load developers"
-        description="Please check your connection and try again."
-        badge="Try again"
+        title={t('developers.directory.error.title')}
+        description={t('developers.directory.error.sub')}
+        badge={t('common.tryAgain')}
       />
     );
   }
@@ -30,11 +32,8 @@ export function DevelopersDirectoryPage() {
     <div className="dev-directory">
       <div className="dev-directory__layout">
         <aside className="dev-directory__left">
-          <h1 className="dev-directory__headline">Meet Our Developer Team</h1>
-          <p className="dev-directory__subtext">
-            Skilled, experienced engineers carefully selected for their craft, reliability, and ability to deliver
-            production-grade code.
-          </p>
+          <h1 className="dev-directory__headline">{t('developers.directory.title')}</h1>
+          <p className="dev-directory__subtext">{t('developers.directory.subtitle')}</p>
         </aside>
 
         <div className="dev-directory__right">
@@ -52,7 +51,7 @@ export function DevelopersDirectoryPage() {
                 <span className="dev-card__icon" aria-hidden>
                   ✦
                 </span>
-                <span className="dev-card__photo-overlay">View full profile</span>
+                <span className="dev-card__photo-overlay">{t('developers.directory.viewProfile')}</span>
               </div>
               <div className="dev-card__body">
                 <h2 className="dev-card__name">{dev.fullName}</h2>
@@ -60,7 +59,7 @@ export function DevelopersDirectoryPage() {
                   <span className="dev-card__verified-icon" aria-hidden>
                     ✓
                   </span>
-                  <span>Verified Expert</span>
+                  <span>{t('developers.directory.verified')}</span>
                 </div>
                 <div className="dev-card__role">
                   <span className="dev-card__role-icon" aria-hidden>
@@ -70,7 +69,7 @@ export function DevelopersDirectoryPage() {
                 </div>
                 {dev.previouslyAt ? (
                   <>
-                    <p className="dev-card__prev-label">Previously at</p>
+                    <p className="dev-card__prev-label">{t('developers.directory.previouslyAt')}</p>
                     {dev.companyLogo ? (
                       <img
                         className="dev-card__company-logo"
@@ -88,7 +87,11 @@ export function DevelopersDirectoryPage() {
           ))}
 
           {!developers.length ? (
-            <EmptyState title="No developers yet" description="Check back soon." badge="Empty" />
+            <EmptyState
+              title={t('developers.directory.empty.title')}
+              description={t('developers.directory.empty.sub')}
+              badge={t('common.empty')}
+            />
           ) : null}
           </div>
         </div>

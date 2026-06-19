@@ -1,0 +1,41 @@
+.client-account-card.client-message-card {
+  cursor: default;
+}
+
+.client-account-card.client-message-card:hover {
+  border-color: var(--admin-border);
+}
+
+.client-account-card .admin-section {
+  margin-bottom: 0;
+}
+
+.client-account-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.client-account-feedback {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  text-align: right;
+}
+
+.admin-topbar__icon-btn--avatar {
+  overflow: hidden;
+  padding: 0;
+}
+
+.admin-topbar__avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.client-account-card + .client-account-card {
+  margin-top: 12px;
+}

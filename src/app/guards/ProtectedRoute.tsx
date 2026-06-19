@@ -1,26 +1,28 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { useAuth } from '../providers/AuthProvider';
+import { useBlockBackNavigation } from '../hooks/useBlockBackNavigation';
 
 export function ProtectedRoute({ children }: { children: React.ReactElement }) {
-  const { status } = useAuth();
+  const { status, refreshMe } = useAuth();
+  const location = useLocation();
 
-  React.useEffect(() => {
-    if (status !== 'authenticated') return;
+  useBlockBackNavigation(status === 'authenticated');
 
-    const blockBackNavigation = () => {
-      window.history.pushState(null, '', window.location.href);
-    };
+  useEffect(() => {
+    refreshMe().catch(() => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
-    blockBackNavigation();
-    window.addEventListener('popstate', blockBackNavigation);
-    return () => window.removeEventListener('popstate', blockBackNavigation);
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      window.location.replace('/login');
+    }
   }, [status]);
 
   if (status === 'loading') return null;
-  if (status === 'unauthenticated') return <Navigate to="/login" replace />;
+  if (status === 'unauthenticated') return null;
 
   return children;
 }
-

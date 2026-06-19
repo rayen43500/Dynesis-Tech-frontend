@@ -31,6 +31,15 @@ export function IconInvoices(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+export function IconContact(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M4 4h16v12H7l-3 3z" />
+      <path d="M8 9h8" />
+    </svg>
+  );
+}
+
 export function IconMessages(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>

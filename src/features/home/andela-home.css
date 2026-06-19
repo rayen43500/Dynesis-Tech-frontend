@@ -121,6 +121,58 @@
   flex-shrink: 0;
 }
 
+.andela-nav__lang {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 4px;
+}
+
+.andela-nav__lang-btn {
+  font-family: Inter, var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(26, 26, 26, 0.55);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.andela-nav__lang-btn:hover {
+  color: #1a1a1a;
+}
+
+.andela-nav__lang-btn--active {
+  background: rgba(26, 26, 26, 0.08);
+  color: #1a1a1a;
+}
+
+.andela-nav__lang-divider {
+  font-size: 11px;
+  color: rgba(26, 26, 26, 0.25);
+  line-height: 1;
+}
+
+.andela-nav--contact .andela-nav__lang-btn {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.andela-nav--contact .andela-nav__lang-btn:hover,
+.andela-nav--contact .andela-nav__lang-btn--active {
+  color: #ffffff;
+}
+
+.andela-nav--contact .andela-nav__lang-btn--active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.andela-nav--contact .andela-nav__lang-divider {
+  color: rgba(255, 255, 255, 0.35);
+}
+
 .andela-nav__btn {
   font-family: Inter, var(--font-sans);
   font-size: 14px;

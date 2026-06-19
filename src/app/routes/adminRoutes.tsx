@@ -8,13 +8,14 @@ import { AdminLayout } from '../layouts/AdminLayout';
 import { AdminOverviewPage } from '../../features/admin/AdminOverviewPage';
 import { DevelopersAdminListPage } from '../../features/admin/developers/DevelopersAdminListPage';
 import { QuotesAdminPage } from '../../features/admin/quotes/QuotesAdminPage';
+import { MessagesAdminPage } from '../../features/admin/messages/MessagesAdminPage';
 import { RoutePlaceholder } from '../../shared/ui/placeholders/RoutePlaceholder';
 import { Roles } from '../../shared/constants/roles';
 
 export function AdminRoutes() {
   return (
     <Route
-      path="/admin"
+      path="/dashboard/admin"
       element={
         <ProtectedRoute>
           <RoleGuard requiredRoles={[Roles.admin]} children={<AdminLayout />} />
@@ -23,17 +24,18 @@ export function AdminRoutes() {
     >
       <Route index element={<AdminOverviewPage />} />
       <Route path="developers" element={<DevelopersAdminListPage />} />
-      <Route path="portfolios" element={<RoutePlaceholder name="PortfolioManagement" />} />
-      <Route path="services" element={<RoutePlaceholder name="ServicesManagement" />} />
-      <Route path="homepage" element={<RoutePlaceholder name="HomepageManagement" />} />
-      <Route path="inquiries" element={<RoutePlaceholder name="InquiriesManagement" />} />
+      <Route path="portfolios" element={<RoutePlaceholder nameKey="admin.routes.portfolios" />} />
+      <Route path="services" element={<RoutePlaceholder nameKey="admin.routes.services" />} />
+      <Route path="homepage" element={<RoutePlaceholder nameKey="admin.routes.homepage" />} />
+      <Route path="inquiries" element={<RoutePlaceholder nameKey="admin.routes.inquiries" />} />
       <Route path="quotes" element={<QuotesAdminPage />} />
-      <Route path="projects" element={<RoutePlaceholder name="ProjectManagement" />} />
-      <Route path="pricing" element={<RoutePlaceholder name="PricingManagement" />} />
-      <Route path="translations" element={<RoutePlaceholder name="TranslationManagement" />} />
-      <Route path="media" element={<RoutePlaceholder name="MediaUploads" />} />
-      <Route path="operations" element={<RoutePlaceholder name="OperationalManagement" />} />
-      <Route path="settings" element={<RoutePlaceholder name="Settings" />} />
+      <Route path="messages" element={<MessagesAdminPage />} />
+      <Route path="projects" element={<RoutePlaceholder nameKey="admin.routes.projects" />} />
+      <Route path="pricing" element={<RoutePlaceholder nameKey="admin.routes.pricing" />} />
+      <Route path="translations" element={<RoutePlaceholder nameKey="admin.routes.translations" />} />
+      <Route path="media" element={<RoutePlaceholder nameKey="admin.routes.media" />} />
+      <Route path="operations" element={<RoutePlaceholder nameKey="admin.routes.operations" />} />
+      <Route path="settings" element={<RoutePlaceholder nameKey="admin.routes.settings" />} />
     </Route>
   );
 }

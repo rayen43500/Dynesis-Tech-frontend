@@ -1,0 +1,126 @@
+.admin-messages-page {
+  padding-top: 0;
+}
+
+.admin-messages-table__head,
+.admin-messages-table__row {
+  grid-template-columns: 1.6fr 1.2fr 0.9fr 0.9fr 0.9fr 140px;
+}
+
+.admin-messages-table__sender-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--admin-text);
+}
+
+.admin-messages-table__sender-email {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--admin-text-subtle);
+}
+
+.admin-messages-table__subject {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--admin-text-secondary);
+}
+
+.admin-message-type {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.admin-message-type--registered {
+  background: #eaf4ea;
+  color: var(--admin-green);
+}
+
+.admin-message-type--guest {
+  background: var(--admin-badge-neutral-bg);
+  color: var(--admin-badge-neutral-text);
+}
+
+.admin-message-date {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--admin-text-faint);
+}
+
+.admin-message-status--new {
+  background: #eaf4ea;
+  color: var(--admin-green);
+}
+
+.admin-message-status--read {
+  background: #fff8e1;
+  color: #f59e0b;
+}
+
+.admin-message-status--replied {
+  background: #e8f0fe;
+  color: #3b82f6;
+}
+
+.admin-sidebar__link--messages {
+  position: relative;
+}
+
+.admin-message-panel__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.admin-message-reply {
+  padding-top: 24px;
+  border-top: 1px solid var(--admin-row-border);
+}
+
+.admin-message-reply__body {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.admin-message-existing-reply {
+  margin-top: 12px;
+  padding: 16px;
+  border-left: 3px solid var(--admin-green);
+  border-radius: 8px;
+  background: #eaf4ea;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--admin-text);
+  white-space: pre-wrap;
+}
+
+.admin-message-existing-reply__date {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--admin-text-faint);
+}
+
+.admin-shell--dark .admin-message-type--registered,
+.admin-shell--dark .admin-message-status--new {
+  background: rgba(58, 138, 58, 0.18);
+}
+
+.admin-shell--dark .admin-message-status--read {
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.admin-shell--dark .admin-message-status--replied {
+  background: rgba(59, 130, 246, 0.18);
+}
+
+.admin-shell--dark .admin-message-existing-reply {
+  background: rgba(58, 138, 58, 0.15);
+}

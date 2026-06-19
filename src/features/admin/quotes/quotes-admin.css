@@ -54,8 +54,8 @@
 }
 
 .admin-quotes-tabs__tab--active {
-  border-bottom-color: #3a8a3a;
-  color: #1a1a2e;
+  border-bottom-color: var(--admin-green);
+  color: var(--admin-text);
 }
 
 .admin-quotes-table {
@@ -85,10 +85,10 @@
 }
 
 .admin-quotes-table__row {
-  border-bottom: 1px solid #f0f0f4;
+  border-bottom: 1px solid var(--admin-row-border);
   font-size: 13px;
   font-weight: 300;
-  color: #444444;
+  color: var(--admin-text-secondary);
 }
 
 .admin-quotes-table__row:last-child {
@@ -130,8 +130,8 @@
 }
 
 .admin-quote-status--closed {
-  background: #f5f5f5;
-  color: #888888;
+  background: var(--admin-badge-neutral-bg);
+  color: var(--admin-badge-neutral-text);
 }
 
 .admin-sidebar__link--quotes {
@@ -254,7 +254,7 @@
   margin: 0 0 8px;
   font-size: 14px;
   font-weight: 300;
-  color: #444444;
+  color: var(--admin-text-secondary);
 }
 
 .admin-quote-section__line span {
@@ -267,11 +267,11 @@
 .admin-quote-description {
   padding: 16px;
   border-radius: 8px;
-  background: #f7f9f7;
+  background: var(--admin-surface-muted);
   font-size: 14px;
   font-weight: 300;
   line-height: 1.8;
-  color: #444444;
+  color: var(--admin-text-secondary);
   white-space: pre-wrap;
 }
 
@@ -315,7 +315,7 @@
 
 .admin-quote-proposal {
   padding-top: 24px;
-  border-top: 1px solid #f0f0f4;
+  border-top: 1px solid var(--admin-row-border);
 }
 
 .admin-quote-proposal__title {
@@ -324,7 +324,7 @@
   font-weight: 500;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #8a8a9a;
+  color: var(--admin-muted);
 }
 
 .admin-quote-proposal__body {
@@ -375,5 +375,17 @@
   font-size: 12px;
   font-weight: 300;
   text-align: center;
-  color: #aaaaaa;
+  color: var(--admin-text-faint);
+}
+
+.admin-shell--dark .admin-quote-status--new {
+  background: rgba(58, 138, 58, 0.18);
+}
+
+.admin-shell--dark .admin-quote-status--reviewed {
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.admin-shell--dark .admin-quote-status--proposal_sent {
+  background: rgba(59, 130, 246, 0.18);
 }

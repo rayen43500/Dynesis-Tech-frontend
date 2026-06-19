@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useAdminDevelopers } from './developers/adminDevelopersHooks';
 import { useAdminQuotes } from './quotes/adminQuotesHooks';
 import { LoadingState } from '../../shared/ui/feedback/LoadingState';
 
 export function AdminOverviewPage() {
+  const { t } = useTranslation();
   const developersQuery = useAdminDevelopers();
   const quotesQuery = useAdminQuotes();
 
@@ -20,7 +22,7 @@ export function AdminOverviewPage() {
   }, [developersQuery.data, quotesQuery.data]);
 
   if (developersQuery.isLoading || quotesQuery.isLoading) {
-    return <LoadingState label="Loading overview…" />;
+    return <LoadingState label={t('admin.overview.loading')} />;
   }
 
   return (
@@ -28,27 +30,27 @@ export function AdminOverviewPage() {
       <div className="admin-stats">
         <div className="admin-stat">
           <div className="admin-stat__value">{stats.total}</div>
-          <div className="admin-stat__label">Total Developers</div>
+          <div className="admin-stat__label">{t('admin.overview.stats.totalDevelopers')}</div>
         </div>
         <div className="admin-stat">
           <div className="admin-stat__value">{stats.available}</div>
-          <div className="admin-stat__label">Available</div>
+          <div className="admin-stat__label">{t('admin.overview.stats.available')}</div>
         </div>
         <div className="admin-stat">
           <div className="admin-stat__value">{stats.portfolioProjects}</div>
-          <div className="admin-stat__label">Portfolio Projects</div>
+          <div className="admin-stat__label">{t('admin.overview.stats.portfolioProjects')}</div>
         </div>
         <div className="admin-stat">
           <div className="admin-stat__value">{stats.newBriefs}</div>
-          <div className="admin-stat__label">New Briefs</div>
+          <div className="admin-stat__label">{t('admin.overview.stats.newBriefs')}</div>
         </div>
       </div>
       <div className="admin-overview-actions">
-        <Link to="/admin/quotes" className="admin-btn admin-btn--ghost">
-          View Project Briefs
+        <Link to="/dashboard/admin/quotes" className="admin-btn admin-btn--ghost">
+          {t('admin.overview.viewBriefs')}
         </Link>
-        <Link to="/admin/developers" className="admin-btn">
-          + Add Developer
+        <Link to="/dashboard/admin/developers" className="admin-btn">
+          {t('admin.overview.addDeveloper')}
         </Link>
       </div>
     </div>

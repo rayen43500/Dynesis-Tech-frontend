@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   buildDefaultProposalBody,
@@ -7,6 +8,7 @@ import {
   useUpdateQuote,
   type QuoteStatus
 } from './adminQuotesHooks';
+import { translateBudget, translateProjectType, translateTimeline } from '../../../shared/i18n/quoteLabels';
 
 type Props = {
   quoteId: string;
@@ -14,12 +16,12 @@ type Props = {
   onUpdated: () => void;
 };
 
-const STATUS_OPTIONS: { value: QuoteStatus; label: string }[] = [
-  { value: 'new', label: 'New' },
-  { value: 'reviewed', label: 'Reviewed' },
-  { value: 'proposal_sent', label: 'Proposal Sent' },
-  { value: 'closed', label: 'Closed' }
-];
+const STATUS_KEYS: Record<QuoteStatus, string> = {
+  new: 'admin.quotes.tabs.new',
+  reviewed: 'admin.quotes.tabs.reviewed',
+  proposal_sent: 'admin.quotes.tabs.proposalSent',
+  closed: 'admin.quotes.tabs.closed'
+};
 
 function formatDate(value?: string) {
   if (!value) return '';
@@ -31,13 +33,14 @@ function formatDate(value?: string) {
 }
 
 export function QuoteDetailPanel({ quoteId, onClose, onUpdated }: Props) {
+  const { t } = useTranslation();
   const query = useAdminQuote(quoteId);
   const updateMutation = useUpdateQuote();
   const sendMutation = useSendProposal();
 
   const [status, setStatus] = useState<QuoteStatus>('new');
   const [adminNotes, setAdminNotes] = useState('');
-  const [subject, setSubject] = useState('Project Proposal — Dynesis Tech');
+  const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
   const [saveMessage, setSaveMessage] = useState('');
   const [sendMessage, setSendMessage] = useState('');
@@ -50,19 +53,19 @@ export function QuoteDetailPanel({ quoteId, onClose, onUpdated }: Props) {
     if (!quote) return;
     setStatus(quote.status);
     setAdminNotes(quote.adminNotes || '');
-    setSubject(quote.proposalSubject || 'Project Proposal — Dynesis Tech');
+    setSubject(quote.proposalSubject || t('admin.quotes.detail.defaultSubject'));
     setBody(quote.proposalBody || buildDefaultProposalBody(quote.name));
     setProposalSent(quote.status === 'proposal_sent');
-  }, [quote]);
+  }, [quote, t]);
 
   async function handleSave() {
     setSaveMessage('');
     try {
       await updateMutation.mutateAsync({ id: quoteId, payload: { status, adminNotes } });
-      setSaveMessage('Changes saved');
+      setSaveMessage(t('admin.quotes.detail.saved'));
       onUpdated();
     } catch {
-      setSaveMessage('Failed to save changes');
+      setSaveMessage(t('admin.quotes.detail.saveFailed'));
     }
   }
 
@@ -75,15 +78,15 @@ export function QuoteDetailPanel({ quoteId, onClose, onUpdated }: Props) {
       if (data?.success) {
         setProposalSent(true);
         setStatus('proposal_sent');
-        setSendMessage('✓ Proposal sent successfully');
+        setSendMessage(t('admin.quotes.detail.sentSuccess'));
         onUpdated();
       } else {
         setSendError(true);
-        setSendMessage('Failed to send. Try again.');
+        setSendMessage(t('admin.quotes.detail.sendFailed'));
       }
     } catch {
       setSendError(true);
-      setSendMessage('Failed to send. Try again.');
+      setSendMessage(t('admin.quotes.detail.sendFailed'));
     }
   }
 
@@ -92,7 +95,7 @@ export function QuoteDetailPanel({ quoteId, onClose, onUpdated }: Props) {
       <>
         <div className="admin-drawer-overlay" role="presentation" onClick={onClose} />
         <aside className="admin-quote-panel">
-          <p className="admin-quote-panel__loading">Loading…</p>
+          <p className="admin-quote-panel__loading">{t('admin.quotes.detail.loading')}</p>
         </aside>
       </>
     );
@@ -105,83 +108,86 @@ export function QuoteDetailPanel({ quoteId, onClose, onUpdated }: Props) {
         <header className="admin-quote-panel__header">
           <div>
             <h2 className="admin-quote-panel__title">{quote.name}</h2>
-            <p className="admin-quote-panel__date">Received {formatDate(quote.createdAt)}</p>
+            <p className="admin-quote-panel__date">
+              {t('common.received', { date: formatDate(quote.createdAt) })}
+            </p>
           </div>
-          <button type="button" className="admin-drawer__close" aria-label="Close" onClick={onClose}>
+          <button type="button" className="admin-drawer__close" aria-label={t('common.close')} onClick={onClose}>
             ✕
           </button>
         </header>
 
         <div className="admin-quote-panel__body">
           <section className="admin-quote-section">
-            <h3 className="admin-quote-section__label">Contact Info</h3>
+            <h3 className="admin-quote-section__label">{t('admin.quotes.detail.contactInfo')}</h3>
             <p className="admin-quote-section__line">
-              <span>Name</span> {quote.name}
+              <span>{t('admin.quotes.detail.name')}</span> {quote.name}
             </p>
             <p className="admin-quote-section__line">
-              <span>Email</span> {quote.email}
+              <span>{t('admin.quotes.detail.email')}</span> {quote.email}
             </p>
             <p className="admin-quote-section__line">
-              <span>Company</span> {quote.company || '—'}
+              <span>{t('admin.quotes.detail.company')}</span> {quote.company || '—'}
             </p>
             <p className="admin-quote-section__line">
-              <span>Discovery call</span> {quote.wantsDiscoveryCall ? 'Yes' : 'No'}
-            </p>
-          </section>
-
-          <section className="admin-quote-section">
-            <h3 className="admin-quote-section__label">Project Details</h3>
-            <p className="admin-quote-section__line">
-              <span>Type</span> {quote.projectType}
-            </p>
-            <p className="admin-quote-section__line">
-              <span>Budget</span> {quote.budget}
-            </p>
-            <p className="admin-quote-section__line">
-              <span>Timeline</span> {quote.timeline}
+              <span>{t('admin.quotes.detail.discoveryCall')}</span>{' '}
+              {quote.wantsDiscoveryCall ? t('common.yes') : t('common.no')}
             </p>
           </section>
 
           <section className="admin-quote-section">
-            <h3 className="admin-quote-section__label">Description</h3>
+            <h3 className="admin-quote-section__label">{t('admin.quotes.detail.projectDetails')}</h3>
+            <p className="admin-quote-section__line">
+              <span>{t('admin.quotes.detail.type')}</span> {translateProjectType(quote.projectType, t)}
+            </p>
+            <p className="admin-quote-section__line">
+              <span>{t('admin.quotes.detail.budget')}</span> {translateBudget(quote.budget, t)}
+            </p>
+            <p className="admin-quote-section__line">
+              <span>{t('admin.quotes.detail.timeline')}</span> {translateTimeline(quote.timeline, t)}
+            </p>
+          </section>
+
+          <section className="admin-quote-section">
+            <h3 className="admin-quote-section__label">{t('admin.quotes.detail.description')}</h3>
             <div className="admin-quote-description">{quote.description}</div>
           </section>
 
           <section className="admin-quote-section">
-            <h3 className="admin-quote-section__label">Status &amp; Notes</h3>
+            <h3 className="admin-quote-section__label">{t('admin.quotes.detail.statusNotes')}</h3>
             <label className="admin-field">
-              <span className="admin-field__label">Status</span>
+              <span className="admin-field__label">{t('admin.quotes.detail.status')}</span>
               <select value={status} onChange={(e) => setStatus(e.target.value as QuoteStatus)}>
-                {STATUS_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
+                {(Object.keys(STATUS_KEYS) as QuoteStatus[]).map((value) => (
+                  <option key={value} value={value}>
+                    {t(STATUS_KEYS[value])}
                   </option>
                 ))}
               </select>
             </label>
             <label className="admin-field">
-              <span className="admin-field__label">Admin notes</span>
+              <span className="admin-field__label">{t('admin.quotes.detail.adminNotes')}</span>
               <textarea
                 className="admin-quote-notes"
-                placeholder="Add internal notes..."
+                placeholder={t('admin.quotes.detail.notesPlaceholder')}
                 value={adminNotes}
                 onChange={(e) => setAdminNotes(e.target.value)}
               />
             </label>
             <button type="button" className="admin-quote-save-btn" disabled={updateMutation.isPending} onClick={() => void handleSave()}>
-              Save Changes
+              {t('admin.quotes.detail.saveChanges')}
             </button>
             {saveMessage ? <p className="admin-quote-feedback">{saveMessage}</p> : null}
           </section>
 
           <section className="admin-quote-proposal">
-            <h3 className="admin-quote-proposal__title">Send Proposal to Client</h3>
+            <h3 className="admin-quote-proposal__title">{t('admin.quotes.detail.sendProposal')}</h3>
             <label className="admin-field">
-              <span className="admin-field__label">Subject</span>
+              <span className="admin-field__label">{t('admin.quotes.detail.subject')}</span>
               <input type="text" value={subject} onChange={(e) => setSubject(e.target.value)} />
             </label>
             <label className="admin-field">
-              <span className="admin-field__label">Body</span>
+              <span className="admin-field__label">{t('admin.quotes.detail.body')}</span>
               <textarea className="admin-quote-proposal__body" value={body} onChange={(e) => setBody(e.target.value)} />
             </label>
             <button
@@ -193,10 +199,10 @@ export function QuoteDetailPanel({ quoteId, onClose, onUpdated }: Props) {
               {sendMutation.isPending ? (
                 <>
                   <span className="admin-quote-send-btn__spinner" aria-hidden />
-                  Sending...
+                  {t('common.sending')}
                 </>
               ) : (
-                'Send Proposal →'
+                t('admin.quotes.detail.sendProposalBtn')
               )}
             </button>
             {sendMessage ? (
@@ -204,7 +210,7 @@ export function QuoteDetailPanel({ quoteId, onClose, onUpdated }: Props) {
                 {sendMessage}
               </p>
             ) : null}
-            <p className="admin-quote-proposal__note">This email will be sent to {quote.email}</p>
+            <p className="admin-quote-proposal__note">{t('admin.quotes.detail.emailNotice', { email: quote.email })}</p>
           </section>
         </div>
       </aside>

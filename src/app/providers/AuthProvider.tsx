@@ -10,6 +10,7 @@ type User = {
   email: string;
   role: 'admin' | 'client';
   displayName?: string;
+  profilePicture?: string;
 };
 
 type AuthContextValue = {

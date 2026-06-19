@@ -1,65 +1,48 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { HomePageSections } from './HomePageSections';
 import './andela-home.css';
 import './home-sections.css';
 
 export function AndelaHomePage() {
+  const { t } = useTranslation();
+
   const content = useMemo(
     () => ({
-      logoText: 'Dynesis Tech',
-      headline1: 'Premium Software,',
-      headline2: 'Built for Your Growth.',
-      subheading:
-        'From strategy to launch, we deliver digital products that perform — built with precision, clarity, and zero compromise on quality.',
-      features: ['Strategy-led delivery', 'Experienced engineers', 'Enterprise-grade quality'],
-      ctaPillText: 'Hire Top Talent',
-      button1: 'Book a discovery call',
-      button2: 'Explore our platform',
-      reviewCountText: '329 reviews',
-      testimonialsHeading: 'Trusted by teams who value clarity',
+      headline1: t('home.hero.headline1'),
+      headline2: t('home.hero.headline2'),
+      subheading: t('home.hero.subheading'),
+      features: [
+        t('home.hero.feature.strategyLed'),
+        t('home.hero.feature.experiencedEngineers'),
+        t('home.hero.feature.enterpriseQuality')
+      ],
+      button1: t('home.cta.primary'),
+      button2: t('home.cta.secondary'),
+      reviewCountText: t('home.ratings.reviewCount'),
+      testimonialsHeading: t('home.testimonials.title'),
+      matchBadge: t('home.hero.matchBadge'),
       featuredPerson: {
-        name: 'Thomas R.',
-        title: 'Senior Full Stack Engineer',
-        workedWith: ['FT', 'SF']
+        name: t('home.featured.name'),
+        title: t('home.featured.role')
       },
       courseCard: {
-        title: 'Delivery readiness',
+        title: t('home.delivery.title'),
         rows: [
-          { label: 'Discovery alignment', pct: 100 },
-          { label: 'Execution velocity', pct: 76 }
+          { label: t('home.delivery.discovery'), pct: 100 },
+          { label: t('home.delivery.velocity'), pct: 76 }
         ]
       },
       techStack: ['HuggingFace', 'PyTorch', 'LangChain', 'OpenAI', 'AWS', 'FastAPI'],
-      testimonials: [
-        {
-          quote:
-            '“Dynesis brought structure and calm to a complex roadmap. We shipped on time with a level of quality our stakeholders noticed.”',
-          name: 'Olivia M.',
-          role: 'Product Lead · SaaS'
-        },
-        {
-          quote:
-            '“Clear communication, strong design execution, and engineering rigor. The process felt enterprise-grade from day one.”',
-          name: 'Daniel R.',
-          role: 'CTO · Fintech'
-        },
-        {
-          quote:
-            '“They helped us move fast without sacrificing maintainability. The handover was clean and the codebase is a joy to extend.”',
-          name: 'Sofia A.',
-          role: 'Engineering Manager · B2B'
-        },
-        {
-          quote:
-            '“A premium partner. Discovery was sharp, estimates were transparent, and delivery was consistent week after week.”',
-          name: 'Michael T.',
-          role: 'Founder · Startup'
-        }
-      ]
+      testimonials: [1, 2, 3, 4].map((n) => ({
+        quote: t(`home.testimonials.${n}.quote`),
+        name: t(`home.testimonials.${n}.name`),
+        role: t(`home.testimonials.${n}.role`)
+      }))
     }),
-    []
+    [t]
   );
 
   const tech = useMemo(() => [...content.techStack, ...content.techStack], [content.techStack]);
@@ -74,7 +57,7 @@ export function AndelaHomePage() {
               <span className="andela-h1__line2">{content.headline2}</span>
             </h1>
             <p className="andela-hero-sub">{content.subheading}</p>
-            <div className="andela-checkrow" aria-label="Key benefits">
+            <div className="andela-checkrow" aria-label={content.headline1}>
               {content.features.map((f) => (
                 <span key={f} className="andela-check">
                   <span className="andela-check__mark">✓</span>
@@ -84,13 +67,13 @@ export function AndelaHomePage() {
             </div>
           </div>
 
-          <div className="hero-card" aria-label="Featured profile card">
+          <div className="hero-card" aria-label={content.featuredPerson.name}>
             <div className="floating-card profile-card">
               <div className="profile-top">
                 <div className="profile-name">{content.featuredPerson.name}</div>
                 <div className="match-badge">
                   <span className="match-dot" aria-hidden />
-                  100% Match
+                  {content.matchBadge}
                 </div>
               </div>
               <p className="profile-title">{content.featuredPerson.title}</p>
@@ -99,17 +82,17 @@ export function AndelaHomePage() {
             <img
               className="hero-card__photo"
               src="/images/hero-developer.png"
-              alt="Featured team member"
+              alt=""
               loading="eager"
             />
 
-            <div className="hero-card__pills" aria-label="Technology stack">
+            <div className="hero-card__pills" aria-hidden>
               <div className="tech-track">
                 <div className="tech-strip">
-                  {tech.map((t, idx) => (
-                    <span key={`${t}-${idx}`} className="pill">
+                  {tech.map((label, idx) => (
+                    <span key={`${label}-${idx}`} className="pill">
                       <span className="pill-dot" aria-hidden />
-                      {t}
+                      {label}
                     </span>
                   ))}
                 </div>
@@ -118,7 +101,7 @@ export function AndelaHomePage() {
           </div>
         </section>
 
-        <section id="cta" className="cta-row" aria-label="Primary calls to action">
+        <section id="cta" className="cta-row">
           <Link className="btn-lg btn-lg--primary" to="/contact">
             {content.button1}
             <span aria-hidden>→</span>
@@ -128,35 +111,35 @@ export function AndelaHomePage() {
           </Link>
         </section>
 
-        <section className="ratings" aria-label="Social proof">
+        <section className="ratings">
           <div className="ratings__inner">
             <span className="g2dot" aria-hidden>
               G2
             </span>
             <span className="rating-num">4.7</span>
-            <span className="stars" aria-label="Rating">
+            <span className="stars" aria-hidden>
               ★★★★½
             </span>
             <span className="reviews">| {content.reviewCountText}</span>
           </div>
         </section>
 
-        <section className="testimonials" aria-label="Testimonials">
+        <section className="testimonials">
           <div className="testimonials__inner">
             <h2 className="testimonials__title">{content.testimonialsHeading}</h2>
             <div className="tgrid">
-              {content.testimonials.map((t) => (
-                <article key={t.name} className="tcard">
+              {content.testimonials.map((item) => (
+                <article key={item.name} className="tcard">
                   <div className="tstars" aria-hidden>
                     ★★★★★
                   </div>
-                  <p className="tquote">{t.quote}</p>
+                  <p className="tquote">{item.quote}</p>
                   <div className="tfoot">
                     <div>
-                      <div className="tname">{t.name}</div>
-                      <div className="trole">{t.role}</div>
+                      <div className="tname">{item.name}</div>
+                      <div className="trole">{item.role}</div>
                     </div>
-                    <div className="tlogo" aria-label="Company logo">
+                    <div className="tlogo" aria-hidden>
                       Co
                     </div>
                   </div>
@@ -171,4 +154,3 @@ export function AndelaHomePage() {
     </div>
   );
 }
-

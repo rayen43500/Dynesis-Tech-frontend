@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Camera, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import {
   useAdminDeveloper,
@@ -55,7 +56,13 @@ const emptyPortfolio = (): PortfolioEntry => ({
   imageFiles: []
 });
 
-const PORTFOLIO_CATEGORIES = ['Enterprise SaaS', 'Marketplace', 'Fintech', 'Mobile', 'Operations'];
+const PORTFOLIO_CATEGORIES: { value: string; labelKey: string }[] = [
+  { value: 'Enterprise SaaS', labelKey: 'admin.developers.drawer.cat.enterprise' },
+  { value: 'Marketplace', labelKey: 'admin.developers.drawer.cat.marketplace' },
+  { value: 'Fintech', labelKey: 'admin.developers.drawer.cat.fintech' },
+  { value: 'Mobile', labelKey: 'admin.developers.drawer.cat.mobile' },
+  { value: 'Operations', labelKey: 'admin.developers.drawer.cat.operations' }
+];
 
 type Props = {
   developerId?: string | null;
@@ -64,6 +71,7 @@ type Props = {
 };
 
 export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
+  const { t } = useTranslation();
   const isEdit = Boolean(developerId);
   const query = useAdminDeveloper(developerId || undefined);
   const createMutation = useCreateDeveloper();
@@ -207,8 +215,9 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
     const files: File[] = [];
 
     for (let slot = 0; slot < PORTFOLIO_IMAGE_SLOTS; slot += 1) {
-      if (project.imageFiles[slot]) {
-        files.push(project.imageFiles[slot]);
+      const slotFile = project.imageFiles[slot];
+      if (slotFile) {
+        files.push(slotFile);
         continue;
       }
 
@@ -281,7 +290,7 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
         const res = await updateMutation.mutateAsync({ id: developerId, formData });
         const savedPortfolio = (res.data?.data?.portfolio || []) as { _id: string }[];
         await syncPortfolioImages(developerId, portfolio, savedPortfolio);
-        setMessage('Developer updated successfully.');
+        setMessage(t('admin.developers.drawer.updated'));
       } else {
         const res = await createMutation.mutateAsync(formData);
         const created = res.data?.data as { _id?: string; id?: string; portfolio?: { _id: string }[] };
@@ -289,12 +298,12 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
         if (devId) {
           await syncPortfolioImages(devId, portfolio, created.portfolio || []);
         }
-        setMessage('Developer created successfully.');
+        setMessage(t('admin.developers.drawer.created'));
       }
       onSaved();
       onClose();
     } catch {
-      setMessage('Failed to save developer. Please try again.');
+      setMessage(t('admin.developers.drawer.saveFailed'));
     }
   }
 
@@ -309,15 +318,17 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
       <div className="admin-drawer-overlay" onClick={onClose} aria-hidden />
       <aside className="admin-drawer" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
         <div className="admin-drawer__header">
-          <h2 className="admin-drawer__title">{isEdit ? 'Edit Developer' : 'Add Developer'}</h2>
-          <button type="button" className="admin-drawer__close" onClick={onClose} aria-label="Close">
+          <h2 className="admin-drawer__title">
+            {isEdit ? t('admin.developers.drawer.editTitle') : t('admin.developers.drawer.addTitle')}
+          </h2>
+          <button type="button" className="admin-drawer__close" onClick={onClose} aria-label={t('common.close')}>
             ×
           </button>
         </div>
 
         <form id="developer-drawer-form" className="admin-drawer__body" onSubmit={handleSubmit}>
           <section className="admin-section">
-            <h3 className="admin-section__title">Basic info</h3>
+            <h3 className="admin-section__title">{t('admin.developers.drawer.basicInfo')}</h3>
 
             <div className="admin-photo-upload-wrap">
               <label className="admin-photo-upload">
@@ -337,30 +348,30 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
                   }}
                 />
               </label>
-              <span className="admin-photo-upload__label">Upload photo</span>
+              <span className="admin-photo-upload__label">{t('admin.developers.drawer.uploadPhoto')}</span>
             </div>
 
             <div className="admin-grid-2">
               <label className="admin-field">
-                <span className="admin-field__label">Name</span>
+                <span className="admin-field__label">{t('admin.developers.drawer.name')}</span>
                 <input value={fullName} onChange={(e) => setFullName(e.target.value)} required />
               </label>
               <label className="admin-field">
-                <span className="admin-field__label">Role</span>
+                <span className="admin-field__label">{t('admin.developers.drawer.role')}</span>
                 <input value={roleTitle} onChange={(e) => setRoleTitle(e.target.value)} />
               </label>
               <label className="admin-field">
-                <span className="admin-field__label">Location</span>
+                <span className="admin-field__label">{t('admin.developers.drawer.location')}</span>
                 <input value={location} onChange={(e) => setLocation(e.target.value)} />
               </label>
               <label className="admin-field">
-                <span className="admin-field__label">Member since</span>
+                <span className="admin-field__label">{t('admin.developers.drawer.memberSince')}</span>
                 <input type="date" value={memberSince} onChange={(e) => setMemberSince(e.target.value)} />
               </label>
             </div>
 
             <label className="admin-field">
-              <span className="admin-field__label">Bio</span>
+              <span className="admin-field__label">{t('admin.developers.drawer.bio')}</span>
               <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={4} />
             </label>
 
@@ -373,21 +384,21 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
               >
                 <span className="admin-switch__knob" />
               </button>
-              <span>Available for hire</span>
+              <span>{t('admin.developers.drawer.available')}</span>
             </div>
 
             <label className="admin-toggle-row">
               <input type="checkbox" checked={verified} onChange={(e) => setVerified(e.target.checked)} />
-              <span>Verified Expert</span>
+              <span>{t('admin.developers.drawer.verified')}</span>
             </label>
           </section>
 
           <section className="admin-section">
-            <h3 className="admin-section__title">Expertise</h3>
+            <h3 className="admin-section__title">{t('admin.developers.drawer.expertise')}</h3>
             <div className="admin-tag-input-row">
               <input
                 value={tagInput}
-                placeholder="Type skill and press Enter"
+                placeholder={t('admin.developers.drawer.skillHint')}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -397,12 +408,12 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
                 }}
               />
               <button type="button" className="admin-btn admin-btn--ghost" onClick={addTagFromInput}>
-                Add
+                {t('admin.developers.drawer.add')}
               </button>
             </div>
             <div className="admin-tags">
               {expertiseTags.map((tag) => (
-                <button key={tag} type="button" className="admin-tag" onClick={() => setExpertiseTags((t) => t.filter((x) => x !== tag))}>
+                <button key={tag} type="button" className="admin-tag" onClick={() => setExpertiseTags((tags) => tags.filter((x) => x !== tag))}>
                   {tag} ×
                 </button>
               ))}
@@ -410,30 +421,30 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
           </section>
 
           <section className="admin-section">
-            <h3 className="admin-section__title">Experience</h3>
+            <h3 className="admin-section__title">{t('admin.developers.drawer.experience')}</h3>
             {experience.map((entry, idx) => (
               <div key={idx} className="admin-card-block">
                 <div className="admin-grid-2">
                   <label className="admin-field">
-                    <span className="admin-field__label">Role</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.role')}</span>
                     <input value={entry.role} onChange={(e) => updateExperience(idx, 'role', e.target.value)} />
                   </label>
                   <label className="admin-field">
-                    <span className="admin-field__label">Company</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.company')}</span>
                     <input value={entry.company} onChange={(e) => updateExperience(idx, 'company', e.target.value)} />
                   </label>
                   <label className="admin-field">
-                    <span className="admin-field__label">Start year</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.startYear')}</span>
                     <input value={entry.startYear} onChange={(e) => updateExperience(idx, 'startYear', e.target.value)} />
                   </label>
                   <label className="admin-field">
-                    <span className="admin-field__label">End year</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.endYear')}</span>
                     <input value={entry.endYear} onChange={(e) => updateExperience(idx, 'endYear', e.target.value)} />
                   </label>
                 </div>
                 {entry.bullets.map((bullet, bIdx) => (
                   <label key={bIdx} className="admin-field">
-                    <span className="admin-field__label">Bullet {bIdx + 1}</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.bullet', { n: bIdx + 1 })}</span>
                     <textarea
                       value={bullet}
                       rows={2}
@@ -442,14 +453,14 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
                   </label>
                 ))}
                 <button type="button" className="admin-link-btn" onClick={() => addExperienceBullet(idx)}>
-                  Add bullet
+                  {t('admin.developers.drawer.addBullet')}
                 </button>
                 <label className="admin-field">
-                  <span className="admin-field__label">Technologies</span>
+                  <span className="admin-field__label">{t('admin.developers.drawer.technologies')}</span>
                   <input value={entry.technologies} onChange={(e) => updateExperience(idx, 'technologies', e.target.value)} />
                 </label>
                 <button type="button" className="admin-card-block__remove" onClick={() => setExperience((e) => e.filter((_, i) => i !== idx))}>
-                  Remove entry
+                  {t('admin.developers.drawer.removeEntry')}
                 </button>
               </div>
             ))}
@@ -460,70 +471,70 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
                 setExperience((e) => [...e, { company: '', role: '', startYear: '', endYear: '', bullets: [''], technologies: '' }])
               }
             >
-              Add experience
+              {t('admin.developers.drawer.addExperience')}
             </button>
           </section>
 
           <section className="admin-section">
-            <h3 className="admin-section__title">Education</h3>
+            <h3 className="admin-section__title">{t('admin.developers.drawer.education')}</h3>
             {education.map((entry, idx) => (
               <div key={idx} className="admin-card-block">
                 <div className="admin-grid-2">
                   <label className="admin-field">
-                    <span className="admin-field__label">School</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.school')}</span>
                     <input value={entry.school} onChange={(e) => updateEducation(idx, 'school', e.target.value)} />
                   </label>
                   <label className="admin-field">
-                    <span className="admin-field__label">Degree</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.degree')}</span>
                     <input value={entry.degree} onChange={(e) => updateEducation(idx, 'degree', e.target.value)} />
                   </label>
                   <label className="admin-field">
-                    <span className="admin-field__label">Year</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.year')}</span>
                     <input value={entry.year} onChange={(e) => updateEducation(idx, 'year', e.target.value)} />
                   </label>
                 </div>
               </div>
             ))}
             <button type="button" className="admin-link-btn" onClick={() => setEducation((e) => [...e, { school: '', degree: '', year: '' }])}>
-              Add education
+              {t('admin.developers.drawer.addEducation')}
             </button>
           </section>
 
           <section className="admin-section">
-            <h3 className="admin-section__title">Skills</h3>
+            <h3 className="admin-section__title">{t('admin.developers.drawer.skills')}</h3>
             {skills.map((entry, idx) => (
               <div key={idx} className="admin-card-block admin-grid-2">
                 <label className="admin-field">
-                  <span className="admin-field__label">Skill</span>
+                  <span className="admin-field__label">{t('admin.developers.drawer.skill')}</span>
                   <input value={entry.name} onChange={(e) => updateSkill(idx, 'name', e.target.value)} />
                 </label>
                 <label className="admin-field">
-                  <span className="admin-field__label">Years</span>
+                  <span className="admin-field__label">{t('admin.developers.drawer.years')}</span>
                   <input value={entry.years} onChange={(e) => updateSkill(idx, 'years', e.target.value)} />
                 </label>
               </div>
             ))}
             <button type="button" className="admin-link-btn" onClick={() => setSkills((s) => [...s, { name: '', years: '' }])}>
-              Add skill
+              {t('admin.developers.drawer.addSkill')}
             </button>
           </section>
 
           <section className="admin-section">
-            <h3 className="admin-section__title">Portfolio</h3>
+            <h3 className="admin-section__title">{t('admin.developers.drawer.portfolio')}</h3>
             {portfolio.map((project, idx) => (
               <div key={idx} className="admin-card-block">
                 <div className="admin-grid-2">
                   <label className="admin-field">
-                    <span className="admin-field__label">Title</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.title')}</span>
                     <input value={project.title} onChange={(e) => updatePortfolio(idx, 'title', e.target.value)} />
                   </label>
                   <label className="admin-field">
-                    <span className="admin-field__label">Category</span>
+                    <span className="admin-field__label">{t('admin.developers.drawer.category')}</span>
                     <select value={project.category} onChange={(e) => updatePortfolio(idx, 'category', e.target.value)}>
-                      <option value="">Select category</option>
+                      <option value="">{t('admin.developers.drawer.selectCategory')}</option>
                       {PORTFOLIO_CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
+                        <option key={cat.value} value={cat.value}>
+                          {t(cat.labelKey)}
                         </option>
                       ))}
                     </select>
@@ -567,7 +578,7 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
                           <button
                             type="button"
                             className="admin-image-slot__remove"
-                            aria-label="Remove image"
+                            aria-label={t('admin.developers.drawer.removeImage')}
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -584,19 +595,21 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
 
                 {(['description', 'overview', 'brief', 'challenges', 'solutions', 'outcomes'] as const).map((field) => (
                   <label key={field} className="admin-field">
-                    <span className="admin-field__label">{field.charAt(0).toUpperCase() + field.slice(1)}</span>
+                    <span className="admin-field__label">
+                      {t(`admin.developers.drawer.${field === 'description' ? 'projectDescription' : field}`)}
+                    </span>
                     <textarea value={project[field]} rows={2} onChange={(e) => updatePortfolio(idx, field, e.target.value)} />
                   </label>
                 ))}
 
                 <label className="admin-field">
-                  <span className="admin-field__label">Technologies (comma separated)</span>
+                  <span className="admin-field__label">{t('admin.developers.drawer.techComma')}</span>
                   <input value={project.technologies} onChange={(e) => updatePortfolio(idx, 'technologies', e.target.value)} />
                 </label>
               </div>
             ))}
             <button type="button" className="admin-link-btn" onClick={() => setPortfolio((p) => [...p, emptyPortfolio()])}>
-              Add project
+              {t('admin.developers.drawer.addProject')}
             </button>
           </section>
 
@@ -605,10 +618,10 @@ export function DeveloperDrawerPanel({ developerId, onClose, onSaved }: Props) {
 
         <div className="admin-drawer__footer">
           <button type="button" className="admin-btn admin-btn--ghost" onClick={onClose}>
-            Cancel
+            {t('common.cancel')}
           </button>
           <button type="submit" form="developer-drawer-form" className="admin-btn" disabled={saving}>
-            {saving ? 'Saving…' : 'Save Developer'}
+            {saving ? t('common.saving') : t('admin.developers.drawer.saveDeveloper')}
           </button>
         </div>
       </aside>

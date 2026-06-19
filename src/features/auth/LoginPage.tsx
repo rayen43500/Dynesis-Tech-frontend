@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
+import { getRoleHomePath } from '../../shared/constants/roles';
 import { endpoints } from '../../shared/api/endpoints';
 import { AuthLogo } from './AuthLogo';
 import { AuthSplitPanel } from './AuthSplitPanel';
@@ -11,6 +13,7 @@ import './auth-pages.css';
 
 export function LoginPage() {
   useAuthPageScrollLock();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');
@@ -34,12 +37,12 @@ export function LoginPage() {
     setLoading(true);
     try {
       const user = await signIn({ email, password });
-      navigate(user.role === 'admin' ? '/admin' : '/client', { replace: true });
+      navigate(getRoleHomePath(user.role), { replace: true });
     } catch (err: any) {
       if (err?.response?.status === 403) {
-        setActivationNotice('Please activate your account first. Check your email.');
+        setActivationNotice(t('auth.login.error.activationRequired'));
       } else {
-        setError('Invalid email or password. Please try again.');
+        setError(t('auth.login.error.invalidCredentials'));
       }
     } finally {
       setLoading(false);
@@ -51,9 +54,9 @@ export function LoginPage() {
     setResending(true);
     try {
       await endpoints.auth.resendActivation({ email });
-      setActivationNotice('Email resent! Check your inbox.');
+      setActivationNotice(t('auth.login.activationResent'));
     } catch {
-      setActivationNotice('Please activate your account first. Check your email.');
+      setActivationNotice(t('auth.login.error.activationRequired'));
     } finally {
       setResending(false);
     }
@@ -66,13 +69,13 @@ export function LoginPage() {
         <div className="auth-split">
         <div className="auth-split__left">
           <div className="auth-form">
-            <h1 className="auth-title">Welcome Back!</h1>
-            <p className="auth-subtitle">Sign in to access your dashboard and manage your projects.</p>
+            <h1 className="auth-title">{t('auth.login.title')}</h1>
+            <p className="auth-subtitle">{t('auth.login.subtitle')}</p>
 
             <form onSubmit={handleSubmit}>
               <div className="auth-field">
                 <label className="auth-label" htmlFor="login-email">
-                  Email
+                  {t('auth.login.email.label')}
                 </label>
                 <div className="auth-input-wrap">
                   <span className="auth-input-icon">
@@ -83,7 +86,7 @@ export function LoginPage() {
                     className="auth-input"
                     type="email"
                     autoComplete="email"
-                    placeholder="Enter your email"
+                    placeholder={t('auth.login.email.placeholder')}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -93,7 +96,7 @@ export function LoginPage() {
 
               <div className="auth-field">
                 <label className="auth-label" htmlFor="login-password">
-                  Password
+                  {t('auth.login.password.label')}
                 </label>
                 <div className="auth-input-wrap">
                   <span className="auth-input-icon">
@@ -104,7 +107,7 @@ export function LoginPage() {
                     className="auth-input auth-input--password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
-                    placeholder="Enter your password"
+                    placeholder={t('auth.login.password.placeholder')}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -112,47 +115,47 @@ export function LoginPage() {
                   <button
                     type="button"
                     className="auth-toggle-pw"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={showPassword ? t('auth.login.password.hide') : t('auth.login.password.show')}
                     onClick={() => setShowPassword((v) => !v)}
                   >
                     <IconEye open={showPassword} />
                   </button>
                 </div>
                 <a href="#" className="auth-forgot" onClick={(e) => e.preventDefault()}>
-                  Forgot Password?
+                  {t('auth.login.forgotPassword')}
                 </a>
               </div>
 
               {error ? <p className="auth-error">{error}</p> : null}
 
               <button type="submit" className="auth-submit" disabled={loading}>
-                {loading ? 'Signing in…' : 'Sign In'}
+                {loading ? t('auth.login.submitting') : t('auth.login.submit')}
               </button>
               {activationNotice ? (
                 <p className="auth-warning">
                   {activationNotice}{' '}
                   <button type="button" className="auth-warning__link" onClick={handleResendActivation} disabled={resending}>
-                    {resending ? 'Resending…' : 'Resend →'}
+                    {resending ? t('auth.login.resending') : t('auth.login.resend')}
                   </button>
                 </p>
               ) : null}
             </form>
 
             <div className="auth-divider">
-              <span>OR</span>
+              <span>{t('auth.login.divider')}</span>
             </div>
 
             <button type="button" className="auth-social">
               <IconGoogle />
-              Continue with Google
+              {t('auth.login.continueGoogle')}
             </button>
             <button type="button" className="auth-social">
               <IconApple />
-              Continue with Apple
+              {t('auth.login.continueApple')}
             </button>
 
             <p className="auth-bottom">
-              Don&apos;t have an account? <Link to="/register">Sign Up</Link>
+              {t('auth.login.noAccount')} <Link to="/register">{t('auth.login.signUpLink')}</Link>
             </p>
           </div>
         </div>

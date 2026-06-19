@@ -3,7 +3,7 @@
   font-family: 'Lora', Georgia, serif;
   font-size: 28px;
   font-weight: 400;
-  color: var(--admin-text, #1a1a2e);
+  color: var(--admin-text);
 }
 
 .client-page-subtitle {
@@ -11,15 +11,15 @@
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 300;
-  color: var(--admin-muted, #8a8a9a);
+  color: var(--admin-muted);
 }
 
 .client-panel-card {
   max-width: 640px;
   padding: 20px 24px;
-  border: 1px solid var(--admin-border, #e8e8ec);
+  border: 1px solid var(--admin-border);
   border-radius: 10px;
-  background: var(--admin-white, #ffffff);
+  background: var(--admin-white);
 }
 
 .client-quote-section__label {
@@ -28,19 +28,19 @@
   font-weight: 500;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #8a8a9a;
+  color: var(--admin-muted);
 }
 
 .client-quote-card__row {
   margin: 0 0 8px;
   font-size: 14px;
   font-weight: 300;
-  color: #444444;
+  color: var(--admin-text-secondary);
 }
 
 .client-quote-card__row strong {
   font-weight: 400;
-  color: var(--admin-text, #1a1a2e);
+  color: var(--admin-text);
 }
 
 .client-quote-status {
@@ -54,7 +54,7 @@
 
 .client-quote-status--new {
   background: #eaf4ea;
-  color: #3a8a3a;
+  color: var(--admin-green);
 }
 
 .client-quote-status--reviewed {
@@ -68,21 +68,21 @@
 }
 
 .client-quote-status--closed {
-  background: #f5f5f5;
-  color: #888888;
+  background: var(--admin-badge-neutral-bg);
+  color: var(--admin-badge-neutral-text);
 }
 
 .client-quote-proposal-note {
   margin: 12px 0 0;
   font-size: 13px;
   font-weight: 300;
-  color: #3a8a3a;
+  color: var(--admin-green);
 }
 
 .client-quote-empty {
   font-size: 14px;
   font-weight: 300;
-  color: #888888;
+  color: var(--admin-text-subtle);
 }
 
 .client-quote-empty__link {
@@ -90,10 +90,22 @@
   margin-top: 12px;
   font-size: 14px;
   font-weight: 400;
-  color: #3a8a3a;
+  color: var(--admin-green);
   text-decoration: none;
 }
 
 .client-quote-empty__link:hover {
   text-decoration: underline;
+}
+
+.admin-shell--dark .client-quote-status--new {
+  background: rgba(58, 138, 58, 0.18);
+}
+
+.admin-shell--dark .client-quote-status--reviewed {
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.admin-shell--dark .client-quote-status--proposal_sent {
+  background: rgba(59, 130, 246, 0.18);
 }

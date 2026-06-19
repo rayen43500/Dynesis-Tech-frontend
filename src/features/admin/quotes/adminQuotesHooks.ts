@@ -63,6 +63,7 @@ export function useUpdateQuote() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['admin', 'quotes'] });
       qc.invalidateQueries({ queryKey: ['admin', 'quotes', 'notifications'] });
+      qc.invalidateQueries({ queryKey: ['admin', 'notifications'] });
     }
   });
 }
@@ -74,6 +75,7 @@ export function useDeleteQuote() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['admin', 'quotes'] });
       qc.invalidateQueries({ queryKey: ['admin', 'quotes', 'notifications'] });
+      qc.invalidateQueries({ queryKey: ['admin', 'notifications'] });
     }
   });
 }

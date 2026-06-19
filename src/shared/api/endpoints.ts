@@ -13,6 +13,10 @@ export const endpoints = {
       wantsDiscoveryCall?: boolean;
     }) => http.post('/api/quotes', payload)
   },
+  contact: {
+    create: (payload: { name: string; email: string; phone?: string; company?: string; message: string }) =>
+      http.post('/api/contact', payload)
+  },
   public: {
     developers: {
       list: (params?: { lang?: 'en' | 'fr'; featuredOnly?: boolean }) => {
@@ -33,6 +37,10 @@ export const endpoints = {
     }
   },
   admin: {
+    notifications: (since?: number) => {
+      const qs = since ? `?since=${encodeURIComponent(new Date(since).toISOString())}` : '';
+      return http.get(`/api/v1/admin/notifications${qs}`);
+    },
     quotes: {
       list: () => http.get('/api/v1/admin/quotes'),
       getById: (id: string) => http.get(`/api/v1/admin/quotes/${id}`),
@@ -45,6 +53,13 @@ export const endpoints = {
       },
       sendProposal: (id: string, payload: { subject: string; body: string }) =>
         http.post(`/api/v1/admin/quotes/${id}/send-proposal`, payload)
+    },
+    messages: {
+      list: () => http.get('/api/v1/admin/messages'),
+      getById: (id: string) => http.get(`/api/v1/admin/messages/${id}`),
+      update: (id: string, payload: { status?: string }) => http.patch(`/api/v1/admin/messages/${id}`, payload),
+      remove: (id: string) => http.delete(`/api/v1/admin/messages/${id}`),
+      reply: (id: string, payload: { reply: string }) => http.post(`/api/v1/admin/messages/${id}/reply`, payload)
     },
     developers: {
       list: (params?: { page?: number; limit?: number; visible?: boolean }) => {
@@ -85,6 +100,17 @@ export const endpoints = {
   client: {
     quotes: {
       list: () => http.get('/api/v1/client/quotes')
+    },
+    messages: {
+      list: () => http.get('/api/v1/client/messages')
+    },
+    account: {
+      update: (formData: FormData) =>
+        http.patch('/api/v1/client/account', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }),
+      changePassword: (payload: { currentPassword: string; newPassword: string }) =>
+        http.patch('/api/v1/client/account/password', payload)
     }
   },
   auth: {

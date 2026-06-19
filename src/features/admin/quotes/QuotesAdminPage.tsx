@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { QuoteDetailPanel } from './QuoteDetailPanel';
 import {
@@ -9,16 +10,17 @@ import {
   type QuoteStatus
 } from './adminQuotesHooks';
 import { LoadingState } from '../../../shared/ui/feedback/LoadingState';
+import { translateBudget, translateProjectType } from '../../../shared/i18n/quoteLabels';
 import './quotes-admin.css';
 
 type FilterTab = 'all' | QuoteStatus;
 
-const FILTER_TABS: { key: FilterTab; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'new', label: 'New' },
-  { key: 'reviewed', label: 'Reviewed' },
-  { key: 'proposal_sent', label: 'Proposal Sent' },
-  { key: 'closed', label: 'Closed' }
+const FILTER_TAB_KEYS: { key: FilterTab; labelKey: string }[] = [
+  { key: 'all', labelKey: 'admin.quotes.tabs.all' },
+  { key: 'new', labelKey: 'admin.quotes.tabs.new' },
+  { key: 'reviewed', labelKey: 'admin.quotes.tabs.reviewed' },
+  { key: 'proposal_sent', labelKey: 'admin.quotes.tabs.proposalSent' },
+  { key: 'closed', labelKey: 'admin.quotes.tabs.closed' }
 ];
 
 function formatDate(value?: string) {
@@ -30,11 +32,8 @@ function formatDate(value?: string) {
   });
 }
 
-function statusLabel(status: QuoteStatus) {
-  return status.replace('_', ' ');
-}
-
 export function QuotesAdminPage() {
+  const { t } = useTranslation();
   const query = useAdminQuotes();
   const deleteMutation = useDeleteQuote();
   const [filter, setFilter] = useState<FilterTab>('all');
@@ -53,6 +52,14 @@ export function QuotesAdminPage() {
     return quotes.filter((q) => q.status === filter);
   }, [quotes, filter]);
 
+  function statusLabel(status: QuoteStatus) {
+    if (status === 'proposal_sent') return t('admin.quotes.tabs.proposalSent');
+    if (status === 'new') return t('admin.quotes.tabs.new');
+    if (status === 'reviewed') return t('admin.quotes.tabs.reviewed');
+    if (status === 'closed') return t('admin.quotes.tabs.closed');
+    return status;
+  }
+
   async function confirmDelete() {
     if (!deleteTarget) return;
     await deleteMutation.mutateAsync(deleteTarget._id);
@@ -63,7 +70,7 @@ export function QuotesAdminPage() {
   if (query.isLoading) {
     return (
       <div className="admin-quotes-page">
-        <LoadingState label="Loading project briefs…" />
+        <LoadingState label={t('admin.quotes.loading')} />
       </div>
     );
   }
@@ -72,64 +79,64 @@ export function QuotesAdminPage() {
     <div className="admin-quotes-page">
       <div className="admin-quotes-page__head">
         <h1 className="admin-quotes-page__title">
-          Project Briefs
+          {t('admin.quotes.title')}
           {newCount > 0 ? <span className="admin-quotes-page__badge">{newCount}</span> : null}
         </h1>
       </div>
 
       <div className="admin-quotes-tabs">
-        {FILTER_TABS.map((tab) => (
+        {FILTER_TAB_KEYS.map((tab) => (
           <button
             key={tab.key}
             type="button"
             className={`admin-quotes-tabs__tab${filter === tab.key ? ' admin-quotes-tabs__tab--active' : ''}`}
             onClick={() => setFilter(tab.key)}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>
 
       <div className="admin-quotes-table">
         <div className="admin-quotes-table__head">
-          <span>Client</span>
-          <span>Project</span>
-          <span>Budget</span>
-          <span>Date</span>
-          <span>Status</span>
-          <span>Actions</span>
+          <span>{t('admin.quotes.columns.client')}</span>
+          <span>{t('admin.quotes.columns.project')}</span>
+          <span>{t('admin.quotes.columns.budget')}</span>
+          <span>{t('admin.quotes.columns.date')}</span>
+          <span>{t('admin.quotes.columns.status')}</span>
+          <span>{t('admin.quotes.columns.actions')}</span>
         </div>
 
         {filtered.map((quote) => (
           <div key={quote._id} className="admin-quotes-table__row">
             <span className="admin-quotes-table__client">{quote.name}</span>
-            <span>{quote.projectType}</span>
-            <span>{quote.budget}</span>
+            <span>{translateProjectType(quote.projectType, t)}</span>
+            <span>{translateBudget(quote.budget, t)}</span>
             <span>{formatDate(quote.createdAt)}</span>
             <span>
               <span className={`admin-quote-status admin-quote-status--${quote.status}`}>{statusLabel(quote.status)}</span>
             </span>
             <div className="admin-quotes-table__actions">
               <button type="button" className="admin-action-btn" onClick={() => setSelectedId(quote._id)}>
-                View
+                {t('common.view')}
               </button>
               <button type="button" className="admin-action-btn admin-action-btn--danger" onClick={() => setDeleteTarget(quote)}>
-                Delete
+                {t('common.delete')}
               </button>
             </div>
           </div>
         ))}
 
-        {!filtered.length ? <div className="admin-empty">No project briefs found.</div> : null}
+        {!filtered.length ? <div className="admin-empty">{t('admin.quotes.empty')}</div> : null}
       </div>
 
       {deleteTarget ? (
         <div className="admin-modal-overlay" role="presentation" onClick={() => setDeleteTarget(null)}>
           <div className="admin-modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-            <p className="admin-modal__text">Are you sure you want to delete this project brief?</p>
+            <p className="admin-modal__text">{t('admin.quotes.deleteConfirm')}</p>
             <div className="admin-modal__actions">
               <button type="button" className="admin-btn admin-btn--ghost" onClick={() => setDeleteTarget(null)}>
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 type="button"
@@ -137,7 +144,7 @@ export function QuotesAdminPage() {
                 disabled={deleteMutation.isPending}
                 onClick={() => void confirmDelete()}
               >
-                Delete
+                {t('common.delete')}
               </button>
             </div>
           </div>

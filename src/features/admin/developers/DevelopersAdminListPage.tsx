@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Pencil, Search, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { DeveloperDrawerPanel } from './DeveloperDrawerPanel';
 import { useAdminDevelopers, useDeleteDeveloper, type AdminDeveloperListItem } from './adminDevelopersHooks';
@@ -10,23 +11,23 @@ type DeleteTarget = { id: string } | null;
 
 type DataColumnKey = Exclude<keyof AdminDeveloperListItem, 'id' | 'photo'>;
 
-const TABLE_COLUMNS: { key: DataColumnKey; label: string }[] = [
-  { key: 'fullName', label: 'Developer' },
-  { key: 'roleTitle', label: 'Role' },
-  { key: 'expertiseTags', label: 'Expertise' },
-  { key: 'availability', label: 'Available' },
-  { key: 'visible', label: 'Visible' },
-  { key: 'verifiedBadge', label: 'Verified' },
-  { key: 'portfolioCount', label: 'Portfolio' }
+const TABLE_COLUMNS: { key: DataColumnKey; labelKey: string }[] = [
+  { key: 'fullName', labelKey: 'admin.developers.columns.developer' },
+  { key: 'roleTitle', labelKey: 'admin.developers.columns.role' },
+  { key: 'expertiseTags', labelKey: 'admin.developers.columns.expertise' },
+  { key: 'availability', labelKey: 'admin.developers.columns.available' },
+  { key: 'visible', labelKey: 'admin.developers.columns.visible' },
+  { key: 'verifiedBadge', labelKey: 'admin.developers.columns.verified' },
+  { key: 'portfolioCount', labelKey: 'admin.developers.columns.portfolio' }
 ];
 
 const TABLE_GRID_COLUMNS = '2fr 1.2fr 1.5fr 0.9fr 0.9fr 0.9fr 0.9fr 100px';
 
-function formatBoolean(value: boolean) {
-  return value ? 'Yes' : 'No';
-}
-
-function renderCell(key: DataColumnKey, dev: AdminDeveloperListItem) {
+function renderCell(
+  key: DataColumnKey,
+  dev: AdminDeveloperListItem,
+  formatBoolean: (value: boolean) => string
+) {
   switch (key) {
     case 'fullName':
       return (
@@ -89,8 +90,11 @@ function renderCell(key: DataColumnKey, dev: AdminDeveloperListItem) {
 }
 
 export function DevelopersAdminListPage() {
+  const { t } = useTranslation();
   const query = useAdminDevelopers();
   const deleteMutation = useDeleteDeveloper();
+
+  const formatBoolean = (value: boolean) => (value ? t('common.yes') : t('common.no'));
 
   const [search, setSearch] = useState('');
   const [drawerId, setDrawerId] = useState<string | null | undefined>(undefined);
@@ -127,7 +131,7 @@ export function DevelopersAdminListPage() {
     setDeleteTarget(null);
   }
 
-  if (query.isLoading) return <LoadingState label="Loading developers…" />;
+  if (query.isLoading) return <LoadingState label={t('admin.developers.loading')} />;
 
   return (
     <>
@@ -136,22 +140,22 @@ export function DevelopersAdminListPage() {
           <Search className="admin-search-field__icon" size={16} strokeWidth={2} aria-hidden />
           <input
             className="admin-search"
-            placeholder="Search developers..."
+            placeholder={t('admin.developers.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <button type="button" className="admin-btn" onClick={openCreate}>
-          + Add Developer
+          {t('admin.developers.add')}
         </button>
       </div>
 
       <div className="admin-table admin-table--developers">
         <div className="admin-table__head admin-table__head--developers" style={{ gridTemplateColumns: TABLE_GRID_COLUMNS }}>
           {TABLE_COLUMNS.map((col) => (
-            <span key={col.key}>{col.label}</span>
+            <span key={col.key}>{t(col.labelKey)}</span>
           ))}
-          <span>Actions</span>
+          <span>{t('admin.developers.columns.actions')}</span>
         </div>
 
         {filtered.map((dev) => (
@@ -161,7 +165,7 @@ export function DevelopersAdminListPage() {
             style={{ gridTemplateColumns: TABLE_GRID_COLUMNS }}
           >
             {TABLE_COLUMNS.map((col) => (
-              <div key={col.key}>{renderCell(col.key, dev)}</div>
+              <div key={col.key}>{renderCell(col.key, dev, formatBoolean)}</div>
             ))}
             <div className="admin-row-actions">
               <button
@@ -186,14 +190,14 @@ export function DevelopersAdminListPage() {
 
         {!developers.length ? (
           <div className="admin-empty">
-            No developers yet.
+            {t('admin.developers.emptyInitial')}
             <br />
-            Add your first developer.
+            {t('admin.developers.emptyInitialCta')}
           </div>
         ) : null}
 
         {developers.length > 0 && !filtered.length ? (
-          <div className="admin-empty">No developers found.</div>
+          <div className="admin-empty">{t('admin.developers.empty')}</div>
         ) : null}
       </div>
 
@@ -207,11 +211,11 @@ export function DevelopersAdminListPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <p className="admin-modal__text" id="admin-delete-title">
-              Are you sure you want to delete this developer?
+              {t('admin.developers.deleteConfirm')}
             </p>
             <div className="admin-modal__actions">
               <button type="button" className="admin-btn admin-btn--ghost" onClick={() => setDeleteTarget(null)}>
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 type="button"
@@ -219,7 +223,7 @@ export function DevelopersAdminListPage() {
                 disabled={deleteMutation.isPending}
                 onClick={() => void confirmDelete()}
               >
-                Delete
+                {t('common.delete')}
               </button>
             </div>
           </div>

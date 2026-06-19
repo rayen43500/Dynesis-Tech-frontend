@@ -18,12 +18,13 @@ export type ClientQuote = {
   createdAt: string;
 };
 
-export function useClientQuotes() {
+export function useClientQuotes(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['client', 'quotes'],
     queryFn: async () => {
       const res = await endpoints.client.quotes.list();
       return (res.data?.data || []) as ClientQuote[];
-    }
+    },
+    enabled: options?.enabled ?? true
   });
 }

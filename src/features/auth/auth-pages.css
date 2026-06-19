@@ -31,13 +31,23 @@ body.auth-route {
   }
 }
 
-.auth-logo-only {
+.auth-logo-row {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding-top: 28px;
   padding-left: 150px;
+  padding-right: 150px;
   z-index: 20;
+}
+
+.auth-logo-only {
+  position: static;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -63,6 +73,40 @@ body.auth-route {
   font-weight: 400;
   font-size: 15px;
   color: var(--color-dark);
+}
+
+.andela-nav__lang--auth {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.andela-nav__lang--auth .andela-nav__lang-btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(26, 26, 26, 0.55);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.andela-nav__lang--auth .andela-nav__lang-btn:hover,
+.andela-nav__lang--auth .andela-nav__lang-btn--active {
+  color: #1a1a1a;
+}
+
+.andela-nav__lang--auth .andela-nav__lang-btn--active {
+  background: rgba(26, 26, 26, 0.08);
+}
+
+.andela-nav__lang--auth .andela-nav__lang-divider {
+  font-size: 11px;
+  color: rgba(26, 26, 26, 0.25);
+  line-height: 1;
 }
 
 .auth-page-container {

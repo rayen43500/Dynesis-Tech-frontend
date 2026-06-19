@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Bell, Moon, Sun, User } from 'lucide-react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
-import { getLastVisitedQuotes, markQuotesVisited, useAdminQuoteNotifications } from '../../features/admin/quotes/adminQuotesHooks';
+import { getLastVisitedQuotes, markQuotesVisited } from '../../features/admin/quotes/adminQuotesHooks';
+import { useAdminNotifications } from '../../features/admin/adminNotificationsHooks';
 import {
   IconHome,
   IconInvoices,
   IconLogout,
+  IconMessages,
   IconSettings,
   IconUser,
   IconUsers
 } from '../../shared/ui/navigation/icons';
+import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
 import '../../features/admin/admin-dashboard.css';
 import '../../features/admin/quotes/quotes-admin.css';
 
@@ -31,15 +35,18 @@ function NavIcon({ children }: { children: React.ReactNode }) {
 }
 
 export function AdminLayout() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [adminTheme, setAdminTheme] = useState<AdminTheme>(() => getStoredAdminTheme());
   const [lastVisited, setLastVisited] = useState<number | undefined>(() => getLastVisitedQuotes());
 
-  const displayName = user?.displayName || user?.email?.split('@')[0] || 'Admin';
-  const notificationsQuery = useAdminQuoteNotifications(lastVisited);
-  const newQuotes = notificationsQuery.data ?? 0;
+  const displayName = user?.displayName || user?.email?.split('@')[0] || t('nav.fallbackAdmin');
+  const notificationsQuery = useAdminNotifications(lastVisited);
+  const newQuotes = notificationsQuery.data?.newQuotes ?? 0;
+  const newMessages = notificationsQuery.data?.newMessages ?? 0;
+  const totalNotifications = newQuotes + newMessages;
 
   useEffect(() => {
     localStorage.setItem(ADMIN_THEME_KEY, adminTheme);
@@ -50,7 +57,7 @@ export function AdminLayout() {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (location.pathname.startsWith('/admin/quotes')) {
+    if (location.pathname.startsWith('/dashboard/admin/quotes')) {
       markQuotesVisited();
       setLastVisited(Date.now());
     }
@@ -58,38 +65,38 @@ export function AdminLayout() {
 
   async function handleLogout() {
     await logout();
-    navigate('/login');
+    window.location.replace('/');
   }
 
   return (
     <div className={`admin-shell${adminTheme === 'dark' ? ' admin-shell--dark' : ''}`}>
       <aside className="admin-sidebar">
-        <Link to={getRoleHomePath('admin')} className="admin-sidebar__brand" aria-label="Admin overview">
-          <div className="admin-sidebar__logo">Dynesis Tech</div>
-          <div className="admin-sidebar__subtitle">Admin Panel</div>
+        <Link to={getRoleHomePath('admin')} className="admin-sidebar__brand" aria-label={t('nav.adminOverviewAria')}>
+          <div className="admin-sidebar__logo">{t('nav.brand')}</div>
+          <div className="admin-sidebar__subtitle">{t('nav.adminPanel')}</div>
         </Link>
 
         <nav className="admin-sidebar__nav">
-          <NavLink to="/admin" end className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}>
+          <NavLink to="/dashboard/admin" end className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}>
             <NavIcon>
               <IconHome />
             </NavIcon>
-            Overview
+            {t('nav.overview')}
           </NavLink>
 
-          <div className="admin-sidebar__section">Content</div>
+          <div className="admin-sidebar__section">{t('nav.content')}</div>
 
           <NavLink
-            to="/admin/developers"
+            to="/dashboard/admin/developers"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
             <NavIcon>
               <IconUser />
             </NavIcon>
-            Developers
+            {t('nav.developers')}
           </NavLink>
           <NavLink
-            to="/admin/quotes"
+            to="/dashboard/admin/quotes"
             className={({ isActive }) =>
               `admin-sidebar__link admin-sidebar__link--quotes${isActive ? ' admin-sidebar__link--active' : ''}`
             }
@@ -97,29 +104,42 @@ export function AdminLayout() {
             <NavIcon>
               <IconInvoices />
             </NavIcon>
-            Quotes
+            {t('nav.quotes')}
             {newQuotes > 0 ? <span className="admin-sidebar__badge">{newQuotes > 9 ? '9+' : newQuotes}</span> : null}
           </NavLink>
 
-          <div className="admin-sidebar__section">System</div>
+          <NavLink
+            to="/dashboard/admin/messages"
+            className={({ isActive }) =>
+              `admin-sidebar__link admin-sidebar__link--messages${isActive ? ' admin-sidebar__link--active' : ''}`
+            }
+          >
+            <NavIcon>
+              <IconMessages />
+            </NavIcon>
+            {t('nav.messages')}
+            {newMessages > 0 ? <span className="admin-sidebar__badge">{newMessages > 9 ? '9+' : newMessages}</span> : null}
+          </NavLink>
+
+          <div className="admin-sidebar__section">{t('nav.system')}</div>
 
           <NavLink
-            to="/admin/operations"
+            to="/dashboard/admin/operations"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
             <NavIcon>
               <IconUsers />
             </NavIcon>
-            Users
+            {t('nav.users')}
           </NavLink>
           <NavLink
-            to="/admin/settings"
+            to="/dashboard/admin/settings"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
             <NavIcon>
               <IconSettings />
             </NavIcon>
-            Settings
+            {t('nav.settings')}
           </NavLink>
         </nav>
 
@@ -128,7 +148,7 @@ export function AdminLayout() {
             <span className="admin-sidebar__icon">
               <IconLogout />
             </span>
-            Log out
+            {t('nav.logout')}
           </button>
         </div>
       </aside>
@@ -136,10 +156,11 @@ export function AdminLayout() {
       <div className="admin-main">
         <header className="admin-topbar">
           <div className="admin-topbar__actions">
+            <LanguageSwitcher variant="dashboard" />
             <button
               type="button"
               className="admin-topbar__icon-btn"
-              aria-label={adminTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label={adminTheme === 'dark' ? t('nav.switchLight') : t('nav.switchDark')}
               onClick={() => setAdminTheme(adminTheme === 'dark' ? 'light' : 'dark')}
             >
               {adminTheme === 'dark' ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}
@@ -148,17 +169,21 @@ export function AdminLayout() {
               <button
                 type="button"
                 className="admin-topbar__bell-btn"
-                aria-label={newQuotes > 0 ? `${newQuotes} new project briefs` : 'Project briefs'}
-                onClick={() => navigate('/admin/quotes')}
+                aria-label={
+                  totalNotifications > 0
+                    ? t('nav.newNotifications', { count: totalNotifications })
+                    : t('nav.notifications')
+                }
+                onClick={() => navigate(newMessages > 0 ? '/dashboard/admin/messages' : '/dashboard/admin/quotes')}
               >
                 <Bell size={20} strokeWidth={1.75} />
               </button>
-              {newQuotes > 0 ? <span className="admin-topbar__bell-dot" aria-hidden /> : null}
+              {totalNotifications > 0 ? <span className="admin-topbar__bell-dot" aria-hidden /> : null}
             </div>
             <button
               type="button"
               className="admin-topbar__icon-btn"
-              aria-label={displayName ? `User: ${displayName}` : 'User account'}
+              aria-label={displayName ? t('nav.userLabel', { name: displayName }) : t('nav.userAccount')}
               title={displayName}
             >
               <User size={18} strokeWidth={1.75} />

@@ -1,133 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type TabId = 'design' | 'development' | 'transformation';
 
-const TABS: { id: TabId; label: string }[] = [
-  { id: 'design', label: 'Product Design & Build' },
-  { id: 'development', label: 'Web & Mobile Development' },
-  { id: 'transformation', label: 'Digital Transformation' }
-];
-
-const TAB_CONTENT: Record<
-  TabId,
-  {
-    tag: string;
-    headline: React.ReactNode;
-    checks: string[];
-    learnHref: string;
-    visual: {
-      image: string;
-      name: string;
-      role: string;
-      tags: string[];
-    };
-  }
-> = {
-  design: {
-    tag: 'PRODUCT DESIGN',
-    headline: (
-      <>
-        Design and ship products
-        <br />
-        your users love
-      </>
-    ),
-    checks: [
-      'UX research & wireframing',
-      'UI design & design systems',
-      'Prototyping & user testing',
-      'Handoff-ready Figma deliverables'
-    ],
-    learnHref: '/work-with-us',
-    visual: {
-      image:
-        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80',
-      name: 'Sarah Chen',
-      role: 'Lead Product Designer',
-      tags: ['Figma', 'Design Systems']
-    }
-  },
-  development: {
-    tag: 'WEB & MOBILE',
-    headline: (
-      <>
-        Build fast, clean,
-        <br />
-        production-ready apps
-      </>
-    ),
-    checks: [
-      'React, Next.js & Node.js',
-      'iOS & Android mobile apps',
-      'API design & backend systems',
-      'Performance & scalability built-in'
-    ],
-    learnHref: '/developers',
-    visual: {
-      image:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
-      name: 'Marcus Webb',
-      role: 'Senior Full-Stack Engineer',
-      tags: ['React', 'Node.js']
-    }
-  },
-  transformation: {
-    tag: 'DIGITAL TRANSFORMATION',
-    headline: (
-      <>
-        Evolve your business
-        <br />
-        with modern digital systems
-      </>
-    ),
-    checks: [
-      'Legacy system modernization',
-      'Cloud architecture & DevOps',
-      'Process automation & tooling',
-      'Team training & technical upskilling'
-    ],
-    learnHref: '/contact',
-    visual: {
-      image:
-        'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80',
-      name: 'Elena Torres',
-      role: 'Transformation Lead',
-      tags: ['AWS', 'DevOps']
-    }
-  }
-};
+const TABS: TabId[] = ['design', 'development', 'transformation'];
 
 const NAV_OFFSET = 68;
 const STICKY_NAV_HEIGHT = 52;
-
 const STICKY_TOP = NAV_OFFSET + STICKY_NAV_HEIGHT;
 
 function pickActivePanel(refs: Partial<Record<TabId, HTMLElement | null>>): TabId {
   const stickyLine = STICKY_TOP + 2;
-  let active: TabId = TABS[0].id;
+  let active: TabId = TABS[0];
   let bestTop = -Infinity;
 
   for (const tab of TABS) {
-    const node = refs[tab.id];
+    const node = refs[tab];
     if (!node) continue;
 
     const top = node.getBoundingClientRect().top;
     if (top <= stickyLine && top > bestTop) {
       bestTop = top;
-      active = tab.id;
+      active = tab;
     }
   }
 
   if (bestTop === -Infinity) {
     let closest = Infinity;
     for (const tab of TABS) {
-      const node = refs[tab.id];
+      const node = refs[tab];
       if (!node) continue;
       const dist = Math.abs(node.getBoundingClientRect().top - STICKY_TOP);
       if (dist < closest) {
         closest = dist;
-        active = tab.id;
+        active = tab;
       }
     }
   }
@@ -136,11 +43,30 @@ function pickActivePanel(refs: Partial<Record<TabId, HTMLElement | null>>): TabI
 }
 
 export function HomeScrollTabs() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabId>('design');
   const panelsWrapperRef = useRef<HTMLDivElement | null>(null);
   const panelRefs = useRef<Partial<Record<TabId, HTMLElement | null>>>({});
   const clickScrolling = useRef(false);
   const clickTimer = useRef<number | null>(null);
+
+  const tabMeta: Record<TabId, { learnHref: string; image: string; tags: string[] }> = {
+    design: {
+      learnHref: '/work-with-us',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80',
+      tags: ['Figma', 'Design Systems']
+    },
+    development: {
+      learnHref: '/developers',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
+      tags: ['React', 'Node.js']
+    },
+    transformation: {
+      learnHref: '/contact',
+      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80',
+      tags: ['AWS', 'DevOps']
+    }
+  };
 
   useEffect(() => {
     const updateActive = () => {
@@ -151,17 +77,14 @@ export function HomeScrollTabs() {
     const observers: IntersectionObserver[] = [];
 
     for (const tab of TABS) {
-      const node = panelRefs.current[tab.id];
+      const node = panelRefs.current[tab];
       if (!node) continue;
 
-      const observer = new IntersectionObserver(
-        () => updateActive(),
-        {
-          root: null,
-          rootMargin: `-${STICKY_TOP}px 0px 0px 0px`,
-          threshold: [0, 0.25, 0.5, 0.75, 1]
-        }
-      );
+      const observer = new IntersectionObserver(() => updateActive(), {
+        root: null,
+        rootMargin: `-${STICKY_TOP}px 0px 0px 0px`,
+        threshold: [0, 0.25, 0.5, 0.75, 1]
+      });
 
       observer.observe(node);
       observers.push(observer);
@@ -178,7 +101,7 @@ export function HomeScrollTabs() {
     const wrapper = panelsWrapperRef.current;
     if (!wrapper) return;
 
-    const index = TABS.findIndex((tab) => tab.id === tabId);
+    const index = TABS.findIndex((tab) => tab === tabId);
     if (index < 0) return;
 
     setActiveTab(tabId);
@@ -200,21 +123,21 @@ export function HomeScrollTabs() {
   }
 
   return (
-    <section className="home-scroll-tabs" aria-label="Services">
+    <section className="home-scroll-tabs" aria-label={t('nav.services')}>
       <div className="home-scroll-tabs__nav-wrap">
-        <div className="home-scroll-tabs__nav-inner" role="tablist" aria-label="Service categories">
+        <div className="home-scroll-tabs__nav-inner" role="tablist" aria-label={t('nav.services')}>
           {TABS.map((tab) => (
             <button
-              key={tab.id}
+              key={tab}
               type="button"
               role="tab"
-              id={`scroll-tab-${tab.id}`}
-              aria-selected={activeTab === tab.id}
-              aria-controls={`scroll-panel-${tab.id}`}
-              className={`home-scroll-tabs__tab${activeTab === tab.id ? ' home-scroll-tabs__tab--active' : ''}`}
-              onClick={() => scrollToPanel(tab.id)}
+              id={`scroll-tab-${tab}`}
+              aria-selected={activeTab === tab}
+              aria-controls={`scroll-panel-${tab}`}
+              className={`home-scroll-tabs__tab${activeTab === tab ? ' home-scroll-tabs__tab--active' : ''}`}
+              onClick={() => scrollToPanel(tab)}
             >
-              {tab.label}
+              {t(`home.scrollTabs.${tab}.label`)}
             </button>
           ))}
         </div>
@@ -222,43 +145,48 @@ export function HomeScrollTabs() {
 
       <div ref={panelsWrapperRef} className="home-scroll-tabs__panels">
         {TABS.map((tab) => {
-          const data = TAB_CONTENT[tab.id];
+          const meta = tabMeta[tab];
+          const checks = ['c1', 'c2', 'c3', 'c4'] as const;
           return (
             <article
-              key={tab.id}
-              id={`scroll-panel-${tab.id}`}
+              key={tab}
+              id={`scroll-panel-${tab}`}
               role="tabpanel"
-              aria-labelledby={`scroll-tab-${tab.id}`}
+              aria-labelledby={`scroll-tab-${tab}`}
               className="home-scroll-tabs__panel"
               ref={(node) => {
-                panelRefs.current[tab.id] = node;
+                panelRefs.current[tab] = node;
               }}
             >
               <div className="home-scroll-tabs__left">
-                <span className="home-scroll-tabs__tag">{data.tag}</span>
-                <h3 className="home-scroll-tabs__headline">{data.headline}</h3>
+                <span className="home-scroll-tabs__tag">{t(`home.scrollTabs.${tab}.tag`)}</span>
+                <h3 className="home-scroll-tabs__headline">
+                  {t(`home.scrollTabs.${tab}.headline1`)}
+                  <br />
+                  {t(`home.scrollTabs.${tab}.headline2`)}
+                </h3>
                 <ul className="home-scroll-tabs__checks">
-                  {data.checks.map((item) => (
-                    <li key={item} className="home-scroll-tabs__check">
+                  {checks.map((c) => (
+                    <li key={c} className="home-scroll-tabs__check">
                       <span className="home-scroll-tabs__check-mark" aria-hidden>
                         ✓
                       </span>
-                      {item}
+                      {t(`home.scrollTabs.${tab}.${c}`)}
                     </li>
                   ))}
                 </ul>
-                <Link to={data.learnHref} className="home-scroll-tabs__link">
-                  Learn more <span aria-hidden>→</span>
+                <Link to={meta.learnHref} className="home-scroll-tabs__link">
+                  {t('nav.learnMore')}
                 </Link>
               </div>
 
               <div className="home-scroll-tabs__right">
-                <img className="home-scroll-tabs__photo" src={data.visual.image} alt="" loading="lazy" />
+                <img className="home-scroll-tabs__photo" src={meta.image} alt="" loading="lazy" />
                 <div className="home-scroll-tabs__float-card">
-                  <p className="home-scroll-tabs__float-name">{data.visual.name}</p>
-                  <p className="home-scroll-tabs__float-role">{data.visual.role}</p>
+                  <p className="home-scroll-tabs__float-name">{t(`home.scrollTabs.${tab}.person`)}</p>
+                  <p className="home-scroll-tabs__float-role">{t(`home.scrollTabs.${tab}.role`)}</p>
                   <div className="home-scroll-tabs__float-tags">
-                    {data.visual.tags.map((tag) => (
+                    {meta.tags.map((tag) => (
                       <span key={tag} className="home-scroll-tabs__float-tag">
                         {tag}
                       </span>

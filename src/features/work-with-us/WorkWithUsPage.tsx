@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { endpoints } from '../../shared/api/endpoints';
 import './work-with-us.css';
@@ -34,34 +35,26 @@ const INITIAL: QuizState = {
 
 const TOTAL_STEPS = 5;
 
-const HOW_IT_WORKS = [
-  {
-    num: 1,
-    title: 'Brief Your Project',
-    desc: 'Answer a few simple questions about what you want to build.'
-  },
-  {
-    num: 2,
-    title: 'Get Your Estimate',
-    desc: 'Receive an instant price range based on your project scope.'
-  },
-  {
-    num: 3,
-    title: 'We Get to Work',
-    desc: "Book a discovery call and let's align on the details."
-  }
-] as const;
-
-const PROJECT_TYPES: Array<{ value: ProjectType; emoji: string; title: string; desc: string }> = [
-  { value: 'Web Application', emoji: '🌐', title: 'Web Application', desc: 'Platform, SaaS, dashboard' },
-  { value: 'Mobile App', emoji: '📱', title: 'Mobile App', desc: 'iOS, Android or both' },
-  { value: 'Design & Branding', emoji: '🎨', title: 'Design & Branding', desc: 'UI/UX, design system' },
-  { value: 'Other / Not sure', emoji: '⚡', title: 'Other / Not sure', desc: 'Tell us more below' }
+const PROJECT_TYPES: Array<{ value: ProjectType; emoji: string; titleKey: string; descKey: string }> = [
+  { value: 'Web Application', emoji: '🌐', titleKey: 'workWithUs.types.web.title', descKey: 'workWithUs.types.web.desc' },
+  { value: 'Mobile App', emoji: '📱', titleKey: 'workWithUs.types.mobile.title', descKey: 'workWithUs.types.mobile.desc' },
+  { value: 'Design & Branding', emoji: '🎨', titleKey: 'workWithUs.types.design.title', descKey: 'workWithUs.types.design.desc' },
+  { value: 'Other / Not sure', emoji: '⚡', titleKey: 'workWithUs.types.other.title', descKey: 'workWithUs.types.other.desc' }
 ];
 
-const BUDGETS: Budget[] = ['< €5,000', '€5,000 – €15,000', '€15,000 – €50,000', '€50,000+'];
+const BUDGETS: Array<{ value: Budget; labelKey: string }> = [
+  { value: '< €5,000', labelKey: 'workWithUs.budget.under5k' },
+  { value: '€5,000 – €15,000', labelKey: 'workWithUs.budget.5k15k' },
+  { value: '€15,000 – €50,000', labelKey: 'workWithUs.budget.15k50k' },
+  { value: '€50,000+', labelKey: 'workWithUs.budget.over50k' }
+];
 
-const TIMELINES: Timeline[] = ['ASAP (< 1 month)', '1 – 3 months', '3 – 6 months', 'Flexible'];
+const TIMELINES: Array<{ value: Timeline; labelKey: string }> = [
+  { value: 'ASAP (< 1 month)', labelKey: 'workWithUs.timeline.asap' },
+  { value: '1 – 3 months', labelKey: 'workWithUs.timeline.1to3' },
+  { value: '3 – 6 months', labelKey: 'workWithUs.timeline.3to6' },
+  { value: 'Flexible', labelKey: 'workWithUs.timeline.flexible' }
+];
 
 function progressWidth(step: number) {
   return `${(step / TOTAL_STEPS) * 100}%`;
@@ -72,6 +65,7 @@ function isValidEmail(email: string) {
 }
 
 function ProjectQuiz() {
+  const { t } = useTranslation();
   const [state, setState] = useState<QuizState>(INITIAL);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -139,12 +133,10 @@ function ProjectQuiz() {
         <div className="wwu-quiz__success-icon" aria-hidden>
           ✓
         </div>
-        <h3 className="wwu-quiz__success-title">Brief received!</h3>
-        <p className="wwu-quiz__success-sub">
-          Our team will review your project and get back to you personally with a detailed proposal.
-        </p>
+        <h3 className="wwu-quiz__success-title">{t('workWithUs.quiz.success.title')}</h3>
+        <p className="wwu-quiz__success-sub">{t('workWithUs.quiz.success.sub')}</p>
         {state.wantsCall ? (
-          <p className="wwu-quiz__success-call">We&apos;ll also reach out to schedule your discovery call.</p>
+          <p className="wwu-quiz__success-call">{t('workWithUs.quiz.success.call')}</p>
         ) : null}
       </div>
     );
@@ -157,13 +149,13 @@ function ProjectQuiz() {
       </div>
 
       <p className="wwu-quiz__step-label">
-        Step {state.step} of {TOTAL_STEPS}
+        {t('workWithUs.quiz.step', { current: state.step, total: TOTAL_STEPS })}
       </p>
 
       <div key={state.step} className="wwu-quiz__step">
         {state.step === 1 ? (
           <>
-            <h3 className="wwu-quiz__question">What are you looking to build?</h3>
+            <h3 className="wwu-quiz__question">{t('workWithUs.quiz.q1')}</h3>
             <div className="wwu-quiz__options-grid">
               {PROJECT_TYPES.map((opt) => {
                 const selected = state.projectType === opt.value;
@@ -177,8 +169,8 @@ function ProjectQuiz() {
                     <div className="wwu-quiz__option-icon" aria-hidden>
                       {opt.emoji}
                     </div>
-                    <p className="wwu-quiz__option-title">{opt.title}</p>
-                    <p className="wwu-quiz__option-desc">{opt.desc}</p>
+                    <p className="wwu-quiz__option-title">{t(opt.titleKey)}</p>
+                    <p className="wwu-quiz__option-desc">{t(opt.descKey)}</p>
                   </button>
                 );
               })}
@@ -188,16 +180,16 @@ function ProjectQuiz() {
 
         {state.step === 2 ? (
           <>
-            <h3 className="wwu-quiz__question">What&apos;s your budget range?</h3>
+            <h3 className="wwu-quiz__question">{t('workWithUs.quiz.q2')}</h3>
             <div className="wwu-quiz__pills">
               {BUDGETS.map((b) => (
                 <button
-                  key={b}
+                  key={b.value}
                   type="button"
-                  className={`wwu-quiz__pill${state.budget === b ? ' wwu-quiz__pill--selected' : ''}`}
-                  onClick={() => update({ budget: b })}
+                  className={`wwu-quiz__pill${state.budget === b.value ? ' wwu-quiz__pill--selected' : ''}`}
+                  onClick={() => update({ budget: b.value })}
                 >
-                  {b}
+                  {t(b.labelKey)}
                 </button>
               ))}
             </div>
@@ -206,16 +198,16 @@ function ProjectQuiz() {
 
         {state.step === 3 ? (
           <>
-            <h3 className="wwu-quiz__question">When do you need it?</h3>
+            <h3 className="wwu-quiz__question">{t('workWithUs.quiz.q3')}</h3>
             <div className="wwu-quiz__pills">
-              {TIMELINES.map((t) => (
+              {TIMELINES.map((item) => (
                 <button
-                  key={t}
+                  key={item.value}
                   type="button"
-                  className={`wwu-quiz__pill${state.timeline === t ? ' wwu-quiz__pill--selected' : ''}`}
-                  onClick={() => update({ timeline: t })}
+                  className={`wwu-quiz__pill${state.timeline === item.value ? ' wwu-quiz__pill--selected' : ''}`}
+                  onClick={() => update({ timeline: item.value })}
                 >
-                  {t}
+                  {t(item.labelKey)}
                 </button>
               ))}
             </div>
@@ -224,10 +216,10 @@ function ProjectQuiz() {
 
         {state.step === 4 ? (
           <>
-            <h3 className="wwu-quiz__question">Tell us about your project</h3>
+            <h3 className="wwu-quiz__question">{t('workWithUs.quiz.q4')}</h3>
             <textarea
               className="wwu-quiz__textarea"
-              placeholder="Describe what you want to build, your target users, and any specific features you have in mind..."
+              placeholder={t('workWithUs.quiz.q4.placeholder')}
               value={state.description}
               onChange={(e) => update({ description: e.target.value })}
             />
@@ -236,11 +228,11 @@ function ProjectQuiz() {
 
         {state.step === 5 ? (
           <>
-            <h3 className="wwu-quiz__question">Where should we send your estimate?</h3>
+            <h3 className="wwu-quiz__question">{t('workWithUs.quiz.q5')}</h3>
             <div className="wwu-quiz__fields">
               <div>
                 <label className="wwu-quiz__field-label" htmlFor="wwu-name">
-                  Full Name
+                  {t('workWithUs.quiz.name')}
                 </label>
                 <input
                   id="wwu-name"
@@ -253,7 +245,7 @@ function ProjectQuiz() {
               </div>
               <div>
                 <label className="wwu-quiz__field-label" htmlFor="wwu-email">
-                  Email
+                  {t('workWithUs.quiz.email')}
                 </label>
                 <input
                   id="wwu-email"
@@ -266,7 +258,8 @@ function ProjectQuiz() {
               </div>
               <div>
                 <label className="wwu-quiz__field-label" htmlFor="wwu-company">
-                  Company <span className="wwu-quiz__field-optional">(optional)</span>
+                  {t('workWithUs.quiz.company')}{' '}
+                  <span className="wwu-quiz__field-optional">{t('common.optional')}</span>
                 </label>
                 <input
                   id="wwu-company"
@@ -283,7 +276,7 @@ function ProjectQuiz() {
                   checked={state.wantsCall}
                   onChange={(e) => update({ wantsCall: e.target.checked })}
                 />
-                <span>I&apos;d also like to book a 30-min discovery call</span>
+                <span>{t('workWithUs.quiz.discoveryCall')}</span>
               </label>
             </div>
           </>
@@ -292,7 +285,7 @@ function ProjectQuiz() {
 
       <div className="wwu-quiz__nav">
         <button type="button" className="wwu-quiz__btn-back" disabled={state.step <= 1} onClick={handleBack}>
-          Back
+          {t('common.back')}
         </button>
         <div className="wwu-quiz__nav-submit">
           <button
@@ -304,17 +297,15 @@ function ProjectQuiz() {
             {submitting ? (
               <>
                 <span className="wwu-quiz__spinner" aria-hidden />
-                Sending...
+                {t('common.sending')}
               </>
             ) : state.step === TOTAL_STEPS ? (
-              'Get My Estimate →'
+              t('workWithUs.quiz.submit')
             ) : (
-              'Continue →'
+              t('common.continue')
             )}
           </button>
-          {submitError ? (
-            <p className="wwu-quiz__error">Something went wrong. Please try again.</p>
-          ) : null}
+          {submitError ? <p className="wwu-quiz__error">{t('common.errorGeneric')}</p> : null}
         </div>
       </div>
     </>
@@ -322,21 +313,27 @@ function ProjectQuiz() {
 }
 
 export function WorkWithUsPage() {
+  const { t } = useTranslation();
+
+  const steps = [
+    { num: 1, titleKey: 'workWithUs.steps.1.title', descKey: 'workWithUs.steps.1.desc' },
+    { num: 2, titleKey: 'workWithUs.steps.2.title', descKey: 'workWithUs.steps.2.desc' },
+    { num: 3, titleKey: 'workWithUs.steps.3.title', descKey: 'workWithUs.steps.3.desc' }
+  ] as const;
+
   return (
     <div className="wwu-page">
-      <section className="wwu-hero" aria-label="Work with us">
+      <section className="wwu-hero" aria-label={t('nav.workWithUs')}>
         <h1 className="wwu-hero__title">
-          <span className="wwu-hero__title-line1">Let&apos;s Build Something</span>
-          <span className="wwu-hero__title-line2">Great Together.</span>
+          <span className="wwu-hero__title-line1">{t('workWithUs.hero.title1')}</span>
+          <span className="wwu-hero__title-line2">{t('workWithUs.hero.title2')}</span>
         </h1>
-        <p className="wwu-hero__sub">
-          Tell us about your project — we&apos;ll give you an honest estimate and a clear path forward.
-        </p>
+        <p className="wwu-hero__sub">{t('workWithUs.hero.subtitle')}</p>
       </section>
 
-      <section className="wwu-steps" aria-label="How it works">
+      <section className="wwu-steps" aria-label={t('services.process.title')}>
         <div className="wwu-steps__track">
-          {HOW_IT_WORKS.map((item, index) => (
+          {steps.map((item, index) => (
             <React.Fragment key={item.num}>
               {index > 0 ? (
                 <span className="wwu-steps__arrow" aria-hidden>
@@ -345,29 +342,27 @@ export function WorkWithUsPage() {
               ) : null}
               <article className="wwu-step">
                 <div className="wwu-step__num">{item.num}</div>
-                <h2 className="wwu-step__title">{item.title}</h2>
-                <p className="wwu-step__desc">{item.desc}</p>
+                <h2 className="wwu-step__title">{t(item.titleKey)}</h2>
+                <p className="wwu-step__desc">{t(item.descKey)}</p>
               </article>
             </React.Fragment>
           ))}
         </div>
       </section>
 
-      <section className="wwu-quiz" aria-label="Project quiz">
+      <section className="wwu-quiz" aria-label={t('workWithUs.quiz.q1')}>
         <div className="wwu-quiz__card">
           <ProjectQuiz />
         </div>
       </section>
 
-      <section className="wwu-cta" aria-label="Discovery call">
-        <h2 className="wwu-cta__title">Prefer to talk first?</h2>
-        <p className="wwu-cta__sub">
-          Book a free 30-min discovery call. No commitment, just a conversation.
-        </p>
+      <section className="wwu-cta" aria-label={t('workWithUs.cta.button')}>
+        <h2 className="wwu-cta__title">{t('workWithUs.cta.title')}</h2>
+        <p className="wwu-cta__sub">{t('workWithUs.cta.sub')}</p>
         <Link to="/contact" className="wwu-cta__btn">
-          Book a Discovery Call
+          {t('workWithUs.cta.button')}
         </Link>
-        <p className="wwu-cta__note">Free · 30 minutes · No obligation</p>
+        <p className="wwu-cta__note">{t('workWithUs.cta.note')}</p>
       </section>
     </div>
   );

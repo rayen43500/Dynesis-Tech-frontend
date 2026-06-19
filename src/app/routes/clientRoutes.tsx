@@ -6,13 +6,16 @@ import { RoleGuard } from '../guards/RoleGuard';
 
 import { ClientLayout } from '../layouts/ClientLayout';
 import { ClientDashboardPage } from '../../features/client/ClientDashboardPage';
+import { ClientMessagesPage } from '../../features/client/ClientMessagesPage';
+import { ClientAccountPage } from '../../features/client/ClientAccountPage';
+import { ContactPage } from '../../features/contact/ContactPage';
 import { RoutePlaceholder } from '../../shared/ui/placeholders/RoutePlaceholder';
 import { Roles } from '../../shared/constants/roles';
 
 export function ClientRoutes() {
   return (
     <Route
-      path="/client"
+      path="/dashboard/client"
       element={
         <ProtectedRoute>
           <RoleGuard requiredRoles={[Roles.client]} children={<ClientLayout />} />
@@ -21,12 +24,13 @@ export function ClientRoutes() {
     >
       <Route index element={<ClientDashboardPage />} />
       <Route path="request" element={<ClientDashboardPage />} />
-      <Route path="settings" element={<RoutePlaceholder name="Settings" />} />
-      <Route path="projects" element={<RoutePlaceholder name="ProjectTracking" />} />
-      <Route path="invoices" element={<RoutePlaceholder name="Invoices" />} />
-      <Route path="messages" element={<RoutePlaceholder name="Messaging" />} />
-      <Route path="roadmap" element={<RoutePlaceholder name="ProjectRoadmap" />} />
-      <Route path="notifications" element={<RoutePlaceholder name="Notifications" />} />
+      <Route path="account" element={<ClientAccountPage />} />
+      <Route path="projects" element={<RoutePlaceholder nameKey="client.routes.projectTracking" />} />
+      <Route path="invoices" element={<RoutePlaceholder nameKey="client.routes.invoices" />} />
+      <Route path="messages" element={<ClientMessagesPage />} />
+      <Route path="contact" element={<ContactPage />} />
+      <Route path="roadmap" element={<RoutePlaceholder nameKey="client.routes.projectRoadmap" />} />
+      <Route path="notifications" element={<RoutePlaceholder nameKey="client.routes.notifications" />} />
     </Route>
   );
 }

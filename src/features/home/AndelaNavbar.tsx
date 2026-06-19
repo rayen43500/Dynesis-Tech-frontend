@@ -1,25 +1,27 @@
 import React, { useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
 import { openPageInNewWindow } from '../../shared/utils/openPageInNewWindow';
+import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
 
 type DropdownId = 'developers' | 'services';
 
 const DROPDOWN_ROWS: Record<
   DropdownId,
-  Array<{ icon: 'code' | 'list' | 'cloud'; title: string; subtitle: string }>
+  Array<{ icon: 'code' | 'list' | 'cloud'; titleKey: string; subtitleKey: string }>
 > = {
   developers: [
-    { icon: 'code', title: 'Builders', subtitle: 'AI Application Engineering' },
-    { icon: 'list', title: 'Integrators', subtitle: 'AI Systems Engineering' },
-    { icon: 'cloud', title: 'Scalers', subtitle: 'AI Platform & Production' }
+    { icon: 'code', titleKey: 'nav.dropdown.builders', subtitleKey: 'nav.dropdown.buildersSub' },
+    { icon: 'list', titleKey: 'nav.dropdown.integrators', subtitleKey: 'nav.dropdown.integratorsSub' },
+    { icon: 'cloud', titleKey: 'nav.dropdown.scalers', subtitleKey: 'nav.dropdown.scalersSub' }
   ],
   services: [
-    { icon: 'code', title: 'Product Design', subtitle: 'UX, UI systems, and prototyping' },
-    { icon: 'list', title: 'Engineering', subtitle: 'Web, mobile, and platform delivery' },
-    { icon: 'cloud', title: 'Cloud & DevOps', subtitle: 'Infrastructure, CI/CD, and scale' }
+    { icon: 'code', titleKey: 'nav.dropdown.productDesign', subtitleKey: 'nav.dropdown.productDesignSub' },
+    { icon: 'list', titleKey: 'nav.dropdown.engineering', subtitleKey: 'nav.dropdown.engineeringSub' },
+    { icon: 'cloud', titleKey: 'nav.dropdown.cloudDevops', subtitleKey: 'nav.dropdown.cloudDevopsSub' }
   ]
 };
 
@@ -57,8 +59,9 @@ function DropdownIcon({ type }: { type: 'code' | 'list' | 'cloud' }) {
 }
 
 function NavDropdownPanel({ id, onNavigate }: { id: DropdownId; onNavigate?: () => void }) {
+  const { t } = useTranslation();
   const rows = DROPDOWN_ROWS[id];
-  const panelTitle = id === 'developers' ? 'Hire elite digital talent' : 'Build with confidence';
+  const panelTitle = id === 'developers' ? t('nav.hireTalent') : t('nav.buildConfidence');
   const sectionPath = id === 'developers' ? '/developers' : '/services';
 
   return (
@@ -66,7 +69,7 @@ function NavDropdownPanel({ id, onNavigate }: { id: DropdownId; onNavigate?: () 
         <div className="andela-nav__dropdown-left">
           {rows.map((row) => (
             <Link
-              key={row.title}
+              key={row.titleKey}
               to={sectionPath}
               className="andela-nav__dropdown-row"
               role="menuitem"
@@ -76,20 +79,20 @@ function NavDropdownPanel({ id, onNavigate }: { id: DropdownId; onNavigate?: () 
                 <DropdownIcon type={row.icon} />
               </span>
               <span>
-                <span className="andela-nav__dropdown-row-title">{row.title}</span>
-                <span className="andela-nav__dropdown-row-sub">{row.subtitle}</span>
+                <span className="andela-nav__dropdown-row-title">{t(row.titleKey)}</span>
+                <span className="andela-nav__dropdown-row-sub">{t(row.subtitleKey)}</span>
               </span>
             </Link>
           ))}
           <Link to={sectionPath} className="andela-nav__dropdown-learn" onClick={onNavigate}>
-            Learn more →
+            {t('nav.learnMore')}
           </Link>
         </div>
 
         <div className="andela-nav__dropdown-right">
           <p className="andela-nav__dropdown-right-title">{panelTitle}</p>
           <Link to="/contact" className="andela-nav__dropdown-right-link" onClick={onNavigate}>
-            Book a discovery call →
+            {t('nav.bookDiscovery')} →
           </Link>
           <img
             className="andela-nav__dropdown-photo"
@@ -97,7 +100,7 @@ function NavDropdownPanel({ id, onNavigate }: { id: DropdownId; onNavigate?: () 
             alt=""
           />
           <div className="andela-nav__dropdown-badge">
-            <span>Amina K. • Senior Product Engineer</span>
+            <span>{t('nav.dropdown.sampleProfile')}</span>
             <span className="andela-nav__dropdown-badge-logo" aria-hidden>
               D
             </span>
@@ -112,6 +115,7 @@ type AndelaNavbarProps = {
 };
 
 export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const { status, user } = useAuth();
   const logoTo =
@@ -149,12 +153,12 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
   return (
     <nav
       className={`andela-nav${isContactNav ? ' andela-nav--contact' : ''}`}
-      aria-label="Primary"
+      aria-label={t('nav.primaryAria')}
     >
       <div className="andela-nav__bar">
-        <Link to={logoTo} className="andela-nav__logo" aria-label="Dynesis Tech home">
+        <Link to={logoTo} className="andela-nav__logo" aria-label={t('footer.brand.homeAria')}>
           <span className="andela-nav__logo-mark">D</span>
-          <span className="andela-nav__logo-text">Dynesis Tech</span>
+          <span className="andela-nav__logo-text">{t('nav.brand')}</span>
         </Link>
 
         <div className="andela-nav__center">
@@ -164,7 +168,7 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
             onMouseLeave={scheduleClose}
           >
             <Link to="/developers" className="andela-nav__link">
-              Developers <span className="andela-nav__chev">▾</span>
+              {t('nav.developers')} <span className="andela-nav__chev">▾</span>
             </Link>
           </div>
 
@@ -174,30 +178,28 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
             onMouseLeave={scheduleClose}
           >
             <Link to="/services" className="andela-nav__link">
-              Services <span className="andela-nav__chev">▾</span>
+              {t('nav.services')} <span className="andela-nav__chev">▾</span>
             </Link>
           </div>
 
           <Link to="/work-with-us" className="andela-nav__link">
-            Work With Us
+            {t('nav.workWithUs')}
           </Link>
           <Link to="/contact" className="andela-nav__link">
-            Contact
+            {t('nav.contact')}
           </Link>
         </div>
 
         <div className="andela-nav__right">
-          <Link to="/login" className="andela-nav__btn andela-nav__btn--ghost" onClick={handleLoginClick}>
-            Login
-          </Link>
-          <Link to="/contact" className="andela-nav__btn andela-nav__btn--primary">
-            Book a discovery call
+          <LanguageSwitcher variant="public" />
+          <Link to="/login" className="andela-nav__btn andela-nav__btn--primary" onClick={handleLoginClick}>
+            {t('nav.login')}
           </Link>
 
           <button
             type="button"
             className="andela-nav__burger"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-label={mobileOpen ? t('nav.closeMenu') : t('nav.openMenu')}
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
           >
@@ -220,28 +222,26 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
 
       <div className={`andela-nav__mobile ${mobileOpen ? 'andela-nav__mobile--open' : ''}`}>
         <Link to="/developers" onClick={() => setMobileOpen(false)}>
-          Developers
+          {t('nav.developers')}
         </Link>
         <Link to="/services" onClick={() => setMobileOpen(false)}>
-          Services
+          {t('nav.services')}
         </Link>
         <Link to="/work-with-us" onClick={() => setMobileOpen(false)}>
-          Work With Us
+          {t('nav.workWithUs')}
         </Link>
         <Link to="/contact" onClick={() => setMobileOpen(false)}>
-          Contact
+          {t('nav.contact')}
         </Link>
         <Link
           to="/login"
+          className="andela-nav__btn andela-nav__btn--primary"
           onClick={(e) => {
             handleLoginClick(e);
             setMobileOpen(false);
           }}
         >
-          Login
-        </Link>
-        <Link to="/contact" className="andela-nav__btn andela-nav__btn--primary" onClick={() => setMobileOpen(false)}>
-          Book a discovery call
+          {t('nav.login')}
         </Link>
       </div>
     </nav>
