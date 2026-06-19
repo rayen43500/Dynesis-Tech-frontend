@@ -155,6 +155,16 @@
   "admin.overview.viewBriefs": "Voir les briefs de projet",
   "admin.overview.addDeveloper": "+ Ajouter un développeur",
 
+  "admin.notifications.title": "Notifications",
+  "admin.notifications.markAllRead": "Tout marquer comme lu",
+  "admin.notifications.newBrief.title": "Nouveau brief projet",
+  "admin.notifications.newBrief.text": "{{count}} nouveau(x) devis en attente de revue",
+  "admin.notifications.newMessage.title": "Nouveau message",
+  "admin.notifications.newMessage.text": "{{count}} nouveau(x) message(s) de visiteurs",
+  "admin.notifications.justNow": "À l'instant",
+  "admin.notifications.empty": "Aucune nouvelle notification",
+  "admin.notifications.viewAll": "Voir tous les messages →",
+
   "admin.developers.columns.developer": "Développeur",
   "admin.developers.columns.role": "Rôle",
   "admin.developers.columns.expertise": "Expertise",

@@ -155,6 +155,16 @@
   "admin.overview.viewBriefs": "View Project Briefs",
   "admin.overview.addDeveloper": "+ Add Developer",
 
+  "admin.notifications.title": "Notifications",
+  "admin.notifications.markAllRead": "Mark all as read",
+  "admin.notifications.newBrief.title": "New Project Brief",
+  "admin.notifications.newBrief.text": "{{count}} new quote(s) waiting for review",
+  "admin.notifications.newMessage.title": "New Message",
+  "admin.notifications.newMessage.text": "{{count}} new message(s) from visitors",
+  "admin.notifications.justNow": "Just now",
+  "admin.notifications.empty": "No new notifications",
+  "admin.notifications.viewAll": "View all messages →",
+
   "admin.developers.columns.developer": "Developer",
   "admin.developers.columns.role": "Role",
   "admin.developers.columns.expertise": "Expertise",

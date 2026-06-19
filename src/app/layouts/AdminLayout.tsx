@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Bell, Moon, Sun, User } from 'lucide-react';
-import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
 import { resolveMediaUrl } from '../../shared/utils/resolveMediaUrl';
-import { getLastVisitedQuotes, markQuotesVisited } from '../../features/admin/quotes/adminQuotesHooks';
+import { AdminNotificationsDropdown } from '../../features/admin/AdminNotificationsDropdown';
 import { useAdminNotifications } from '../../features/admin/adminNotificationsHooks';
+import { getLastReadNotifications } from '../../features/admin/adminNotificationsStorage';
 import {
   IconHome,
   IconInvoices,
@@ -40,13 +41,14 @@ export function AdminLayout() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
+  const bellWrapRef = useRef<HTMLDivElement>(null);
   const [adminTheme, setAdminTheme] = useState<AdminTheme>(() => getStoredAdminTheme());
-  const [lastVisited, setLastVisited] = useState<number | undefined>(() => getLastVisitedQuotes());
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [lastReadAt, setLastReadAt] = useState<number | undefined>(() => getLastReadNotifications());
 
   const displayName = user?.displayName?.trim() || user?.email?.split('@')[0] || t('nav.fallbackAdmin');
   const profilePhotoUrl = user?.profilePicture ? resolveMediaUrl(user.profilePicture) : '';
-  const notificationsQuery = useAdminNotifications(lastVisited);
+  const notificationsQuery = useAdminNotifications(lastReadAt);
   const newQuotes = notificationsQuery.data?.newQuotes ?? 0;
   const newMessages = notificationsQuery.data?.newMessages ?? 0;
   const totalNotifications = newQuotes + newMessages;
@@ -56,15 +58,30 @@ export function AdminLayout() {
   }, [adminTheme]);
 
   useEffect(() => {
-    setLastVisited(getLastVisitedQuotes());
-  }, [location.pathname]);
+    if (!notificationsOpen) return;
 
-  useEffect(() => {
-    if (location.pathname.startsWith('/dashboard/admin/quotes')) {
-      markQuotesVisited();
-      setLastVisited(Date.now());
+    function handlePointerDown(event: MouseEvent) {
+      const target = event.target as Node;
+      if (bellWrapRef.current && !bellWrapRef.current.contains(target)) {
+        setNotificationsOpen(false);
+      }
     }
-  }, [location.pathname]);
+
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [notificationsOpen]);
+
+  function handleBellClick() {
+    const willOpen = !notificationsOpen;
+    setNotificationsOpen(willOpen);
+    if (willOpen) {
+      void notificationsQuery.refetch();
+    }
+  }
+
+  function handleMarkAllRead() {
+    setLastReadAt(Date.now());
+  }
 
   async function handleLogout() {
     await logout();
@@ -177,20 +194,32 @@ export function AdminLayout() {
             >
               {adminTheme === 'dark' ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}
             </button>
-            <div className="admin-topbar__bell-wrap">
+            <div className="admin-topbar__bell-wrap" ref={bellWrapRef}>
               <button
                 type="button"
                 className="admin-topbar__bell-btn"
+                aria-expanded={notificationsOpen}
+                aria-haspopup="dialog"
                 aria-label={
                   totalNotifications > 0
                     ? t('nav.newNotifications', { count: totalNotifications })
                     : t('nav.notifications')
                 }
-                onClick={() => navigate(newMessages > 0 ? '/dashboard/admin/messages' : '/dashboard/admin/quotes')}
+                onClick={handleBellClick}
               >
                 <Bell size={20} strokeWidth={1.75} />
               </button>
-              {totalNotifications > 0 ? <span className="admin-topbar__bell-dot" aria-hidden /> : null}
+              {totalNotifications > 0 ? (
+                <span className="admin-topbar__bell-count" aria-hidden>
+                  {totalNotifications > 9 ? '9+' : totalNotifications}
+                </span>
+              ) : null}
+              <AdminNotificationsDropdown
+                open={notificationsOpen}
+                onClose={() => setNotificationsOpen(false)}
+                notifications={notificationsQuery.data}
+                onMarkAllRead={handleMarkAllRead}
+              />
             </div>
             <button
               type="button"
