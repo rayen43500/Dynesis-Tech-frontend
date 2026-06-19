@@ -2,10 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import { useBrandingContent, useFooterContactContent } from '../../hooks/useSiteContent';
 import './public-footer.css';
 
 export function PublicFooter() {
   const { t } = useTranslation();
+  const branding = useBrandingContent();
+  const footer = useFooterContactContent();
 
   const navLinks = [
     { label: t('footer.navigation.home'), to: '/' },
@@ -26,7 +29,7 @@ export function PublicFooter() {
   const socialLinks = [
     {
       label: t('footer.social.x'),
-      href: '#',
+      href: footer.social.x,
       ariaLabel: t('footer.social.x'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -36,7 +39,7 @@ export function PublicFooter() {
     },
     {
       label: t('footer.social.linkedin'),
-      href: '#',
+      href: footer.social.linkedin,
       ariaLabel: t('footer.social.linkedin'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -46,7 +49,7 @@ export function PublicFooter() {
     },
     {
       label: t('footer.social.github'),
-      href: '#',
+      href: footer.social.github,
       ariaLabel: t('footer.social.github'),
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -63,7 +66,7 @@ export function PublicFooter() {
           <div className="public-footer__col">
             <h3 className="public-footer__col-title">{t('footer.company.title')}</h3>
             <div className="public-footer__col-body">
-              <p className="public-footer__about">{t('footer.company.about')}</p>
+              <p className="public-footer__about">{footer.about}</p>
             </div>
           </div>
 
@@ -92,10 +95,10 @@ export function PublicFooter() {
           <div className="public-footer__col">
             <h3 className="public-footer__col-title">{t('footer.contact.title')}</h3>
             <div className="public-footer__col-body">
-              <span className="public-footer__item">{t('footer.contact.email')}</span>
-              <span className="public-footer__item">{t('footer.contact.phone')}</span>
-              <span className="public-footer__item">{t('footer.contact.location')}</span>
-              <span className="public-footer__item">{t('footer.contact.hours')}</span>
+              <span className="public-footer__item">{footer.email}</span>
+              <span className="public-footer__item">{footer.phone}</span>
+              <span className="public-footer__item">{footer.location}</span>
+              <span className="public-footer__item">{footer.hours}</span>
             </div>
           </div>
         </div>
@@ -104,11 +107,15 @@ export function PublicFooter() {
 
         <div className="public-footer__bar">
           <Link to="/" className="public-footer__bar-brand" aria-label={t('footer.brand.homeAria')}>
-            <span className="public-footer__bar-brand-mark">D</span>
-            <span className="public-footer__bar-brand-text">{t('footer.brand.name')}</span>
+            {branding.logoUrl ? (
+              <img src={branding.logoUrl} alt="" className="public-footer__bar-brand-logo" />
+            ) : (
+              <span className="public-footer__bar-brand-mark">{branding.logoMark}</span>
+            )}
+            <span className="public-footer__bar-brand-text">{branding.siteName}</span>
           </Link>
 
-          <p className="public-footer__copyright">{t('footer.copyright')}</p>
+          <p className="public-footer__copyright">{footer.copyright}</p>
 
           <div className="public-footer__social">
             {socialLinks.map(({ label, href, ariaLabel, icon }) => (

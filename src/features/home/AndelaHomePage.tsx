@@ -1,50 +1,13 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
+import { useHomePageContent } from '../../shared/hooks/useSiteContent';
 import { HomePageSections } from './HomePageSections';
 import './andela-home.css';
 import './home-sections.css';
 
 export function AndelaHomePage() {
-  const { t } = useTranslation();
-
-  const content = useMemo(
-    () => ({
-      headline1: t('home.hero.headline1'),
-      headline2: t('home.hero.headline2'),
-      subheading: t('home.hero.subheading'),
-      features: [
-        t('home.hero.feature.strategyLed'),
-        t('home.hero.feature.experiencedEngineers'),
-        t('home.hero.feature.enterpriseQuality')
-      ],
-      button1: t('home.cta.primary'),
-      button2: t('home.cta.secondary'),
-      reviewCountText: t('home.ratings.reviewCount'),
-      testimonialsHeading: t('home.testimonials.title'),
-      matchBadge: t('home.hero.matchBadge'),
-      featuredPerson: {
-        name: t('home.featured.name'),
-        title: t('home.featured.role')
-      },
-      courseCard: {
-        title: t('home.delivery.title'),
-        rows: [
-          { label: t('home.delivery.discovery'), pct: 100 },
-          { label: t('home.delivery.velocity'), pct: 76 }
-        ]
-      },
-      techStack: ['HuggingFace', 'PyTorch', 'LangChain', 'OpenAI', 'AWS', 'FastAPI'],
-      testimonials: [1, 2, 3, 4].map((n) => ({
-        quote: t(`home.testimonials.${n}.quote`),
-        name: t(`home.testimonials.${n}.name`),
-        role: t(`home.testimonials.${n}.role`)
-      }))
-    }),
-    [t]
-  );
-
+  const content = useHomePageContent();
   const tech = useMemo(() => [...content.techStack, ...content.techStack], [content.techStack]);
 
   return (
@@ -79,12 +42,7 @@ export function AndelaHomePage() {
               <p className="profile-title">{content.featuredPerson.title}</p>
             </div>
 
-            <img
-              className="hero-card__photo"
-              src="/images/hero-developer.png"
-              alt=""
-              loading="eager"
-            />
+            <img className="hero-card__photo" src={content.heroImage} alt="" loading="eager" />
 
             <div className="hero-card__pills" aria-hidden>
               <div className="tech-track">
@@ -102,11 +60,11 @@ export function AndelaHomePage() {
         </section>
 
         <section id="cta" className="cta-row">
-          <Link className="btn-lg btn-lg--primary" to="/contact">
+          <Link className="btn-lg btn-lg--primary" to={content.button1Href}>
             {content.button1}
             <span aria-hidden>→</span>
           </Link>
-          <Link className="btn-lg btn-lg--secondary" to="/work-with-us">
+          <Link className="btn-lg btn-lg--secondary" to={content.button2Href}>
             {content.button2}
           </Link>
         </section>
@@ -116,7 +74,7 @@ export function AndelaHomePage() {
             <span className="g2dot" aria-hidden>
               G2
             </span>
-            <span className="rating-num">4.7</span>
+            <span className="rating-num">{content.ratingScore}</span>
             <span className="stars" aria-hidden>
               ★★★★½
             </span>
@@ -129,7 +87,7 @@ export function AndelaHomePage() {
             <h2 className="testimonials__title">{content.testimonialsHeading}</h2>
             <div className="tgrid">
               {content.testimonials.map((item) => (
-                <article key={item.name} className="tcard">
+                <article key={`${item.name}-${item.quote.slice(0, 24)}`} className="tcard">
                   <div className="tstars" aria-hidden>
                     ★★★★★
                   </div>

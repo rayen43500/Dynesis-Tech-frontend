@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import { useHomePageContent } from '../../shared/hooks/useSiteContent';
+
 type TabId = 'design' | 'development' | 'transformation';
 
 const TABS: TabId[] = ['design', 'development', 'transformation'];
@@ -44,29 +46,12 @@ function pickActivePanel(refs: Partial<Record<TabId, HTMLElement | null>>): TabI
 
 export function HomeScrollTabs() {
   const { t } = useTranslation();
+  const content = useHomePageContent();
   const [activeTab, setActiveTab] = useState<TabId>('design');
   const panelsWrapperRef = useRef<HTMLDivElement | null>(null);
   const panelRefs = useRef<Partial<Record<TabId, HTMLElement | null>>>({});
   const clickScrolling = useRef(false);
   const clickTimer = useRef<number | null>(null);
-
-  const tabMeta: Record<TabId, { learnHref: string; image: string; tags: string[] }> = {
-    design: {
-      learnHref: '/work-with-us',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80',
-      tags: ['Figma', 'Design Systems']
-    },
-    development: {
-      learnHref: '/developers',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
-      tags: ['React', 'Node.js']
-    },
-    transformation: {
-      learnHref: '/contact',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80',
-      tags: ['AWS', 'DevOps']
-    }
-  };
 
   useEffect(() => {
     const updateActive = () => {
@@ -137,7 +122,7 @@ export function HomeScrollTabs() {
               className={`home-scroll-tabs__tab${activeTab === tab ? ' home-scroll-tabs__tab--active' : ''}`}
               onClick={() => scrollToPanel(tab)}
             >
-              {t(`home.scrollTabs.${tab}.label`)}
+              {content.scrollTabs[tab].label}
             </button>
           ))}
         </div>
@@ -145,8 +130,7 @@ export function HomeScrollTabs() {
 
       <div ref={panelsWrapperRef} className="home-scroll-tabs__panels">
         {TABS.map((tab) => {
-          const meta = tabMeta[tab];
-          const checks = ['c1', 'c2', 'c3', 'c4'] as const;
+          const tabContent = content.scrollTabs[tab];
           return (
             <article
               key={tab}
@@ -159,34 +143,34 @@ export function HomeScrollTabs() {
               }}
             >
               <div className="home-scroll-tabs__left">
-                <span className="home-scroll-tabs__tag">{t(`home.scrollTabs.${tab}.tag`)}</span>
+                <span className="home-scroll-tabs__tag">{tabContent.tag}</span>
                 <h3 className="home-scroll-tabs__headline">
-                  {t(`home.scrollTabs.${tab}.headline1`)}
+                  {tabContent.headline1}
                   <br />
-                  {t(`home.scrollTabs.${tab}.headline2`)}
+                  {tabContent.headline2}
                 </h3>
                 <ul className="home-scroll-tabs__checks">
-                  {checks.map((c) => (
-                    <li key={c} className="home-scroll-tabs__check">
+                  {tabContent.checks.map((item) => (
+                    <li key={item} className="home-scroll-tabs__check">
                       <span className="home-scroll-tabs__check-mark" aria-hidden>
                         ✓
                       </span>
-                      {t(`home.scrollTabs.${tab}.${c}`)}
+                      {item}
                     </li>
                   ))}
                 </ul>
-                <Link to={meta.learnHref} className="home-scroll-tabs__link">
+                <Link to={tabContent.learnHref} className="home-scroll-tabs__link">
                   {t('nav.learnMore')}
                 </Link>
               </div>
 
               <div className="home-scroll-tabs__right">
-                <img className="home-scroll-tabs__photo" src={meta.image} alt="" loading="lazy" />
+                <img className="home-scroll-tabs__photo" src={tabContent.image} alt="" loading="lazy" />
                 <div className="home-scroll-tabs__float-card">
-                  <p className="home-scroll-tabs__float-name">{t(`home.scrollTabs.${tab}.person`)}</p>
-                  <p className="home-scroll-tabs__float-role">{t(`home.scrollTabs.${tab}.role`)}</p>
+                  <p className="home-scroll-tabs__float-name">{tabContent.person}</p>
+                  <p className="home-scroll-tabs__float-role">{tabContent.role}</p>
                   <div className="home-scroll-tabs__float-tags">
-                    {meta.tags.map((tag) => (
+                    {tabContent.tags.map((tag) => (
                       <span key={tag} className="home-scroll-tabs__float-tag">
                         {tag}
                       </span>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
+import { PlatformSettingsProvider } from '../providers/PlatformSettingsProvider';
 import { AndelaNavbar } from '../../features/home/AndelaNavbar';
 import { PublicFooter } from '../../shared/ui/layout/PublicFooter';
 import { PageContainer } from '../../shared/ui/layout/PageContainer';
@@ -17,18 +18,20 @@ export function PublicLayout() {
   const showFooter = !isAuthPage;
 
   return (
-    <div className="flex min-h-screen flex-col bg-bg">
-      {!isAuthPage && !isContactPage && <AndelaNavbar />}
-      <div className="flex flex-1 flex-col">
-        {isFullBleed ? (
-          <Outlet />
-        ) : (
-          <PageContainer className="flex-1 py-10 sm:py-12">
+    <PlatformSettingsProvider>
+      <div className="flex min-h-screen flex-col bg-bg">
+        {!isAuthPage && !isContactPage && <AndelaNavbar />}
+        <div className="flex flex-1 flex-col">
+          {isFullBleed ? (
             <Outlet />
-          </PageContainer>
-        )}
+          ) : (
+            <PageContainer className="flex-1 py-10 sm:py-12">
+              <Outlet />
+            </PageContainer>
+          )}
+        </div>
+        {showFooter ? <PublicFooter /> : null}
       </div>
-      {showFooter ? <PublicFooter /> : null}
-    </div>
+    </PlatformSettingsProvider>
   );
 }

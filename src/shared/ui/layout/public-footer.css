@@ -96,21 +96,35 @@
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: #f3f3f3;
+  background: hsl(var(--color-surface-2));
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 14px;
-  color: #1a1a1a;
+  color: hsl(var(--color-text));
+  transition: color 0.2s ease;
+}
+
+.public-footer__bar-brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  object-fit: contain;
 }
 
 .public-footer__bar-brand-text {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 15px;
-  color: #ffffff;
+  color: hsl(var(--color-text));
+  transition: color 0.2s ease;
+}
+
+.public-footer__bar-brand:hover .public-footer__bar-brand-mark,
+.public-footer__bar-brand:hover .public-footer__bar-brand-text {
+  color: hsl(var(--color-accent));
 }
 
 .public-footer__copyright {
@@ -119,7 +133,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   line-height: 1.4;
-  color: rgba(255, 255, 255, 0.55);
+  color: hsl(var(--color-text));
   text-align: center;
 }
 

@@ -77,6 +77,13 @@
   color: #1a1a1a;
 }
 
+.andela-nav__logo-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
 .andela-nav__logo-text {
   font-family: var(--font-sans);
   font-weight: 400;

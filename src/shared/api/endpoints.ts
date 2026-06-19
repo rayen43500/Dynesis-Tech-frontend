@@ -18,6 +18,9 @@ export const endpoints = {
       http.post('/api/contact', payload)
   },
   public: {
+    settings: {
+      get: () => http.get('/api/v1/public/settings')
+    },
     developers: {
       list: (params?: { lang?: 'en' | 'fr'; featuredOnly?: boolean }) => {
         const search = new URLSearchParams();
@@ -95,6 +98,11 @@ export const endpoints = {
         }),
       removePortfolio: (id: string, projectId: string) =>
         http.delete(`/api/v1/admin/developers/${id}/portfolio/${projectId}`)
+    },
+    settings: {
+      get: () => http.get('/api/v1/admin/settings'),
+      update: (payload: Record<string, unknown>) => http.put('/api/v1/admin/settings', payload),
+      reset: (payload: { scope: string }) => http.post('/api/v1/admin/settings/reset', payload)
     }
   },
   client: {

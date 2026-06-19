@@ -9,6 +9,7 @@ import { AdminOverviewPage } from '../../features/admin/AdminOverviewPage';
 import { DevelopersAdminListPage } from '../../features/admin/developers/DevelopersAdminListPage';
 import { QuotesAdminPage } from '../../features/admin/quotes/QuotesAdminPage';
 import { MessagesAdminPage } from '../../features/admin/messages/MessagesAdminPage';
+import { SettingsAdminPage } from '../../features/admin/settings/SettingsAdminPage';
 import { RoutePlaceholder } from '../../shared/ui/placeholders/RoutePlaceholder';
 import { Roles } from '../../shared/constants/roles';
 
@@ -35,7 +36,7 @@ export function AdminRoutes() {
       <Route path="translations" element={<RoutePlaceholder nameKey="admin.routes.translations" />} />
       <Route path="media" element={<RoutePlaceholder nameKey="admin.routes.media" />} />
       <Route path="operations" element={<RoutePlaceholder nameKey="admin.routes.operations" />} />
-      <Route path="settings" element={<RoutePlaceholder nameKey="admin.routes.settings" />} />
+      <Route path="settings" element={<SettingsAdminPage />} />
     </Route>
   );
 }

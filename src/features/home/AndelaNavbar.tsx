@@ -6,6 +6,7 @@ import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
 import { openPageInNewWindow } from '../../shared/utils/openPageInNewWindow';
 import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
+import { useBrandingContent } from '../../shared/hooks/useSiteContent';
 
 type DropdownId = 'developers' | 'services';
 
@@ -116,6 +117,7 @@ type AndelaNavbarProps = {
 
 export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
   const { t } = useTranslation();
+  const branding = useBrandingContent();
   const { pathname } = useLocation();
   const { status, user } = useAuth();
   const logoTo =
@@ -157,8 +159,12 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
     >
       <div className="andela-nav__bar">
         <Link to={logoTo} className="andela-nav__logo" aria-label={t('footer.brand.homeAria')}>
-          <span className="andela-nav__logo-mark">D</span>
-          <span className="andela-nav__logo-text">{t('nav.brand')}</span>
+          {branding.logoUrl ? (
+            <img src={branding.logoUrl} alt="" className="andela-nav__logo-img" />
+          ) : (
+            <span className="andela-nav__logo-mark">{branding.logoMark}</span>
+          )}
+          <span className="andela-nav__logo-text">{branding.siteName}</span>
         </Link>
 
         <div className="andela-nav__center">
