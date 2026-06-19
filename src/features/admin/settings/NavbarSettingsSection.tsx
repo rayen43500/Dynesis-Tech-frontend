@@ -62,26 +62,22 @@ export function NavbarSettingsSection({ settings }: Props) {
       >
         <LocalizedField
           label={t('admin.settings.general.siteName')}
-          hint={t('admin.settings.hints.siteName')}
           value={branding.siteName || {}}
           onChange={(siteName) => setBranding((prev) => ({ ...prev, siteName }))}
         />
         <LocalizedField
           label={t('admin.settings.general.tagline')}
-          hint={t('admin.settings.hints.tagline')}
           value={branding.tagline || {}}
           onChange={(tagline) => setBranding((prev) => ({ ...prev, tagline }))}
         />
         <SimpleField
           label={t('admin.settings.general.logoUrl')}
-          hint={t('admin.settings.hints.logoUrl')}
           value={branding.logoUrl || ''}
           onChange={(logoUrl) => setBranding((prev) => ({ ...prev, logoUrl }))}
           type="url"
         />
         <SimpleField
           label={t('admin.settings.general.logoMark')}
-          hint={t('admin.settings.hints.logoMark')}
           value={branding.logoMark || 'D'}
           onChange={(logoMark) => setBranding((prev) => ({ ...prev, logoMark }))}
         />

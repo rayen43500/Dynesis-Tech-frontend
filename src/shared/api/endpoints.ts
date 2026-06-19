@@ -103,6 +103,14 @@ export const endpoints = {
       get: () => http.get('/api/v1/admin/settings'),
       update: (payload: Record<string, unknown>) => http.put('/api/v1/admin/settings', payload),
       reset: (payload: { scope: string }) => http.post('/api/v1/admin/settings/reset', payload)
+    },
+    account: {
+      update: (formData: FormData) =>
+        http.patch('/api/v1/admin/account', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }),
+      changePassword: (payload: { currentPassword: string; newPassword: string }) =>
+        http.patch('/api/v1/admin/account/password', payload)
     }
   },
   client: {

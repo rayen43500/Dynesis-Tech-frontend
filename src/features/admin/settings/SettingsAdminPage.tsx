@@ -19,7 +19,7 @@ export function SettingsAdminPage() {
 
   if (query.isLoading || !query.data) {
     return (
-      <div className="admin-settings-page">
+      <div className="admin-quotes-page admin-settings-page">
         <LoadingState label={t('admin.settings.loading')} />
       </div>
     );
@@ -28,7 +28,7 @@ export function SettingsAdminPage() {
   const settings = query.data;
 
   return (
-    <div className="admin-settings-page">
+    <div className="admin-quotes-page admin-settings-page">
       <div className="admin-quotes-page__head">
         <h1 className="admin-quotes-page__title">{t('admin.settings.title')}</h1>
       </div>

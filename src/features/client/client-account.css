@@ -39,3 +39,10 @@
 .client-account-card + .client-account-card {
   margin-top: 12px;
 }
+
+.client-account-card .admin-field input:disabled,
+.client-account-card .admin-field input[readonly] {
+  background: var(--admin-control-bg);
+  color: var(--admin-text-subtle);
+  cursor: not-allowed;
+}

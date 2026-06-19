@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
+import { resolveMediaUrl } from '../../shared/utils/resolveMediaUrl';
 import { getLastVisitedQuotes, markQuotesVisited } from '../../features/admin/quotes/adminQuotesHooks';
 import { useAdminNotifications } from '../../features/admin/adminNotificationsHooks';
 import {
@@ -19,6 +20,7 @@ import {
 import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
 import '../../features/admin/admin-dashboard.css';
 import '../../features/admin/quotes/quotes-admin.css';
+import '../../features/client/client-account.css';
 
 const ADMIN_THEME_KEY = 'admin-panel-theme';
 
@@ -42,7 +44,8 @@ export function AdminLayout() {
   const [adminTheme, setAdminTheme] = useState<AdminTheme>(() => getStoredAdminTheme());
   const [lastVisited, setLastVisited] = useState<number | undefined>(() => getLastVisitedQuotes());
 
-  const displayName = user?.displayName || user?.email?.split('@')[0] || t('nav.fallbackAdmin');
+  const displayName = user?.displayName?.trim() || user?.email?.split('@')[0] || t('nav.fallbackAdmin');
+  const profilePhotoUrl = user?.profilePicture ? resolveMediaUrl(user.profilePicture) : '';
   const notificationsQuery = useAdminNotifications(lastVisited);
   const newQuotes = notificationsQuery.data?.newQuotes ?? 0;
   const newMessages = notificationsQuery.data?.newMessages ?? 0;
@@ -141,6 +144,15 @@ export function AdminLayout() {
             </NavIcon>
             {t('nav.settings')}
           </NavLink>
+          <NavLink
+            to="/dashboard/admin/account"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon>
+              <IconUser />
+            </NavIcon>
+            {t('nav.myAccount')}
+          </NavLink>
         </nav>
 
         <div className="admin-sidebar__footer">
@@ -182,11 +194,16 @@ export function AdminLayout() {
             </div>
             <button
               type="button"
-              className="admin-topbar__icon-btn"
+              className={`admin-topbar__icon-btn${profilePhotoUrl ? ' admin-topbar__icon-btn--avatar' : ''}`}
               aria-label={displayName ? t('nav.userLabel', { name: displayName }) : t('nav.userAccount')}
               title={displayName}
+              onClick={() => navigate('/dashboard/admin/account')}
             >
-              <User size={18} strokeWidth={1.75} />
+              {profilePhotoUrl ? (
+                <img src={profilePhotoUrl} alt="" className="admin-topbar__avatar" />
+              ) : (
+                <User size={18} strokeWidth={1.75} />
+              )}
             </button>
             <span>{displayName}</span>
           </div>

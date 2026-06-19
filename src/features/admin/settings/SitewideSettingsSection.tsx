@@ -86,7 +86,7 @@ export function SitewideSettingsSection({ settings }: Props) {
         resetLabel={t('admin.settings.reset')}
       >
       <label className="admin-field">
-        <FieldLabel label={t('admin.settings.theme.defaultMode')} hint={t('admin.settings.hints.defaultMode')} />
+        <FieldLabel label={t('admin.settings.theme.defaultMode')} />
         <select
           value={defaultMode}
           onChange={(e) => setDefaultMode(e.target.value as 'light' | 'dark' | 'system')}
@@ -103,7 +103,6 @@ export function SitewideSettingsSection({ settings }: Props) {
           <HslField
             key={`light-${key}`}
             label={t(`admin.settings.theme.vars.${key}`)}
-            hint={t(`admin.settings.hints.globalLight.${key}`)}
             value={global.light?.[key] || ''}
             onChange={(v) => updateLight(key, v)}
           />
@@ -116,7 +115,6 @@ export function SitewideSettingsSection({ settings }: Props) {
           <HslField
             key={`dark-${key}`}
             label={t(`admin.settings.theme.vars.${key}`)}
-            hint={t(`admin.settings.hints.globalDark.${key}`)}
             value={global.dark?.[key] || ''}
             onChange={(v) => updateDark(key, v)}
           />

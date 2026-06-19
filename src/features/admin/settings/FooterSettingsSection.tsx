@@ -69,32 +69,27 @@ export function FooterSettingsSection({ settings }: Props) {
         <h3 className="admin-settings-subtitle">{t('admin.settings.general.contact')}</h3>
         <SimpleField
           label={t('admin.settings.general.email')}
-          hint={t('admin.settings.hints.email')}
           value={contact.email || ''}
           onChange={(email) => setContact((prev) => ({ ...prev, email }))}
           type="email"
         />
         <SimpleField
           label={t('admin.settings.general.phone')}
-          hint={t('admin.settings.hints.phone')}
           value={contact.phone || ''}
           onChange={(phone) => setContact((prev) => ({ ...prev, phone }))}
         />
         <LocalizedField
           label={t('admin.settings.general.location')}
-          hint={t('admin.settings.hints.location')}
           value={contact.location || {}}
           onChange={(location) => setContact((prev) => ({ ...prev, location }))}
         />
         <LocalizedField
           label={t('admin.settings.general.hours')}
-          hint={t('admin.settings.hints.hours')}
           value={contact.hours || {}}
           onChange={(hours) => setContact((prev) => ({ ...prev, hours }))}
         />
         <LocalizedField
           label={t('admin.settings.general.about')}
-          hint={t('admin.settings.hints.about')}
           value={contact.about || {}}
           onChange={(about) => setContact((prev) => ({ ...prev, about }))}
           multiline
@@ -103,21 +98,18 @@ export function FooterSettingsSection({ settings }: Props) {
         <h3 className="admin-settings-subtitle">{t('admin.settings.general.social')}</h3>
         <SimpleField
           label={t('footer.social.x')}
-          hint={t('admin.settings.hints.socialX')}
           value={social.x || ''}
           onChange={(x) => setSocial((prev) => ({ ...prev, x }))}
           type="url"
         />
         <SimpleField
           label={t('footer.social.linkedin')}
-          hint={t('admin.settings.hints.socialLinkedin')}
           value={social.linkedin || ''}
           onChange={(linkedin) => setSocial((prev) => ({ ...prev, linkedin }))}
           type="url"
         />
         <SimpleField
           label={t('footer.social.github')}
-          hint={t('admin.settings.hints.socialGithub')}
           value={social.github || ''}
           onChange={(github) => setSocial((prev) => ({ ...prev, github }))}
           type="url"
@@ -125,7 +117,6 @@ export function FooterSettingsSection({ settings }: Props) {
 
         <LocalizedField
           label={t('admin.settings.general.copyright')}
-          hint={t('admin.settings.hints.copyright')}
           value={copyright}
           onChange={setCopyright}
         />
