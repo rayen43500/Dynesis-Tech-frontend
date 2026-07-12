@@ -2,13 +2,14 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 
 import { endpoints } from '../../shared/api/endpoints';
 import { configureAuthTokenHandlers } from '../../shared/api/httpClient';
+import type { Role } from '../../shared/constants/roles';
 
 type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 
 type User = {
   id: string;
   email: string;
-  role: 'admin' | 'client';
+  role: Role;
   displayName?: string;
   profilePicture?: string;
 };

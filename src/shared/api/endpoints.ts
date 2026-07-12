@@ -21,6 +21,9 @@ export const endpoints = {
     settings: {
       get: () => http.get('/api/v1/public/settings')
     },
+    services: {
+      list: () => http.get('/api/v1/public/services')
+    },
     developers: {
       list: (params?: { lang?: 'en' | 'fr'; featuredOnly?: boolean }) => {
         const search = new URLSearchParams();
@@ -99,6 +102,22 @@ export const endpoints = {
       removePortfolio: (id: string, projectId: string) =>
         http.delete(`/api/v1/admin/developers/${id}/portfolio/${projectId}`)
     },
+    services: {
+      list: (params?: { page?: number; limit?: number; visible?: boolean; highlighted?: boolean }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (typeof params?.visible === 'boolean') search.set('visible', String(params.visible));
+        if (typeof params?.highlighted === 'boolean') search.set('highlighted', String(params.highlighted));
+        const qs = search.toString();
+        const url = qs ? `/api/v1/admin/services?${qs}` : '/api/v1/admin/services';
+        return http.get(url);
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/services/${id}`),
+      create: (payload: Record<string, unknown>) => http.post('/api/v1/admin/services', payload),
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/services/${id}`, payload),
+      remove: (id: string) => http.delete(`/api/v1/admin/services/${id}`)
+    },
     settings: {
       get: () => http.get('/api/v1/admin/settings'),
       update: (payload: Record<string, unknown>) => http.put('/api/v1/admin/settings', payload),
@@ -127,6 +146,37 @@ export const endpoints = {
         }),
       changePassword: (payload: { currentPassword: string; newPassword: string }) =>
         http.patch('/api/v1/client/account/password', payload)
+    }
+  },
+  developer: {
+    dashboard: () => http.get('/api/v1/developer/dashboard'),
+    projects: () => http.get('/api/v1/developer/projects'),
+    tasks: {
+      list: () => http.get('/api/v1/developer/tasks'),
+      updateStatus: (id: string, payload: { status: string }) => http.patch(`/api/v1/developer/tasks/${id}/status`, payload),
+      addComment: (id: string, payload: { body: string }) => http.post(`/api/v1/developer/tasks/${id}/comments`, payload)
+    },
+    timeEntries: {
+      list: () => http.get('/api/v1/developer/time-entries'),
+      create: (payload: {
+        projectId?: string;
+        taskId?: string;
+        startedAt: string;
+        endedAt?: string;
+        durationMinutes: number;
+        note?: string;
+        source?: 'timer' | 'manual';
+      }) => http.post('/api/v1/developer/time-entries', payload)
+    },
+    bugs: {
+      list: () => http.get('/api/v1/developer/bugs')
+    },
+    deployments: {
+      list: () => http.get('/api/v1/developer/deployments')
+    },
+    leaves: {
+      list: () => http.get('/api/v1/developer/leaves'),
+      request: (payload: { startDate: string; endDate: string; reason?: string }) => http.post('/api/v1/developer/leaves', payload)
     }
   },
   auth: {

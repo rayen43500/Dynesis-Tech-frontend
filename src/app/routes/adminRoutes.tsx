@@ -7,6 +7,7 @@ import { RoleGuard } from '../guards/RoleGuard';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { AdminOverviewPage } from '../../features/admin/AdminOverviewPage';
 import { DevelopersAdminListPage } from '../../features/admin/developers/DevelopersAdminListPage';
+import { ServicesAdminPage } from '../../features/admin/services/ServicesAdminPage';
 import { QuotesAdminPage } from '../../features/admin/quotes/QuotesAdminPage';
 import { MessagesAdminPage } from '../../features/admin/messages/MessagesAdminPage';
 import { SettingsAdminPage } from '../../features/admin/settings/SettingsAdminPage';
@@ -27,7 +28,7 @@ export function AdminRoutes() {
       <Route index element={<AdminOverviewPage />} />
       <Route path="developers" element={<DevelopersAdminListPage />} />
       <Route path="portfolios" element={<RoutePlaceholder nameKey="admin.routes.portfolios" />} />
-      <Route path="services" element={<RoutePlaceholder nameKey="admin.routes.services" />} />
+      <Route path="services" element={<ServicesAdminPage />} />
       <Route path="homepage" element={<RoutePlaceholder nameKey="admin.routes.homepage" />} />
       <Route path="inquiries" element={<RoutePlaceholder nameKey="admin.routes.inquiries" />} />
       <Route path="quotes" element={<QuotesAdminPage />} />
