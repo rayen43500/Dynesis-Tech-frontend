@@ -12,6 +12,10 @@ import { QuotesAdminPage } from '../../features/admin/quotes/QuotesAdminPage';
 import { MessagesAdminPage } from '../../features/admin/messages/MessagesAdminPage';
 import { SettingsAdminPage } from '../../features/admin/settings/SettingsAdminPage';
 import { AdminAccountPage } from '../../features/admin/account/AdminAccountPage';
+import { ProjectsAdminPage } from '../../features/admin/projects/ProjectsAdminPage';
+import { InquiriesAdminPage } from '../../features/admin/inquiries/InquiriesAdminPage';
+import { PortfoliosAdminPage } from '../../features/admin/portfolios/PortfoliosAdminPage';
+import { UsersAdminPage } from '../../features/admin/users/UsersAdminPage';
 import { RoutePlaceholder } from '../../shared/ui/placeholders/RoutePlaceholder';
 import { Roles } from '../../shared/constants/roles';
 
@@ -27,17 +31,17 @@ export function AdminRoutes() {
     >
       <Route index element={<AdminOverviewPage />} />
       <Route path="developers" element={<DevelopersAdminListPage />} />
-      <Route path="portfolios" element={<RoutePlaceholder nameKey="admin.routes.portfolios" />} />
+      <Route path="portfolios" element={<PortfoliosAdminPage />} />
       <Route path="services" element={<ServicesAdminPage />} />
       <Route path="homepage" element={<RoutePlaceholder nameKey="admin.routes.homepage" />} />
-      <Route path="inquiries" element={<RoutePlaceholder nameKey="admin.routes.inquiries" />} />
+      <Route path="inquiries" element={<InquiriesAdminPage />} />
       <Route path="quotes" element={<QuotesAdminPage />} />
       <Route path="messages" element={<MessagesAdminPage />} />
-      <Route path="projects" element={<RoutePlaceholder nameKey="admin.routes.projects" />} />
+      <Route path="projects" element={<ProjectsAdminPage />} />
       <Route path="pricing" element={<RoutePlaceholder nameKey="admin.routes.pricing" />} />
       <Route path="translations" element={<RoutePlaceholder nameKey="admin.routes.translations" />} />
       <Route path="media" element={<RoutePlaceholder nameKey="admin.routes.media" />} />
-      <Route path="operations" element={<RoutePlaceholder nameKey="admin.routes.operations" />} />
+      <Route path="operations" element={<UsersAdminPage />} />
       <Route path="settings" element={<SettingsAdminPage />} />
       <Route path="account" element={<AdminAccountPage />} />
     </Route>

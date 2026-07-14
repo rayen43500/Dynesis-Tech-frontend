@@ -6,17 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
 import { resolveMediaUrl } from '../../shared/utils/resolveMediaUrl';
-import { IconContact, IconHome, IconInvoices, IconLogout, IconMessages, IconUser } from '../../shared/ui/navigation/icons';
+import { IconHome, IconInvoices, IconLogout, IconMessages, IconSettings, IconUser } from '../../shared/ui/navigation/icons';
 import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
 import '../../features/admin/admin-dashboard.css';
-import '../../features/client/client-account.css';
 
-const CLIENT_THEME_KEY = 'client-panel-theme';
+const PM_THEME_KEY = 'pm-panel-theme';
 
 type PanelTheme = 'light' | 'dark';
 
-function getStoredClientTheme(): PanelTheme {
-  const stored = localStorage.getItem(CLIENT_THEME_KEY);
+function getStoredTheme(): PanelTheme {
+  const stored = localStorage.getItem(PM_THEME_KEY);
   if (stored === 'light' || stored === 'dark') return stored;
   return 'light';
 }
@@ -25,16 +24,16 @@ function NavIcon({ children }: { children: React.ReactNode }) {
   return <span className="admin-sidebar__icon">{children}</span>;
 }
 
-export function ClientLayout() {
+export function ProjectManagerLayout() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
-  const [panelTheme, setPanelTheme] = useState<PanelTheme>(() => getStoredClientTheme());
+  const [panelTheme, setPanelTheme] = useState<PanelTheme>(() => getStoredTheme());
 
-  const displayName = user?.displayName?.trim() || user?.email?.split('@')[0] || t('nav.fallbackClient');
+  const displayName = user?.displayName?.trim() || user?.email?.split('@')[0] || t('nav.fallbackPm');
   const profilePhotoUrl = user?.profilePicture ? resolveMediaUrl(user.profilePicture) : '';
 
   useEffect(() => {
-    localStorage.setItem(CLIENT_THEME_KEY, panelTheme);
+    localStorage.setItem(PM_THEME_KEY, panelTheme);
   }, [panelTheme]);
 
   async function handleLogout() {
@@ -45,80 +44,53 @@ export function ClientLayout() {
   return (
     <div className={`admin-shell${panelTheme === 'dark' ? ' admin-shell--dark' : ''}`}>
       <aside className="admin-sidebar">
-        <Link to={getRoleHomePath('client')} className="admin-sidebar__brand" aria-label={t('nav.clientOverviewAria')}>
+        <Link to={getRoleHomePath('project_manager')} className="admin-sidebar__brand" aria-label={t('nav.pmOverviewAria')}>
           <div className="admin-sidebar__logo">{t('nav.brand')}</div>
-          <div className="admin-sidebar__subtitle">{t('nav.clientPortal')}</div>
+          <div className="admin-sidebar__subtitle">{t('nav.pmPortal')}</div>
         </Link>
 
         <nav className="admin-sidebar__nav">
-          <NavLink to="/dashboard/client" end className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}>
+          <NavLink to="/dashboard/project-manager" end className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}>
             <NavIcon>
               <IconHome />
             </NavIcon>
             {t('nav.overview')}
           </NavLink>
           <NavLink
-            to="/dashboard/client/request"
+            to="/dashboard/project-manager/projects"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
             <NavIcon>
               <IconInvoices />
             </NavIcon>
-            {t('nav.myRequest')}
+            {t('pm.nav.projects')}
           </NavLink>
           <NavLink
-            to="/dashboard/client/projects"
+            to="/dashboard/project-manager/tasks"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
             <NavIcon>
-              <IconInvoices />
+              <IconSettings />
             </NavIcon>
-            {t('nav.clientProjects')}
+            {t('pm.nav.tasks')}
           </NavLink>
           <NavLink
-            to="/dashboard/client/roadmap"
-            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
-          >
-            <NavIcon>
-              <IconHome />
-            </NavIcon>
-            {t('nav.clientRoadmap')}
-          </NavLink>
-          <NavLink
-            to="/dashboard/client/notifications"
-            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
-          >
-            <NavIcon>
-              <IconMessages />
-            </NavIcon>
-            {t('nav.notifications')}
-          </NavLink>
-          <NavLink
-            to="/dashboard/client/messages"
-            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
-          >
-            <NavIcon>
-              <IconMessages />
-            </NavIcon>
-            {t('nav.messages')}
-          </NavLink>
-          <NavLink
-            to="/dashboard/client/contact"
-            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
-          >
-            <NavIcon>
-              <IconContact />
-            </NavIcon>
-            {t('nav.contact')}
-          </NavLink>
-          <NavLink
-            to="/dashboard/client/account"
+            to="/dashboard/project-manager/roadmap"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
             <NavIcon>
               <IconUser />
             </NavIcon>
-            {t('nav.myAccount')}
+            {t('pm.nav.roadmap')}
+          </NavLink>
+          <NavLink
+            to="/dashboard/project-manager/messages"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon>
+              <IconMessages />
+            </NavIcon>
+            {t('pm.nav.messages')}
           </NavLink>
         </nav>
 
@@ -144,17 +116,8 @@ export function ClientLayout() {
             >
               {panelTheme === 'dark' ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}
             </button>
-            <button
-              type="button"
-              className={`admin-topbar__icon-btn${profilePhotoUrl ? ' admin-topbar__icon-btn--avatar' : ''}`}
-              aria-label={displayName ? t('nav.userLabel', { name: displayName }) : t('nav.userAccount')}
-              title={displayName}
-            >
-              {profilePhotoUrl ? (
-                <img src={profilePhotoUrl} alt="" className="admin-topbar__avatar" />
-              ) : (
-                <User size={18} strokeWidth={1.75} />
-              )}
+            <button type="button" className="admin-topbar__icon-btn" aria-label={displayName} title={displayName}>
+              {profilePhotoUrl ? <img src={profilePhotoUrl} alt="" className="admin-topbar__avatar" /> : <User size={18} strokeWidth={1.75} />}
             </button>
             <span>{displayName}</span>
           </div>

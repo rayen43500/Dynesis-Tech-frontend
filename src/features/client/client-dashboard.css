@@ -109,3 +109,41 @@
 .admin-shell--dark .client-quote-status--proposal_sent {
   background: rgba(59, 130, 246, 0.18);
 }
+
+.client-projects-grid {
+  display: grid;
+  gap: 16px;
+  max-width: 960px;
+}
+
+.client-roadmap-list,
+.client-milestones-list,
+.client-activity-list {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--admin-text-secondary);
+}
+
+.client-roadmap-list__item--done {
+  color: var(--admin-green);
+}
+
+.client-notifications-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.client-notifications-list {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+}
+
+.client-panel-card--unread {
+  border-color: var(--admin-green);
+}

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Moon, Sun, User } from 'lucide-react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
 import { resolveMediaUrl } from '../../shared/utils/resolveMediaUrl';
 import {
-  IconContact,
   IconHome,
   IconInvoices,
   IconLogout,
   IconMessages,
   IconSettings,
   IconUser,
-  IconUsers
+  IconUsers,
+  IconCalendar,
+  IconContact,
+  IconProjects
 } from '../../shared/ui/navigation/icons';
 import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
 import '../../features/admin/admin-dashboard.css';
@@ -33,10 +35,30 @@ function NavIcon({ children }: { children: React.ReactNode }) {
   return <span className="admin-sidebar__icon">{children}</span>;
 }
 
+function usePageTitle() {
+  const { t } = useTranslation();
+  const location = useLocation();
+  const path = location.pathname;
+
+  if (path.endsWith('/developer') || path.endsWith('/developer/'))
+    return t('developer.dashboard.title');
+  if (path.includes('/projects')) return t('developer.projects.title');
+  if (path.includes('/tasks') || path.includes('/kanban')) return t('developer.tasks.title');
+  if (path.includes('/time')) return t('developer.time.title');
+  if (path.includes('/bugs')) return t('developer.bugs.title');
+  if (path.includes('/deployments')) return t('developer.deployments.title');
+  if (path.includes('/leaves')) return t('developer.leaves.title');
+  if (path.includes('/messages')) return t('developer.nav.messages');
+  if (path.includes('/account')) return t('developer.nav.account');
+  if (path.includes('/performance')) return t('developer.nav.performance');
+  return t('developer.dashboard.title');
+}
+
 export function DeveloperLayout() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const [panelTheme, setPanelTheme] = useState<PanelTheme>(() => getStoredTheme());
+  const pageTitle = usePageTitle();
 
   const displayName = user?.displayName?.trim() || user?.email?.split('@')[0] || t('nav.fallbackDeveloper');
   const profilePhotoUrl = user?.profilePicture ? resolveMediaUrl(user.profilePicture) : '';
@@ -60,64 +82,66 @@ export function DeveloperLayout() {
 
         <nav className="admin-sidebar__nav">
           <NavLink to="/dashboard/developer" end className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}>
-            <NavIcon>
-              <IconHome />
-            </NavIcon>
-            {t('nav.overview')}
+            <NavIcon><IconHome /></NavIcon>
+            {t('developer.nav.overview')}
           </NavLink>
+
+          <div className="admin-sidebar__section">{t('nav.content')}</div>
+
           <NavLink
             to="/dashboard/developer/projects"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
-            <NavIcon>
-              <IconInvoices />
-            </NavIcon>
+            <NavIcon><IconProjects /></NavIcon>
             {t('developer.nav.projects')}
           </NavLink>
           <NavLink
             to="/dashboard/developer/tasks"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
-            <NavIcon>
-              <IconUsers />
-            </NavIcon>
+            <NavIcon><IconInvoices /></NavIcon>
             {t('developer.nav.tasks')}
           </NavLink>
           <NavLink
             to="/dashboard/developer/time"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
-            <NavIcon>
-              <IconSettings />
-            </NavIcon>
+            <NavIcon><IconCalendar /></NavIcon>
             {t('developer.nav.time')}
           </NavLink>
+
+          <div className="admin-sidebar__section">{t('nav.system')}</div>
+
           <NavLink
             to="/dashboard/developer/bugs"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
-            <NavIcon>
-              <IconContact />
-            </NavIcon>
+            <NavIcon><IconContact /></NavIcon>
             {t('developer.nav.bugs')}
           </NavLink>
           <NavLink
             to="/dashboard/developer/deployments"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
-            <NavIcon>
-              <IconMessages />
-            </NavIcon>
+            <NavIcon><IconMessages /></NavIcon>
             {t('developer.nav.deployments')}
           </NavLink>
           <NavLink
             to="/dashboard/developer/leaves"
             className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
           >
-            <NavIcon>
-              <IconUser />
-            </NavIcon>
+            <NavIcon><IconCalendar /></NavIcon>
             {t('developer.nav.leaves')}
+          </NavLink>
+
+          <div className="admin-sidebar__section">{t('nav.userAccount')}</div>
+
+          <NavLink
+            to="/dashboard/developer/account"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon><IconUser /></NavIcon>
+            {t('developer.nav.account')}
           </NavLink>
         </nav>
 
@@ -133,6 +157,7 @@ export function DeveloperLayout() {
 
       <div className="admin-main">
         <header className="admin-topbar">
+          <h1 className="admin-topbar__title">{pageTitle}</h1>
           <div className="admin-topbar__actions">
             <LanguageSwitcher variant="dashboard" />
             <button

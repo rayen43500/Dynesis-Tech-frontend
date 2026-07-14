@@ -141,6 +141,43 @@ export function AdminLayout() {
             {newMessages > 0 ? <span className="admin-sidebar__badge">{newMessages > 9 ? '9+' : newMessages}</span> : null}
           </NavLink>
 
+          <NavLink
+            to="/dashboard/admin/projects"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon>
+              <IconInvoices />
+            </NavIcon>
+            {t('nav.projects')}
+          </NavLink>
+          <NavLink
+            to="/dashboard/admin/inquiries"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon>
+              <IconUsers />
+            </NavIcon>
+            {t('nav.inquiries')}
+          </NavLink>
+          <NavLink
+            to="/dashboard/admin/portfolios"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon>
+              <IconUser />
+            </NavIcon>
+            {t('nav.portfolios')}
+          </NavLink>
+          <NavLink
+            to="/dashboard/admin/services"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon>
+              <IconSettings />
+            </NavIcon>
+            {t('nav.services')}
+          </NavLink>
+
           <div className="admin-sidebar__section">{t('nav.system')}</div>
 
           <NavLink

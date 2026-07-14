@@ -130,6 +130,80 @@ export const endpoints = {
         }),
       changePassword: (payload: { currentPassword: string; newPassword: string }) =>
         http.patch('/api/v1/admin/account/password', payload)
+    },
+    projects: {
+      list: (params?: { page?: number; limit?: number; clientId?: string; status?: string }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (params?.clientId) search.set('clientId', params.clientId);
+        if (params?.status) search.set('status', params.status);
+        const qs = search.toString();
+        const url = qs ? `/api/v1/admin/projects?${qs}` : '/api/v1/admin/projects';
+        return http.get(url);
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/projects/${id}`),
+      create: (payload: Record<string, unknown>) => http.post('/api/v1/admin/projects', payload),
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/projects/${id}`, payload)
+    },
+    inquiries: {
+      list: (params?: { page?: number; limit?: number; status?: string }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (params?.status) search.set('status', params.status);
+        const qs = search.toString();
+        const url = qs ? `/api/v1/admin/inquiries?${qs}` : '/api/v1/admin/inquiries';
+        return http.get(url);
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/inquiries/${id}`),
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/inquiries/${id}`, payload),
+      setStatus: (id: string, payload: { status: string }) => http.patch(`/api/v1/admin/inquiries/${id}/status`, payload),
+      convertToProject: (id: string) => http.post(`/api/v1/admin/inquiries/${id}/convert-to-project`)
+    },
+    portfolios: {
+      list: (params?: { page?: number; limit?: number; featured?: boolean }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (typeof params?.featured === 'boolean') search.set('featured', String(params.featured));
+        const qs = search.toString();
+        const url = qs ? `/api/v1/admin/portfolios?${qs}` : '/api/v1/admin/portfolios';
+        return http.get(url);
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/portfolios/${id}`),
+      create: (payload: Record<string, unknown>) => http.post('/api/v1/admin/portfolios', payload),
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/portfolios/${id}`, payload)
+    },
+    clients: {
+      list: (params?: { page?: number; limit?: number }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        const qs = search.toString();
+        const url = qs ? `/api/v1/admin/clients?${qs}` : '/api/v1/admin/clients';
+        return http.get(url);
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/clients/${id}`),
+      create: (payload: Record<string, unknown>) => http.post('/api/v1/admin/clients', payload),
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/clients/${id}`, payload)
+    },
+    users: {
+      list: (params?: { page?: number; limit?: number; role?: string; search?: string }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (params?.role) search.set('role', params.role);
+        if (params?.search) search.set('search', params.search);
+        const qs = search.toString();
+        const url = qs ? `/api/v1/admin/users?${qs}` : '/api/v1/admin/users';
+        return http.get(url);
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/users/${id}`),
+      update: (id: string, payload: { displayName?: string; role?: string; permissions?: string[]; isActivated?: boolean }) =>
+        http.patch(`/api/v1/admin/users/${id}`, payload),
+      remove: (id: string) => http.delete(`/api/v1/admin/users/${id}`),
+      invite: (payload: { email: string; role: string }) => http.post('/api/v1/admin/users/invite', payload)
     }
   },
   client: {
@@ -146,7 +220,37 @@ export const endpoints = {
         }),
       changePassword: (payload: { currentPassword: string; newPassword: string }) =>
         http.patch('/api/v1/client/account/password', payload)
+    },
+    projects: {
+      list: () => http.get('/api/v1/client/projects'),
+      getById: (id: string) => http.get(`/api/v1/client/projects/${id}`),
+      roadmap: (id: string) => http.get(`/api/v1/client/projects/${id}/roadmap`)
     }
+  },
+  projectManager: {
+    dashboard: () => http.get('/api/v1/project-manager/dashboard'),
+    projects: (params?: { page?: number; limit?: number; status?: string }) => {
+      const search = new URLSearchParams();
+      if (params?.page) search.set('page', String(params.page));
+      if (params?.limit) search.set('limit', String(params.limit));
+      if (params?.status) search.set('status', params.status);
+      const qs = search.toString();
+      const url = qs ? `/api/v1/project-manager/projects?${qs}` : '/api/v1/project-manager/projects';
+      return http.get(url);
+    }
+  },
+  notifications: {
+    list: (params?: { page?: number; limit?: number; unreadOnly?: boolean }) => {
+      const search = new URLSearchParams();
+      if (params?.page) search.set('page', String(params.page));
+      if (params?.limit) search.set('limit', String(params.limit));
+      if (params?.unreadOnly) search.set('unreadOnly', 'true');
+      const qs = search.toString();
+      const url = qs ? `/api/v1/notifications?${qs}` : '/api/v1/notifications';
+      return http.get(url);
+    },
+    markRead: (id: string) => http.patch(`/api/v1/notifications/${id}/read`),
+    markAllRead: () => http.post('/api/v1/notifications/read-all')
   },
   developer: {
     dashboard: () => http.get('/api/v1/developer/dashboard'),
@@ -177,6 +281,14 @@ export const endpoints = {
     leaves: {
       list: () => http.get('/api/v1/developer/leaves'),
       request: (payload: { startDate: string; endDate: string; reason?: string }) => http.post('/api/v1/developer/leaves', payload)
+    },
+    account: {
+      update: (formData: FormData) =>
+        http.patch('/api/v1/developer/account', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }),
+      changePassword: (payload: { currentPassword: string; newPassword: string }) =>
+        http.patch('/api/v1/developer/account/password', payload)
     }
   },
   auth: {
@@ -189,7 +301,7 @@ export const endpoints = {
     logout: () => http.post('/api/v1/auth/logout', {})
   },
   invitations: {
-    create: (payload: { email: string; role: 'admin' | 'client' }) => http.post('/api/v1/invitations/create', payload),
+    create: (payload: { email: string; role: 'admin' | 'client' | 'developer' | 'project_manager' }) => http.post('/api/v1/invitations/create', payload),
     accept: (payload: { token: string; email?: string; password: string; displayName?: string }) =>
       http.post('/api/v1/invitations/accept', payload)
   },
