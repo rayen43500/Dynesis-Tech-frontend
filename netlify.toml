@@ -1,0 +1,53 @@
+# Netlify — Frontend Configuration
+# ==================================
+# Framework: Vite + React (TypeScript)
+# Repo: Dynesis-Tech-frontend
+# Branch to deploy: main
+# Auto-deploy: Yes
+
+[build]
+  # Where Netlify builds from (repo root)
+  base    = "."
+  # Build command
+  command = "npm ci && npm run build"
+  # Output directory (Vite default)
+  publish = "dist"
+
+[build.environment]
+  # Node version — pin to LTS
+  NODE_VERSION = "20"
+  # Vite will read VITE_* env vars from the Netlify dashboard
+  # Set VITE_API_BASE_URL in Netlify > Site Settings > Environment Variables
+
+# ── SPA Routing: redirect all routes to index.html ────────────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ── Security Headers ─────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+    Permissions-Policy     = "camera=(), microphone=(), geolocation=()"
+    # Strict CSP — adjust allowed origins as needed
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src  'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com;
+      style-src   'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src    'self' https://fonts.gstatic.com;
+      img-src     'self' data: blob: https://res.cloudinary.com;
+      connect-src 'self' https://dynesis-tech-backend.onrender.com https://accounts.google.com;
+      frame-src   https://accounts.google.com;
+    """
+
+# ── Cache static assets ───────────────────────────────────────────────────
+[[headers]]
+  for = "/assets/*"
+
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
