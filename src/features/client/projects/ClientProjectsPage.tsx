@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useClientProjects } from './clientProjectsHooks';
+import { BlockchainTimeline } from './BlockchainTimeline';
 import { LoadingState } from '../../../shared/ui/feedback/LoadingState';
 import '../client-dashboard.css';
 
@@ -30,27 +31,36 @@ export function ClientProjectsPage() {
       ) : null}
 
       {!query.isLoading && projects.length > 0 ? (
-        <div className="client-projects-grid">
+        <div className="client-projects-grid" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {projects.map((project) => {
             const completedStages = (project.roadmap || []).filter((stage) => stage.completed).length;
             const totalStages = project.roadmap?.length || 0;
             const progress = totalStages > 0 ? Math.round((completedStages / totalStages) * 100) : 0;
 
             return (
-              <article key={project._id} className="client-panel-card">
-                <h2 className="client-quote-section__label">{project.title || t('client.projects.untitled')}</h2>
-                <p className="client-quote-card__row">
-                  <strong>{t('client.projects.status')}:</strong> {project.status || '—'}
-                </p>
-                <p className="client-quote-card__row">
-                  <strong>{t('client.projects.progress')}:</strong> {progress}%
-                </p>
-                <p className="client-quote-card__row">
-                  <strong>{t('client.projects.updated')}:</strong> {formatDate(project.updatedAt)}
-                </p>
-                <Link to={`/dashboard/client/roadmap?project=${project._id}`} className="client-quote-empty__link">
-                  {t('client.projects.viewRoadmap')}
-                </Link>
+              <article key={project._id} className="client-panel-card" style={{ maxWidth: '100%' }}>
+                <h2 className="client-quote-section__label" style={{ fontSize: '18px', textTransform: 'none', color: 'var(--admin-text)' }}>
+                  {project.title || t('client.projects.untitled')}
+                </h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', margin: '16px 0' }}>
+                  <p className="client-quote-card__row" style={{ margin: 0 }}>
+                    <strong>{t('client.projects.status')}:</strong> {project.status || '—'}
+                  </p>
+                  <p className="client-quote-card__row" style={{ margin: 0 }}>
+                    <strong>{t('client.projects.progress')}:</strong> {progress}% ({completedStages}/{totalStages} étapes)
+                  </p>
+                  <p className="client-quote-card__row" style={{ margin: 0 }}>
+                    <strong>{t('client.projects.updated')}:</strong> {formatDate(project.updatedAt)}
+                  </p>
+                </div>
+
+                <BlockchainTimeline entries={project.blockchainLog || []} />
+
+                <div style={{ marginTop: '16px', textAlign: 'right' }}>
+                  <Link to={`/dashboard/client/roadmap?project=${project._id}`} className="client-quote-empty__link">
+                    {t('client.projects.viewRoadmap')} →
+                  </Link>
+                </div>
               </article>
             );
           })}

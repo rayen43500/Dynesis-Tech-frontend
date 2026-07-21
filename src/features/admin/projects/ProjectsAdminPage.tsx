@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type AdminProject, type ProjectStatus, useAdminProjects, useUpdateProject } from './adminProjectsHooks';
+import { type AdminProject, type ProjectStatus, useAdminProjects, useUpdateProject, useCompleteBlockchainStage } from './adminProjectsHooks';
+import { BlockchainTimeline } from '../../client/projects/BlockchainTimeline';
 import { LoadingState } from '../../../shared/ui/feedback/LoadingState';
 import '../quotes/quotes-admin.css';
 
@@ -26,8 +27,11 @@ export function ProjectsAdminPage() {
   const { t } = useTranslation();
   const query = useAdminProjects();
   const updateMutation = useUpdateProject();
+  const completeStageMutation = useCompleteBlockchainStage();
+
   const [filter, setFilter] = useState<FilterTab>('all');
   const [selected, setSelected] = useState<AdminProject | null>(null);
+  const [adminNote, setAdminNote] = useState('');
 
   const projects = query.data || [];
 
@@ -45,6 +49,18 @@ export function ProjectsAdminPage() {
     await updateMutation.mutateAsync({ id, payload: { status } });
     if (selected?._id === id) {
       setSelected((prev) => (prev ? { ...prev, status } : prev));
+    }
+  }
+
+  async function handleCompleteStage(projectId: string, stageIndex: number) {
+    const res = await completeStageMutation.mutateAsync({
+      id: projectId,
+      stageIndex,
+      adminNote: adminNote.trim() || undefined
+    });
+    setAdminNote('');
+    if (res.data?.data) {
+      setSelected(res.data.data as AdminProject);
     }
   }
 
@@ -111,7 +127,7 @@ export function ProjectsAdminPage() {
       )}
 
       {selected ? (
-        <aside className="admin-quotes-detail" aria-label={t('admin.projects.detailTitle')}>
+        <aside className="admin-quotes-detail" aria-label={t('admin.projects.detailTitle')} style={{ width: '560px', overflowY: 'auto', maxHeight: '100vh', padding: '28px' }}>
           <div className="admin-quotes-detail__head">
             <h2>{selected.title || t('admin.projects.untitled')}</h2>
             <button type="button" className="admin-quotes-detail__close" onClick={() => setSelected(null)}>
@@ -124,11 +140,7 @@ export function ProjectsAdminPage() {
           <p>
             <strong>{t('admin.projects.columns.payment')}:</strong> {selected.paymentStatus || '—'}
           </p>
-          {selected.consultationNotes ? (
-            <p>
-              <strong>{t('admin.projects.notes')}:</strong> {selected.consultationNotes}
-            </p>
-          ) : null}
+
           <div className="admin-quotes-detail__actions">
             {(['active', 'paused', 'completed', 'canceled'] as ProjectStatus[]).map((status) => (
               <button
@@ -142,31 +154,60 @@ export function ProjectsAdminPage() {
               </button>
             ))}
           </div>
+
           {selected.roadmap?.length ? (
-            <div>
-              <h3>{t('admin.projects.roadmap')}</h3>
-              <ul>
+            <div style={{ marginTop: '24px' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px' }}>Étapes Feuille de Route & Validation Blockchain</h3>
+
+              <div style={{ marginBottom: '12px' }}>
+                <input
+                  type="text"
+                  placeholder="Note facultative pour la blockchain (ex: Livrable vérifié v1.2)"
+                  style={{ width: '100%', padding: '8px 10px', fontSize: '13px', borderRadius: '6px', border: '1px solid var(--admin-border)' }}
+                  value={adminNote}
+                  onChange={(e) => setAdminNote(e.target.value)}
+                />
+              </div>
+
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {selected.roadmap.map((stage, index) => (
-                  <li key={`${stage.title}-${index}`}>
-                    {stage.completed ? '✓ ' : '○ '}
-                    {stage.title}
+                  <li
+                    key={`${stage.title}-${index}`}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      background: stage.completed ? '#eaf4ea' : 'var(--admin-surface-muted, #f8fafc)',
+                      border: '1px solid var(--admin-row-border, #e2e8f0)'
+                    }}
+                  >
+                    <span style={{ fontSize: '13px', fontWeight: 500, color: stage.completed ? '#2d6a4f' : 'var(--admin-text)' }}>
+                      {stage.completed ? '✓ ' : '○ '} {stage.title}
+                    </span>
+
+                    {!stage.completed ? (
+                      <button
+                        type="button"
+                        className="admin-btn"
+                        style={{ fontSize: '11px', padding: '4px 10px' }}
+                        disabled={completeStageMutation.isPending}
+                        onClick={() => handleCompleteStage(selected._id, index)}
+                      >
+                        Valider & Signer Hash
+                      </button>
+                    ) : (
+                      <span style={{ fontSize: '11px', color: '#2d6a4f', fontWeight: 600 }}>Inscrit on-chain</span>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
           ) : null}
-          {selected.milestones?.length ? (
-            <div>
-              <h3>{t('admin.projects.milestones')}</h3>
-              <ul>
-                {selected.milestones.map((milestone, index) => (
-                  <li key={`${milestone.title}-${index}`}>
-                    {milestone.title} — {formatDate(milestone.dueDate)} ({milestone.status})
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+
+          {/* Render Blockchain Log */}
+          <BlockchainTimeline entries={selected.blockchainLog || []} />
         </aside>
       ) : null}
     </div>

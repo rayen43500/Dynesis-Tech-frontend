@@ -5,6 +5,7 @@ import { PlatformSettingsProvider } from '../providers/PlatformSettingsProvider'
 import { AndelaNavbar } from '../../features/home/AndelaNavbar';
 import { PublicFooter } from '../../shared/ui/layout/PublicFooter';
 import { PageContainer } from '../../shared/ui/layout/PageContainer';
+import { ChatbotWidget } from '../../features/chatbot/ChatbotWidget';
 
 export function PublicLayout() {
   const { pathname } = useLocation();
@@ -13,8 +14,9 @@ export function PublicLayout() {
   const isDevelopersPage = pathname.startsWith('/developers');
   const isWorkWithUsPage = pathname === '/work-with-us';
   const isServicesPage = pathname === '/services';
+  const isPricingPage = pathname === '/pricing';
   const isFullBleed =
-    pathname === '/' || isAuthPage || isContactPage || isDevelopersPage || isWorkWithUsPage || isServicesPage;
+    pathname === '/' || isAuthPage || isContactPage || isDevelopersPage || isWorkWithUsPage || isServicesPage || isPricingPage;
   const showFooter = !isAuthPage;
 
   return (
@@ -31,6 +33,7 @@ export function PublicLayout() {
           )}
         </div>
         {showFooter ? <PublicFooter /> : null}
+        <ChatbotWidget />
       </div>
     </PlatformSettingsProvider>
   );

@@ -40,6 +40,22 @@ export const endpoints = {
         const url = qs ? `/api/v1/public/developers/${id}?${qs}` : `/api/v1/public/developers/${id}`;
         return http.get(url);
       }
+    },
+    pricing: {
+      list: () => http.get('/api/v1/public/pricing')
+    },
+    chatbot: {
+      send: (message: string) => http.post('/api/v1/public/chatbot/message', { message })
+    },
+    portfolio: {
+      list: (_params?: Record<string, unknown>) => http.get('/api/v1/public/portfolio')
+    },
+    faq: {
+      list: () => http.get('/api/v1/public/faq')
+    },
+    blog: {
+      list: (_params?: Record<string, unknown>) => http.get('/api/v1/public/blog'),
+      getBySlug: (slug: string) => http.get(`/api/v1/public/blog/${slug}`)
     }
   },
   admin: {
@@ -144,7 +160,10 @@ export const endpoints = {
       },
       getById: (id: string) => http.get(`/api/v1/admin/projects/${id}`),
       create: (payload: Record<string, unknown>) => http.post('/api/v1/admin/projects', payload),
-      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/projects/${id}`, payload)
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/projects/${id}`, payload),
+      getBlockchainLog: (id: string) => http.get(`/api/v1/admin/projects/${id}/blockchain`),
+      completeBlockchainStage: (id: string, payload: { stageIndex: number; adminNote?: string }) =>
+        http.post(`/api/v1/admin/projects/${id}/blockchain/complete-stage`, payload)
     },
     inquiries: {
       list: (params?: { page?: number; limit?: number; status?: string }) => {
@@ -204,6 +223,38 @@ export const endpoints = {
         http.patch(`/api/v1/admin/users/${id}`, payload),
       remove: (id: string) => http.delete(`/api/v1/admin/users/${id}`),
       invite: (payload: { email: string; role: string }) => http.post('/api/v1/admin/users/invite', payload)
+    },
+    pricing: {
+      list: (params?: { page?: number; limit?: number; visible?: boolean }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (typeof params?.visible === 'boolean') search.set('visible', String(params.visible));
+        const qs = search.toString();
+        return http.get(qs ? `/api/v1/admin/pricing?${qs}` : '/api/v1/admin/pricing');
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/pricing/${id}`),
+      create: (payload: Record<string, unknown>) => http.post('/api/v1/admin/pricing', payload),
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/pricing/${id}`, payload),
+      remove: (id: string) => http.delete(`/api/v1/admin/pricing/${id}`)
+    },
+    invoices: {
+      list: (params?: Record<string, unknown>) => http.get('/api/v1/admin/invoices')
+    },
+    tickets: {
+      list: (params?: Record<string, unknown>) => http.get('/api/v1/admin/tickets')
+    },
+    faq: {
+      list: (params?: Record<string, unknown>) => http.get('/api/v1/admin/faq')
+    },
+    blog: {
+      list: (params?: Record<string, unknown>) => http.get('/api/v1/admin/blog')
+    },
+    homepage: {
+      get: () => http.get('/api/v1/admin/homepage')
+    },
+    translations: {
+      list: (params?: Record<string, unknown>) => http.get('/api/v1/admin/translations')
     }
   },
   client: {
@@ -224,7 +275,15 @@ export const endpoints = {
     projects: {
       list: () => http.get('/api/v1/client/projects'),
       getById: (id: string) => http.get(`/api/v1/client/projects/${id}`),
-      roadmap: (id: string) => http.get(`/api/v1/client/projects/${id}/roadmap`)
+      roadmap: (id: string) => http.get(`/api/v1/client/projects/${id}/roadmap`),
+      blockchainLog: (id: string) => http.get(`/api/v1/client/projects/${id}/blockchain`)
+    },
+    invoices: {
+      list: () => http.get('/api/v1/client/invoices')
+    },
+    tickets: {
+      list: () => http.get('/api/v1/client/tickets'),
+      create: (payload: Record<string, unknown>) => http.post('/api/v1/client/tickets', payload)
     }
   },
   projectManager: {

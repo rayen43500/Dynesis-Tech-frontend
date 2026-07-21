@@ -10,6 +10,15 @@ export type ClientProject = {
   roadmap?: { title?: string; order?: number; completed?: boolean }[];
   milestones?: { title?: string; dueDate?: string; status?: string; notes?: string }[];
   activityTimeline?: { eventType?: string; message?: string; createdAt?: string }[];
+  blockchainLog?: {
+    _id?: string;
+    stageTitle: string;
+    stageIndex: number;
+    completedAt: string;
+    hash: string;
+    previousHash: string;
+    adminNote?: string;
+  }[];
   updatedAt?: string;
 };
 

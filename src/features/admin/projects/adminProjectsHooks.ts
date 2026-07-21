@@ -17,6 +17,16 @@ export type Milestone = {
   notes?: string;
 };
 
+export type BlockchainEntry = {
+  _id?: string;
+  stageTitle: string;
+  stageIndex: number;
+  completedAt: string;
+  hash: string;
+  previousHash: string;
+  adminNote?: string;
+};
+
 export type AdminProject = {
   _id: string;
   clientId?: string;
@@ -26,6 +36,7 @@ export type AdminProject = {
   status?: ProjectStatus;
   milestones?: Milestone[];
   roadmap?: RoadmapStage[];
+  blockchainLog?: BlockchainEntry[];
   paymentStatus?: string;
   consultationNotes?: string;
   createdAt?: string;
@@ -61,6 +72,19 @@ export function useUpdateProject() {
     onSuccess: (_res, vars) => {
       qc.invalidateQueries({ queryKey: ['admin', 'projects'] });
       qc.invalidateQueries({ queryKey: ['admin', 'projects', vars.id] });
+    }
+  });
+}
+
+export function useCompleteBlockchainStage() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, stageIndex, adminNote }: { id: string; stageIndex: number; adminNote?: string }) =>
+      endpoints.admin.projects.completeBlockchainStage(id, { stageIndex, adminNote }),
+    onSuccess: (_res, vars) => {
+      qc.invalidateQueries({ queryKey: ['admin', 'projects'] });
+      qc.invalidateQueries({ queryKey: ['admin', 'projects', vars.id] });
+      qc.invalidateQueries({ queryKey: ['client', 'projects'] });
     }
   });
 }

@@ -188,6 +188,9 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
             </Link>
           </div>
 
+          <Link to="/pricing" className="andela-nav__link">
+            Tarifs
+          </Link>
           <Link to="/work-with-us" className="andela-nav__link">
             {t('nav.workWithUs')}
           </Link>
