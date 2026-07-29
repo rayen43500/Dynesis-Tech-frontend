@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Bell, Moon, Sun, User } from 'lucide-react';
+import { Bell, Moon, Sun, User, Mail } from 'lucide-react';
+
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -177,6 +178,16 @@ export function AdminLayout() {
             </NavIcon>
             {t('nav.services')}
           </NavLink>
+          <NavLink
+            to="/dashboard/admin/newsletter"
+            className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}
+          >
+            <NavIcon>
+              <Mail size={18} strokeWidth={1.75} />
+            </NavIcon>
+            {t('nav.newsletter')}
+          </NavLink>
+
 
           <div className="admin-sidebar__section">{t('nav.system')}</div>
 

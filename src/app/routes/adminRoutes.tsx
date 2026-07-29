@@ -17,6 +17,7 @@ import { InquiriesAdminPage } from '../../features/admin/inquiries/InquiriesAdmi
 import { PortfoliosAdminPage } from '../../features/admin/portfolios/PortfoliosAdminPage';
 import { UsersAdminPage } from '../../features/admin/users/UsersAdminPage';
 import { PricingAdminPage } from '../../features/admin/pricing/PricingAdminPage';
+import { NewsletterAdminPage } from '../../features/admin/newsletter/NewsletterAdminPage';
 import { RoutePlaceholder } from '../../shared/ui/placeholders/RoutePlaceholder';
 import { Roles } from '../../shared/constants/roles';
 
@@ -40,6 +41,7 @@ export function AdminRoutes() {
       <Route path="messages" element={<MessagesAdminPage />} />
       <Route path="projects" element={<ProjectsAdminPage />} />
       <Route path="pricing" element={<PricingAdminPage />} />
+      <Route path="newsletter" element={<NewsletterAdminPage />} />
       <Route path="translations" element={<RoutePlaceholder nameKey="admin.routes.translations" />} />
       <Route path="media" element={<RoutePlaceholder nameKey="admin.routes.media" />} />
       <Route path="operations" element={<UsersAdminPage />} />
@@ -48,3 +50,4 @@ export function AdminRoutes() {
     </Route>
   );
 }
+

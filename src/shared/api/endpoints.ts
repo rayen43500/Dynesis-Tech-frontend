@@ -147,6 +147,25 @@ export const endpoints = {
       changePassword: (payload: { currentPassword: string; newPassword: string }) =>
         http.patch('/api/v1/admin/account/password', payload)
     },
+    newsletter: {
+      stats: () => http.get('/api/v1/admin/newsletter/stats'),
+      subscribers: (params?: { page?: number; limit?: number; status?: string; search?: string }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (params?.status) search.set('status', params.status);
+        if (params?.search) search.set('search', params.search);
+        const qs = search.toString();
+        return http.get(qs ? `/api/v1/admin/newsletter/subscribers?${qs}` : '/api/v1/admin/newsletter/subscribers');
+      },
+      addSubscriber: (payload: { email: string; source?: string }) =>
+        http.post('/api/v1/admin/newsletter/subscribers', payload),
+      deleteSubscriber: (id: string) => http.delete(`/api/v1/admin/newsletter/subscribers/${id}`),
+      campaigns: () => http.get('/api/v1/admin/newsletter/campaigns'),
+      sendCampaign: (payload: { subject: string; content: string }) =>
+        http.post('/api/v1/admin/newsletter/send', payload)
+    },
+
     projects: {
       list: (params?: { page?: number; limit?: number; clientId?: string; status?: string }) => {
         const search = new URLSearchParams();

@@ -1,14 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 import { useBrandingContent, useFooterContactContent } from '../../hooks/useSiteContent';
+import { http } from '../../api/httpClient';
 import './public-footer.css';
 
 export function PublicFooter() {
   const { t } = useTranslation();
   const branding = useBrandingContent();
   const footer = useFooterContactContent();
+
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'already' | 'error'>('idle');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
+
+  async function handleNewsletterSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newsletterEmail.trim() || !newsletterEmail.includes('@')) return;
+
+    setNewsletterStatus('loading');
+    setNewsletterMessage('');
+
+    try {
+      const response = await http.post('/api/v1/public/newsletter/subscribe', {
+        email: newsletterEmail.trim(),
+        source: 'footer'
+      });
+
+      if (response.data?.alreadySubscribed) {
+        setNewsletterStatus('already');
+        setNewsletterMessage(t('footer.newsletter.alreadySubscribed'));
+      } else {
+        setNewsletterStatus('success');
+        setNewsletterMessage(t('footer.newsletter.success'));
+        setNewsletterEmail('');
+      }
+    } catch (err: any) {
+      setNewsletterStatus('error');
+      setNewsletterMessage(err?.response?.data?.message || t('common.errorGeneric'));
+    }
+  }
 
   const navLinks = [
     { label: t('footer.navigation.home'), to: '/' },
@@ -101,7 +134,54 @@ export function PublicFooter() {
               <span className="public-footer__item">{footer.hours}</span>
             </div>
           </div>
+
+          <div className="public-footer__col public-footer__col--newsletter">
+            <h3 className="public-footer__col-title">{t('footer.newsletter.title')}</h3>
+            <div className="public-footer__col-body">
+              <p className="public-footer__newsletter-desc">{t('footer.newsletter.description')}</p>
+              <form onSubmit={handleNewsletterSubmit} className="public-footer__newsletter-form">
+                <div className="public-footer__newsletter-input-wrap">
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder={t('footer.newsletter.placeholder')}
+                    className="public-footer__newsletter-input"
+                    disabled={newsletterStatus === 'loading'}
+                    required
+                  />
+                  <button
+                    type="submit"
+                    disabled={newsletterStatus === 'loading' || !newsletterEmail.trim()}
+                    className="public-footer__newsletter-btn"
+                    aria-label={t('footer.newsletter.subscribe')}
+                  >
+                    {newsletterStatus === 'loading' ? (
+                      <Loader2 size={16} className="public-footer__spinner" />
+                    ) : (
+                      <Send size={16} />
+                    )}
+                  </button>
+                </div>
+              </form>
+              {newsletterMessage && (
+                <div
+                  className={`public-footer__newsletter-msg public-footer__newsletter-msg--${
+                    newsletterStatus === 'success' || newsletterStatus === 'already' ? 'success' : 'error'
+                  }`}
+                >
+                  {newsletterStatus === 'success' || newsletterStatus === 'already' ? (
+                    <CheckCircle2 size={14} />
+                  ) : (
+                    <AlertCircle size={14} />
+                  )}
+                  <span>{newsletterMessage}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
+
 
         <hr className="public-footer__divider" />
 
