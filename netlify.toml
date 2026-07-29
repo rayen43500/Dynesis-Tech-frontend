@@ -16,6 +16,8 @@
 [build.environment]
   # Node version — pin to LTS
   NODE_VERSION = "20"
+  # Disable Next.js runtime plugin which may be configured in the Netlify UI
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
   # Vite will read VITE_* env vars from the Netlify dashboard
   # Set VITE_API_BASE_URL in Netlify > Site Settings > Environment Variables
 
