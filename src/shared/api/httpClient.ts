@@ -3,10 +3,10 @@ import axios from 'axios';
 type AccessTokenProvider = () => string | null;
 type AccessTokenSetter = (token: string | null) => void;
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://dynesis-tech-backend.onrender.com';
 
 let getAccessToken: AccessTokenProvider = () => null;
-let setAccessToken: AccessTokenSetter = () => {};
+let setAccessToken: AccessTokenSetter = () => { };
 
 export function configureAuthTokenHandlers(handlers: { getToken: AccessTokenProvider; setToken: AccessTokenSetter }) {
   getAccessToken = handlers.getToken;

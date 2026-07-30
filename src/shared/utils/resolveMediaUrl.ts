@@ -1,5 +1,5 @@
 function getMediaApiBase() {
-  const raw = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
+  const raw = (import.meta.env.VITE_API_BASE_URL || 'https://dynesis-tech-backend.onrender.com').replace(/\/$/, '');
   return raw.replace(/\/api\/v\d+$/, '');
 }
 

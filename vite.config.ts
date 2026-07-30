@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/uploads': {
-        target: 'http://localhost:5000',
+        target: 'https://dynesis-tech-backend.onrender.com',
         changeOrigin: true
       }
     }
