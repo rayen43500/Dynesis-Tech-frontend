@@ -11,8 +11,6 @@ import {
   Search,
   Eye,
   Loader2,
-  CheckCircle2,
-  AlertCircle,
   X
 } from 'lucide-react';
 
@@ -27,8 +25,8 @@ import {
   type NewsletterCampaignItem
 } from './newsletterAdminHooks';
 import { LoadingState } from '../../../shared/ui/feedback/LoadingState';
-import '../quotes/quotes-admin.css';
 import './newsletter-admin.css';
+
 
 export function NewsletterAdminPage() {
   const { t } = useTranslation();
@@ -97,23 +95,23 @@ export function NewsletterAdminPage() {
 
   if (statsQuery.isLoading) {
     return (
-      <div className="admin-quotes-page">
+      <div className="newsletter-admin">
         <LoadingState />
       </div>
     );
   }
 
   return (
-    <div className="admin-quotes-page newsletter-admin">
-      <div className="admin-quotes-page__header">
-        <div>
-          <h1 className="admin-quotes-page__title">{t('admin.newsletter.title')}</h1>
-          <p className="admin-quotes-page__subtitle">{t('admin.newsletter.subtitle')}</p>
+    <div className="newsletter-admin">
+      <div className="newsletter-admin__header">
+        <div className="newsletter-admin__header-info">
+          <h1 className="newsletter-admin__title">{t('admin.newsletter.title')}</h1>
+          <p className="newsletter-admin__subtitle">{t('admin.newsletter.subtitle')}</p>
         </div>
         <div className="newsletter-admin__header-actions">
           <button
             type="button"
-            className="admin-quotes-card__btn admin-quotes-card__btn--primary"
+            className="newsletter-admin__btn newsletter-admin__btn--primary"
             onClick={() => setIsCampaignModalOpen(true)}
           >
             <Send size={16} />
@@ -121,7 +119,7 @@ export function NewsletterAdminPage() {
           </button>
           <button
             type="button"
-            className="admin-quotes-card__btn admin-quotes-card__btn--secondary"
+            className="newsletter-admin__btn newsletter-admin__btn--secondary"
             onClick={() => setIsAddModalOpen(true)}
           >
             <Plus size={16} />
@@ -131,60 +129,60 @@ export function NewsletterAdminPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="admin-quotes-stats newsletter-admin__stats">
-        <div className="admin-quotes-stats__card">
-          <div className="admin-quotes-stats__icon newsletter-admin__icon--blue">
-            <Users size={20} />
+      <div className="newsletter-admin__stats-grid">
+        <div className="newsletter-admin__stat-card">
+          <div className="newsletter-admin__stat-icon newsletter-admin__icon--blue">
+            <Users size={22} />
           </div>
-          <div className="admin-quotes-stats__info">
-            <span className="admin-quotes-stats__label">{t('admin.newsletter.stats.total')}</span>
-            <span className="admin-quotes-stats__val">{stats.totalSubscribers}</span>
-          </div>
-        </div>
-
-        <div className="admin-quotes-stats__card">
-          <div className="admin-quotes-stats__icon newsletter-admin__icon--green">
-            <UserCheck size={20} />
-          </div>
-          <div className="admin-quotes-stats__info">
-            <span className="admin-quotes-stats__label">{t('admin.newsletter.stats.active')}</span>
-            <span className="admin-quotes-stats__val">{stats.activeSubscribers}</span>
+          <div className="newsletter-admin__stat-info">
+            <span className="newsletter-admin__stat-label">{t('admin.newsletter.stats.total')}</span>
+            <span className="newsletter-admin__stat-val">{stats.totalSubscribers}</span>
           </div>
         </div>
 
-        <div className="admin-quotes-stats__card">
-          <div className="admin-quotes-stats__icon newsletter-admin__icon--orange">
-            <UserX size={20} />
+        <div className="newsletter-admin__stat-card">
+          <div className="newsletter-admin__stat-icon newsletter-admin__icon--green">
+            <UserCheck size={22} />
           </div>
-          <div className="admin-quotes-stats__info">
-            <span className="admin-quotes-stats__label">{t('admin.newsletter.stats.unsubscribed')}</span>
-            <span className="admin-quotes-stats__val">{stats.unsubscribedCount}</span>
+          <div className="newsletter-admin__stat-info">
+            <span className="newsletter-admin__stat-label">{t('admin.newsletter.stats.active')}</span>
+            <span className="newsletter-admin__stat-val">{stats.activeSubscribers}</span>
           </div>
         </div>
 
-        <div className="admin-quotes-stats__card">
-          <div className="admin-quotes-stats__icon newsletter-admin__icon--purple">
-            <Mail size={20} />
+        <div className="newsletter-admin__stat-card">
+          <div className="newsletter-admin__stat-icon newsletter-admin__icon--orange">
+            <UserX size={22} />
           </div>
-          <div className="admin-quotes-stats__info">
-            <span className="admin-quotes-stats__label">{t('admin.newsletter.stats.campaigns')}</span>
-            <span className="admin-quotes-stats__val">{stats.totalCampaignsSent}</span>
+          <div className="newsletter-admin__stat-info">
+            <span className="newsletter-admin__stat-label">{t('admin.newsletter.stats.unsubscribed')}</span>
+            <span className="newsletter-admin__stat-val">{stats.unsubscribedCount}</span>
+          </div>
+        </div>
+
+        <div className="newsletter-admin__stat-card">
+          <div className="newsletter-admin__stat-icon newsletter-admin__icon--purple">
+            <Mail size={22} />
+          </div>
+          <div className="newsletter-admin__stat-info">
+            <span className="newsletter-admin__stat-label">{t('admin.newsletter.stats.campaigns')}</span>
+            <span className="newsletter-admin__stat-val">{stats.totalCampaignsSent}</span>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="admin-quotes-tabs">
+      <div className="newsletter-admin__tabs">
         <button
           type="button"
-          className={`admin-quotes-tab ${activeTab === 'subscribers' ? 'admin-quotes-tab--active' : ''}`}
+          className={`newsletter-admin__tab ${activeTab === 'subscribers' ? 'newsletter-admin__tab--active' : ''}`}
           onClick={() => setActiveTab('subscribers')}
         >
           {t('admin.newsletter.subscribers.title')}
         </button>
         <button
           type="button"
-          className={`admin-quotes-tab ${activeTab === 'campaigns' ? 'admin-quotes-tab--active' : ''}`}
+          className={`newsletter-admin__tab ${activeTab === 'campaigns' ? 'newsletter-admin__tab--active' : ''}`}
           onClick={() => setActiveTab('campaigns')}
         >
           {t('admin.newsletter.campaigns.title')}
@@ -222,12 +220,12 @@ export function NewsletterAdminPage() {
             </select>
           </div>
 
-          <div className="admin-quotes-table-wrap">
-            <table className="admin-quotes-table">
+          <div className="newsletter-admin__table-wrap">
+            <table className="newsletter-admin__table">
               <thead>
                 <tr>
                   <th>Email</th>
-                  <th>Status</th>
+                  <th>Statut</th>
                   <th>{t('admin.newsletter.subscribers.source')}</th>
                   <th>{t('admin.newsletter.subscribers.date')}</th>
                   <th style={{ textAlign: 'right' }}>Actions</th>
@@ -236,13 +234,13 @@ export function NewsletterAdminPage() {
               <tbody>
                 {subscribersQuery.isLoading ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: '3rem' }}>
                       <LoadingState />
                     </td>
                   </tr>
                 ) : !subscribersQuery.data?.subscribers?.length ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: '3rem' }} className="newsletter-admin__empty">
                       {t('admin.newsletter.subscribers.empty')}
                     </td>
                   </tr>
@@ -252,8 +250,10 @@ export function NewsletterAdminPage() {
                       <td className="newsletter-admin__email-cell">{item.email}</td>
                       <td>
                         <span
-                          className={`admin-quotes-badge ${
-                            item.status === 'active' ? 'admin-quotes-badge--converted' : 'admin-quotes-badge--closed'
+                          className={`newsletter-admin__badge ${
+                            item.status === 'active'
+                              ? 'newsletter-admin__badge--active'
+                              : 'newsletter-admin__badge--unsubscribed'
                           }`}
                         >
                           {t(`admin.newsletter.subscribers.${item.status}`)}
@@ -287,20 +287,20 @@ export function NewsletterAdminPage() {
                 type="button"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="admin-quotes-card__btn admin-quotes-card__btn--secondary"
+                className="newsletter-admin__btn newsletter-admin__btn--secondary"
               >
-                Previous
+                Précédent
               </button>
               <span>
-                Page {page} of {subscribersQuery.data.pagination.pages}
+                Page {page} sur {subscribersQuery.data.pagination.pages}
               </span>
               <button
                 type="button"
                 disabled={page >= subscribersQuery.data.pagination.pages}
                 onClick={() => setPage((p) => p + 1)}
-                className="admin-quotes-card__btn admin-quotes-card__btn--secondary"
+                className="newsletter-admin__btn newsletter-admin__btn--secondary"
               >
-                Next
+                Suivant
               </button>
             </div>
           )}
@@ -310,8 +310,8 @@ export function NewsletterAdminPage() {
       {/* Campaigns Content */}
       {activeTab === 'campaigns' && (
         <div className="newsletter-admin__content-block">
-          <div className="admin-quotes-table-wrap">
-            <table className="admin-quotes-table">
+          <div className="newsletter-admin__table-wrap">
+            <table className="newsletter-admin__table">
               <thead>
                 <tr>
                   <th>{t('admin.newsletter.campaigns.subject')}</th>
@@ -324,13 +324,13 @@ export function NewsletterAdminPage() {
               <tbody>
                 {campaignsQuery.isLoading ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: '3rem' }}>
                       <LoadingState />
                     </td>
                   </tr>
                 ) : !campaignsQuery.data?.length ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: '3rem' }} className="newsletter-admin__empty">
                       {t('admin.newsletter.campaigns.empty')}
                     </td>
                   </tr>
@@ -340,15 +340,15 @@ export function NewsletterAdminPage() {
                       <td className="newsletter-admin__email-cell">
                         <strong>{item.subject}</strong>
                       </td>
-                      <td>{item.recipientCount} subscribers</td>
+                      <td>{item.recipientCount} abonnés</td>
                       <td>
                         <span
-                          className={`admin-quotes-badge ${
+                          className={`newsletter-admin__badge ${
                             item.status === 'sent'
-                              ? 'admin-quotes-badge--converted'
+                              ? 'newsletter-admin__badge--active'
                               : item.status === 'sending'
-                              ? 'admin-quotes-badge--consultation'
-                              : 'admin-quotes-badge--closed'
+                              ? 'newsletter-admin__badge--pending'
+                              : 'newsletter-admin__badge--unsubscribed'
                           }`}
                         >
                           {item.status.toUpperCase()}
@@ -386,7 +386,7 @@ export function NewsletterAdminPage() {
             </div>
             <form onSubmit={handleAddSubscriber} className="newsletter-modal__body">
               <label className="newsletter-modal__label">
-                Email Address
+                Adresse Email
                 <input
                   type="email"
                   required
@@ -400,14 +400,14 @@ export function NewsletterAdminPage() {
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="admin-quotes-card__btn admin-quotes-card__btn--secondary"
+                  className="newsletter-admin__btn newsletter-admin__btn--secondary"
                 >
                   {t('common.cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={addSubscriberMutation.isPending || !newEmail.trim()}
-                  className="admin-quotes-card__btn admin-quotes-card__btn--primary"
+                  className="newsletter-admin__btn newsletter-admin__btn--primary"
                 >
                   {addSubscriberMutation.isPending ? <Loader2 size={16} className="newsletter-admin__spinner" /> : t('common.save')}
                 </button>
@@ -433,7 +433,7 @@ export function NewsletterAdminPage() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. New AI features announcement!"
+                  placeholder="ex: Annonce de nos nouvelles fonctionnalités !"
                   value={campaignSubject}
                   onChange={(e) => setCampaignSubject(e.target.value)}
                   className="newsletter-admin__input"
@@ -446,14 +446,14 @@ export function NewsletterAdminPage() {
                   className={`newsletter-modal__tab ${!previewMode ? 'newsletter-modal__tab--active' : ''}`}
                   onClick={() => setPreviewMode(false)}
                 >
-                  Editor
+                  Éditeur
                 </button>
                 <button
                   type="button"
                   className={`newsletter-modal__tab ${previewMode ? 'newsletter-modal__tab--active' : ''}`}
                   onClick={() => setPreviewMode(true)}
                 >
-                  Preview HTML
+                  Aperçu HTML
                 </button>
               </div>
 
@@ -463,7 +463,7 @@ export function NewsletterAdminPage() {
                   <textarea
                     rows={10}
                     required
-                    placeholder="Write your email body here. HTML formatting is supported (e.g. <p>Hello</p>)"
+                    placeholder="Rédigez le corps de votre email ici. Le formatage HTML est pris en charge (ex: <p>Bonjour</p>)"
                     value={campaignContent}
                     onChange={(e) => setCampaignContent(e.target.value)}
                     className="newsletter-admin__textarea"
@@ -472,11 +472,11 @@ export function NewsletterAdminPage() {
               ) : (
                 <div className="newsletter-modal__preview-box">
                   <div className="newsletter-modal__preview-header">
-                    <strong>Subject:</strong> {campaignSubject || '(No Subject)'}
+                    <strong>Objet:</strong> {campaignSubject || '(Aucun objet)'}
                   </div>
                   <div
                     className="newsletter-modal__preview-body"
-                    dangerouslySetInnerHTML={{ __html: campaignContent || '<p><em>No content entered yet.</em></p>' }}
+                    dangerouslySetInnerHTML={{ __html: campaignContent || '<p><em>Aucun contenu saisi.</em></p>' }}
                   />
                 </div>
               )}
@@ -485,14 +485,14 @@ export function NewsletterAdminPage() {
                 <button
                   type="button"
                   onClick={() => setIsCampaignModalOpen(false)}
-                  className="admin-quotes-card__btn admin-quotes-card__btn--secondary"
+                  className="newsletter-admin__btn newsletter-admin__btn--secondary"
                 >
                   {t('common.cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={sendCampaignMutation.isPending || !campaignSubject.trim() || !campaignContent.trim()}
-                  className="admin-quotes-card__btn admin-quotes-card__btn--primary"
+                  className="newsletter-admin__btn newsletter-admin__btn--primary"
                 >
                   {sendCampaignMutation.isPending ? (
                     <>
@@ -517,23 +517,23 @@ export function NewsletterAdminPage() {
         <div className="newsletter-modal-overlay">
           <div className="newsletter-modal newsletter-modal--large">
             <div className="newsletter-modal__header">
-              <h3>Campaign: {selectedCampaign.subject}</h3>
+              <h3>Campagne: {selectedCampaign.subject}</h3>
               <button type="button" onClick={() => setSelectedCampaign(null)} className="newsletter-modal__close">
                 <X size={18} />
               </button>
             </div>
             <div className="newsletter-modal__body">
               <p>
-                <strong>Sent Date:</strong>{' '}
+                <strong>Date d'envoi:</strong>{' '}
                 {selectedCampaign.sentAt ? new Date(selectedCampaign.sentAt).toLocaleString() : 'N/A'}
               </p>
               <p>
-                <strong>Recipients:</strong> {selectedCampaign.recipientCount} subscribers
+                <strong>Destinataires:</strong> {selectedCampaign.recipientCount} abonnés
               </p>
               <p>
-                <strong>Status:</strong> {selectedCampaign.status}
+                <strong>Statut:</strong> {selectedCampaign.status}
               </p>
-              <hr style={{ borderColor: 'hsl(var(--color-border))', margin: '1rem 0' }} />
+              <hr style={{ borderColor: 'hsl(var(--color-border, #334155))', margin: '1rem 0' }} />
               <div
                 className="newsletter-modal__preview-body"
                 dangerouslySetInnerHTML={{ __html: selectedCampaign.content }}
@@ -543,9 +543,9 @@ export function NewsletterAdminPage() {
               <button
                 type="button"
                 onClick={() => setSelectedCampaign(null)}
-                className="admin-quotes-card__btn admin-quotes-card__btn--secondary"
+                className="newsletter-admin__btn newsletter-admin__btn--secondary"
               >
-                Close
+                Fermer
               </button>
             </div>
           </div>
@@ -554,3 +554,4 @@ export function NewsletterAdminPage() {
     </div>
   );
 }
+
