@@ -15,7 +15,7 @@ export function useBrandingContent() {
     () => ({
       siteName: pickLocalized(settings?.branding?.siteName, language, t('nav.brand')),
       tagline: pickLocalized(settings?.branding?.tagline, language, t('topBar.tagline')),
-      logoUrl: settings?.branding?.logoUrl || '',
+      logoUrl: settings?.branding?.logoUrl || '/images/image.png',
       logoMark: settings?.branding?.logoMark || 'D'
     }),
     [settings, language, t]

@@ -7,7 +7,7 @@
   --color-accent-light: #d1e8dc;
   --color-card-bg: #ffffff;
   --color-card-border: #e8e8e8;
-  --color-hero-card-bg: #2d5a1b;
+  --color-hero-card-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   --color-btn-primary: #1a1a1a;
   --color-btn-secondary: #ffffff;
   --color-star: #f59e0b;
@@ -516,7 +516,7 @@
   max-width: 640px;
   margin: 48px auto 0;
   border-radius: 24px;
-  background: var(--color-hero-card-bg);
+  background: url('/images/image.png') center/cover no-repeat;
   overflow: hidden;
   position: relative;
   height: 420px;

@@ -31,17 +31,7 @@ export function AndelaHomePage() {
             </div>
           </div>
 
-          <div className="hero-card" aria-label={content.featuredPerson.name}>
-            <div className="floating-card profile-card">
-              <div className="profile-top">
-                <div className="profile-name">{content.featuredPerson.name}</div>
-                <div className="match-badge">
-                  <span className="match-dot" aria-hidden />
-                  {content.matchBadge}
-                </div>
-              </div>
-              <p className="profile-title">{content.featuredPerson.title}</p>
-            </div>
+          <div className="hero-card" aria-label="Hero showcase">
 
             <img className="hero-card__photo" src={content.heroImage} alt="" loading="eager" />
 
