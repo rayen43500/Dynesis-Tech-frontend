@@ -6,7 +6,7 @@
 .pricing-page {
   padding: 80px 0 100px;
   min-height: 100vh;
-  background: var(--bg, #0a0c10);
+  background: #ffffff;
 }
 
 .pricing-page__inner {
@@ -26,13 +26,14 @@
   margin-bottom: 14px;
   padding: 5px 14px;
   border-radius: 9999px;
-  background: rgba(58, 138, 58, 0.12);
+  background: #edf7f2;
+  border: 1px solid #b8ddc8;
   font-family: 'Inter', sans-serif;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #4ade80;
+  color: #2d6a4f;
 }
 
 .pricing-header__title {
@@ -41,7 +42,7 @@
   font-size: clamp(32px, 5vw, 52px);
   font-weight: 400;
   line-height: 1.2;
-  color: #ffffff;
+  color: #1a1a1a;
 }
 
 .pricing-header__subtitle {
@@ -49,9 +50,9 @@
   max-width: 600px;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.55);
+  color: #4a5568;
 }
 
 /* ---- Grid ---- */
@@ -68,27 +69,28 @@
   display: flex;
   flex-direction: column;
   padding: 36px 32px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #e2e8f0;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.03);
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .pricing-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: #cbd5e1;
   transform: translateY(-4px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
 }
 
 .pricing-card--highlighted {
-  border-color: rgba(74, 222, 128, 0.35);
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.06) 0%, rgba(74, 222, 128, 0.02) 100%);
-  box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.15), 0 20px 50px rgba(0, 0, 0, 0.3);
+  border-color: #2d6a4f;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  box-shadow: 0 0 0 1px #2d6a4f, 0 14px 40px rgba(45, 106, 79, 0.12);
 }
 
 .pricing-card--highlighted:hover {
-  border-color: rgba(74, 222, 128, 0.55);
-  box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.25), 0 28px 70px rgba(0, 0, 0, 0.4);
+  border-color: #1e4d37;
+  box-shadow: 0 0 0 1.5px #1e4d37, 0 22px 55px rgba(45, 106, 79, 0.18);
 }
 
 .pricing-card__badge {
@@ -98,12 +100,12 @@
   transform: translateX(-50%);
   padding: 5px 16px;
   border-radius: 9999px;
-  background: linear-gradient(90deg, #4ade80, #22c55e);
+  background: #2d6a4f;
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  color: #031a0a;
+  color: #ffffff;
   white-space: nowrap;
 }
 
@@ -116,8 +118,9 @@
   height: 48px;
   margin-bottom: 20px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.06);
+  background: #f1f5f9;
   font-size: 22px;
+  color: #1a1a1a;
 }
 
 /* ---- Card content ---- */
@@ -126,16 +129,16 @@
   font-family: 'Inter', sans-serif;
   font-size: 20px;
   font-weight: 600;
-  color: #ffffff;
+  color: #1a1a1a;
 }
 
 .pricing-card__desc {
   margin: 0 0 28px;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.5);
+  color: #4a5568;
 }
 
 .pricing-card__price-row {
@@ -149,21 +152,21 @@
   font-family: 'Lora', Georgia, serif;
   font-size: 38px;
   font-weight: 400;
-  color: #ffffff;
+  color: #1a1a1a;
 }
 
 .pricing-card__price-note {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
+  color: #64748b;
 }
 
 .pricing-card__divider {
   width: 40px;
   height: 1px;
   margin: 20px 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: #e2e8f0;
 }
 
 /* ---- Features list ---- */
@@ -181,12 +184,12 @@
   margin-bottom: 12px;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  color: #334155;
 }
 
 .pricing-feature--excluded {
-  color: rgba(255, 255, 255, 0.25);
+  color: #94a3b8;
 }
 
 .pricing-feature__icon {
@@ -201,13 +204,13 @@
 }
 
 .pricing-feature__icon--check {
-  background: rgba(74, 222, 128, 0.15);
-  color: #4ade80;
+  background: #edf7f2;
+  color: #2d6a4f;
 }
 
 .pricing-feature__icon--cross {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.2);
+  background: #f1f5f9;
+  color: #94a3b8;
 }
 
 /* ---- CTA button ---- */
@@ -218,32 +221,32 @@
   gap: 8px;
   width: 100%;
   padding: 14px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid #cbd5e1;
   border-radius: 10px;
-  background: transparent;
+  background: #ffffff;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #ffffff;
+  color: #1a1a1a;
   text-decoration: none;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .pricing-card__cta:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: #f8fafc;
+  border-color: #94a3b8;
 }
 
 .pricing-card--highlighted .pricing-card__cta {
-  border-color: rgba(74, 222, 128, 0.4);
-  background: rgba(74, 222, 128, 0.1);
-  color: #4ade80;
+  border-color: #2d6a4f;
+  background: #2d6a4f;
+  color: #ffffff;
 }
 
 .pricing-card--highlighted .pricing-card__cta:hover {
-  background: rgba(74, 222, 128, 0.2);
-  border-color: #4ade80;
+  background: #1e4d37;
+  border-color: #1e4d37;
 }
 
 /* ---- Custom project banner ---- */
@@ -254,9 +257,9 @@
   justify-content: space-between;
   gap: 20px;
   padding: 32px 40px;
-  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border: 1px dashed #b8ddc8;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.02);
+  background: #f0fdf4;
 }
 
 .pricing-custom-banner__text h2 {
@@ -264,15 +267,15 @@
   font-family: 'Inter', sans-serif;
   font-size: 18px;
   font-weight: 600;
-  color: #ffffff;
+  color: #1a1a1a;
 }
 
 .pricing-custom-banner__text p {
   margin: 0;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+  color: #4a5568;
 }
 
 .pricing-custom-banner__btn {
@@ -282,11 +285,11 @@
   padding: 12px 28px;
   border: none;
   border-radius: 10px;
-  background: #ffffff;
+  background: #1a1a1a;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #0a0c10;
+  color: #ffffff;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;

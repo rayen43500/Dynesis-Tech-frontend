@@ -42,6 +42,27 @@ export type TestimonialItem = {
   role?: LocalizedString;
 };
 
+export type CustomSectionItem = {
+  id: string;
+  title?: LocalizedString;
+  subtitle?: LocalizedString;
+  content?: LocalizedString;
+  badge?: LocalizedString;
+  buttonText?: LocalizedString;
+  buttonLink?: string;
+  layoutVariant?: 'card' | 'banner' | 'grid' | 'split';
+  enabled?: boolean;
+  order?: number;
+};
+
+export type TypographySettings = {
+  headingFont?: 'Lora' | 'Inter' | 'Outfit' | 'Playfair Display' | 'Plus Jakarta Sans';
+  bodyFont?: 'Inter' | 'DM Sans' | 'Roboto' | 'System';
+  headingScale?: 'sm' | 'md' | 'lg' | 'xl';
+  headingWeight?: '300' | '400' | '500' | '600' | '700';
+  letterSpacing?: 'normal' | 'tight' | 'wide';
+};
+
 export type PlatformSettings = {
   branding?: {
     siteName?: LocalizedString;
@@ -60,8 +81,11 @@ export type PlatformSettings = {
     x?: string;
     linkedin?: string;
     github?: string;
+    instagram?: string;
   };
   copyright?: LocalizedString;
+  typography?: TypographySettings;
+  customSections?: CustomSectionItem[];
   theme?: {
     defaultMode?: 'light' | 'dark' | 'system';
     global?: {
@@ -108,4 +132,5 @@ export type PlatformSettings = {
   };
 };
 
-export type SettingsTab = 'homePage' | 'navbar' | 'footer' | 'sitewide';
+export type SettingsTab = 'homePage' | 'sections' | 'typography' | 'contact' | 'navbar' | 'footer' | 'sitewide';
+

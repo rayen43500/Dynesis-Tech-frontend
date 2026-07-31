@@ -7,6 +7,8 @@ import { HomePageSections } from './HomePageSections';
 import './andela-home.css';
 import './home-sections.css';
 
+import { DynamicCustomSections } from '../../shared/ui/content/DynamicCustomSections';
+
 export function AndelaHomePage() {
   const content = useHomePageContent();
   const tech = useMemo(() => [...content.techStack, ...content.techStack], [content.techStack]);
@@ -60,6 +62,8 @@ export function AndelaHomePage() {
           </Link>
         </section>
 
+        <DynamicCustomSections />
+
         <section className="ratings">
           <div className="ratings__inner">
             <span className="g2dot" aria-hidden>
@@ -106,6 +110,7 @@ export function AndelaHomePage() {
     </div>
   );
 }
+
 
 /* ────────────────────────────────────────────────────────────────
    Section Services — adaptée au fond blanc de la page d'accueil

@@ -22,16 +22,19 @@
   color: var(--color-text-primary);
 }
 
-/* NAVBAR — Andela exact */
+/* NAVBAR — Clean Light Theme */
 .andela-nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid #f0f0f0;
   z-index: 1000;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .andela-nav::before {
@@ -67,14 +70,15 @@
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: #f3f3f3;
+  background: #eaf3ec;
+  border: 1px solid #b8ddc8;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans);
-  font-weight: 400;
+  font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #2d6a4f;
 }
 
 .andela-nav__logo-img {
@@ -86,9 +90,10 @@
 
 .andela-nav__logo-text {
   font-family: var(--font-sans);
-  font-weight: 400;
+  font-weight: 500;
   font-size: 15px;
   color: #1a1a1a;
+  letter-spacing: -0.2px;
 }
 
 .andela-nav__center {
@@ -113,12 +118,18 @@
   align-items: center;
   gap: 4px;
   white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.andela-nav__link:hover {
+  color: #2d6a4f;
 }
 
 .andela-nav__chev {
   font-size: 11px;
   opacity: 0.75;
   line-height: 1;
+  transition: transform 0.2s ease;
 }
 
 .andela-nav__right {
@@ -143,7 +154,7 @@
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: rgba(26, 26, 26, 0.55);
+  color: rgba(26, 26, 26, 0.6);
   cursor: pointer;
   transition: color 0.15s ease, background 0.15s ease;
 }
@@ -164,20 +175,20 @@
 }
 
 .andela-nav--contact .andela-nav__lang-btn {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(26, 26, 26, 0.65);
 }
 
 .andela-nav--contact .andela-nav__lang-btn:hover,
 .andela-nav--contact .andela-nav__lang-btn--active {
-  color: #ffffff;
+  color: #1a1a1a;
 }
 
 .andela-nav--contact .andela-nav__lang-btn--active {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(26, 26, 26, 0.08);
 }
 
 .andela-nav--contact .andela-nav__lang-divider {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(26, 26, 26, 0.35);
 }
 
 .andela-nav__btn {
@@ -188,29 +199,39 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s ease, transform 0.15s ease;
+  transition: opacity 0.2s ease, transform 0.15s ease, background 0.2s ease;
   border: none;
 }
 
 .andela-nav__btn:hover {
-  opacity: 0.88;
   transform: translateY(-1px);
 }
 
 .andela-nav__btn--ghost {
-  border: 1.5px solid #d0d0d0;
+  border: 1px solid #d0d0d0;
   border-radius: 9999px;
   padding: 8px 22px;
-  background: white;
+  background: #ffffff;
   color: #1a1a1a;
+}
+
+.andela-nav__btn--ghost:hover {
+  background: #f7f7f5;
+  border-color: #a0a0a0;
 }
 
 .andela-nav__btn--primary {
   background: #1a1a1a;
-  color: white;
+  color: #ffffff;
   border-radius: 9999px;
   padding: 10px 22px;
   font-weight: 500;
+}
+
+.andela-nav__btn--primary:hover {
+  background: #2d6a4f;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(45, 106, 79, 0.25);
 }
 
 .andela-nav__burger {
@@ -219,7 +240,7 @@
   height: 42px;
   border: 1.5px solid #d0d0d0;
   border-radius: 9999px;
-  background: white;
+  background: #ffffff;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -262,10 +283,10 @@
   left: 50%;
   transform: translateX(-50%) translateY(-4px);
   margin-top: 0;
-  background: white;
+  background: #ffffff;
   border: 1px solid #e8e8e8;
   border-radius: 16px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
   padding: 28px;
   min-width: 660px;
   z-index: 999;
@@ -313,9 +334,13 @@
   flex-shrink: 0;
 }
 
+.andela-nav__dropdown-icon svg path {
+  stroke: #1a1a1a;
+}
+
 .andela-nav__dropdown-row-title {
   display: block;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 15px;
   color: #1a1a1a;
   margin-bottom: 2px;
@@ -332,15 +357,21 @@
 .andela-nav__dropdown-learn {
   color: #2d6a4f;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   margin-top: 8px;
   text-decoration: none;
   display: inline-block;
   font-family: Inter, var(--font-sans);
+  transition: color 0.15s ease;
+}
+
+.andela-nav__dropdown-learn:hover {
+  color: #1b4332;
 }
 
 .andela-nav__dropdown-right {
   background: #eaf3ec;
+  border: 1px solid #b8ddc8;
   border-radius: 12px;
   padding: 20px;
   position: relative;
@@ -361,6 +392,7 @@
   font-size: 14px;
   text-decoration: none;
   font-family: Inter, var(--font-sans);
+  font-weight: 500;
 }
 
 .andela-nav__dropdown-photo {
@@ -378,7 +410,8 @@
   position: absolute;
   bottom: 12px;
   left: 12px;
-  background: white;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 12px;
@@ -396,11 +429,12 @@
   height: 22px;
   border-radius: 6px;
   background: #f0f0f0;
+  color: #1a1a1a;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 10px;
-  font-weight: 400;
+  font-weight: 600;
   flex-shrink: 0;
 }
 
@@ -410,7 +444,7 @@
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.28s ease;
-  background: white;
+  background: #ffffff;
   border-bottom: 1px solid #f0f0f0;
 }
 
