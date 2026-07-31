@@ -100,6 +100,8 @@ export function HslField({ label, value, onChange }: HslFieldProps) {
 
 export function SettingsSectionCard({
   title,
+  subtitle,
+  icon,
   children,
   onSave,
   onReset,
@@ -110,6 +112,8 @@ export function SettingsSectionCard({
   resetLabel
 }: {
   title: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
   children: React.ReactNode;
   onSave: () => void;
   onReset?: () => void;
@@ -123,7 +127,15 @@ export function SettingsSectionCard({
 
   return (
     <section className="admin-settings-section">
-      <h2 className="admin-settings-section__title">{title}</h2>
+      <div className="admin-settings-section__header">
+        {icon ? (
+          <div className="admin-settings-section__header-icon">{icon}</div>
+        ) : null}
+        <div>
+          <h2 className="admin-settings-section__title">{title}</h2>
+          {subtitle ? <p className="admin-settings-section__subtitle">{subtitle}</p> : null}
+        </div>
+      </div>
       <div className="admin-settings-section__body">{children}</div>
       <div className="admin-settings-section__footer">
         {onReset ? (

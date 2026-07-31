@@ -95,10 +95,19 @@ export function HomePageSettingsSection({ settings }: Props) {
   const testimonials = form.testimonials || { items: [] };
   const intro = form.intro || {};
 
+  const homeIcon = (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z" />
+      <path d="M6 15V9h4v6" />
+    </svg>
+  );
+
   return (
     <>
       <SettingsSectionCard
         title={t('admin.settings.tabs.homePage')}
+        subtitle="Personnalisez le contenu de votre page d'accueil — hero, témoignages, intro & onglets."
+        icon={homeIcon}
         onSave={() => void handleSave()}
         onReset={() => setResetOpen(true)}
         saving={mutation.isPending}
@@ -206,23 +215,28 @@ export function HomePageSettingsSection({ settings }: Props) {
       />
       {(testimonials.items || []).map((item, idx) => (
         <div key={idx} className="admin-settings-block">
-          <h4 className="admin-settings-block__title">{t('admin.settings.home.testimonialN', { n: idx + 1 })}</h4>
-          <LocalizedField
-            label={t('admin.settings.home.quote')}
-            value={item.quote || {}}
-            onChange={(v) => setTestimonial(idx, { quote: v })}
-            multiline
-          />
-          <LocalizedField
-            label={t('admin.settings.home.name')}
-            value={item.name || {}}
-            onChange={(v) => setTestimonial(idx, { name: v })}
-          />
-          <LocalizedField
-            label={t('admin.settings.home.role')}
-            value={item.role || {}}
-            onChange={(v) => setTestimonial(idx, { role: v })}
-          />
+          <div className="admin-settings-block__header">
+            <span className="admin-settings-block__number">{idx + 1}</span>
+            <h4 className="admin-settings-block__title">{t('admin.settings.home.testimonialN', { n: idx + 1 })}</h4>
+          </div>
+          <div className="admin-settings-block__body">
+            <LocalizedField
+              label={t('admin.settings.home.quote')}
+              value={item.quote || {}}
+              onChange={(v) => setTestimonial(idx, { quote: v })}
+              multiline
+            />
+            <LocalizedField
+              label={t('admin.settings.home.name')}
+              value={item.name || {}}
+              onChange={(v) => setTestimonial(idx, { name: v })}
+            />
+            <LocalizedField
+              label={t('admin.settings.home.role')}
+              value={item.role || {}}
+              onChange={(v) => setTestimonial(idx, { role: v })}
+            />
+          </div>
         </div>
       ))}
 
@@ -242,7 +256,10 @@ export function HomePageSettingsSection({ settings }: Props) {
         const tab = form.scrollTabs?.[tabId] || {};
         return (
           <div key={tabId} className="admin-settings-block">
-            <h3 className="admin-settings-subtitle">{t(`admin.settings.home.scrollTab.${tabId}`)}</h3>
+            <div className="admin-settings-block__header">
+              <h3 className="admin-settings-block__title">{t(`admin.settings.home.scrollTab.${tabId}`)}</h3>
+            </div>
+            <div className="admin-settings-block__body">
             <LocalizedField
               label={t('admin.settings.home.tabLabel')}
               value={tab.label || {}}
@@ -297,6 +314,7 @@ export function HomePageSettingsSection({ settings }: Props) {
               value={tab.learnHref || ''}
               onChange={(v) => setScrollTab(tabId, { learnHref: v })}
             />
+            </div>
           </div>
         );
       })}
