@@ -1,0 +1,187 @@
+.privacy-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* HERO */
+.privacy-hero {
+  position: relative;
+  min-height: 300px;
+  background: #0d1f13;
+  overflow: hidden;
+}
+
+.privacy-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 50, 25, 0.35) 0%,
+    rgba(10, 60, 30, 0.25) 60%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Re-use the contact hero nav overrides */
+.privacy-hero .andela-nav--contact {
+  position: relative;
+  background: transparent;
+  border-bottom: none;
+  z-index: 2;
+}
+
+.privacy-hero .andela-nav--contact::before {
+  display: none;
+}
+
+.privacy-hero .andela-nav__link,
+.privacy-hero .andela-nav__logo-text {
+  color: #ffffff;
+}
+
+.privacy-hero .andela-nav__logo-mark {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+}
+
+.privacy-hero .andela-nav__btn--ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+.privacy-hero .andela-nav__btn--primary {
+  background: #ffffff;
+  color: #1a1a1a;
+}
+
+.privacy-hero .andela-nav__burger {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.privacy-hero .andela-nav__burger-lines::before,
+.privacy-hero .andela-nav__burger-lines::after,
+.privacy-hero .andela-nav__burger-lines span {
+  background: #ffffff;
+}
+
+.privacy-hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 40px 80px 56px 120px;
+  max-width: 780px;
+}
+
+.privacy-hero__back {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: color 0.2s ease;
+}
+
+.privacy-hero__back:hover {
+  color: #ffffff;
+}
+
+.privacy-hero__title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 42px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 10px;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.privacy-hero__date {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+}
+
+/* BODY */
+.privacy-body {
+  flex: 1;
+  max-width: 800px;
+  width: 90%;
+  margin: 60px auto 80px;
+  padding: 0;
+}
+
+.privacy-intro {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #444444;
+  margin: 0 0 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.privacy-section {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.privacy-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.privacy-section__title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
+
+.privacy-section__body {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.72;
+  color: #555555;
+  margin: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .privacy-hero__content {
+    padding: 32px 24px 48px;
+  }
+
+  .privacy-hero__title {
+    font-size: 30px;
+  }
+
+  .privacy-body {
+    width: 92%;
+    margin: 40px auto 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-hero__content {
+    padding: 28px 16px 40px;
+  }
+
+  .privacy-hero__title {
+    font-size: 26px;
+  }
+
+  .privacy-section__title {
+    font-size: 17px;
+  }
+}

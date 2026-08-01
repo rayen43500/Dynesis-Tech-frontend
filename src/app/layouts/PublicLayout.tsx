@@ -6,23 +6,25 @@ import { AndelaNavbar } from '../../features/home/AndelaNavbar';
 import { PublicFooter } from '../../shared/ui/layout/PublicFooter';
 import { PageContainer } from '../../shared/ui/layout/PageContainer';
 import { ChatbotWidget } from '../../features/chatbot/ChatbotWidget';
+import { CookieConsent } from '../../shared/ui/layout/CookieConsent';
 
 export function PublicLayout() {
   const { pathname } = useLocation();
   const isAuthPage = pathname === '/login' || pathname === '/register';
   const isContactPage = pathname === '/contact';
+  const isPrivacyPage = pathname === '/privacy-policy';
   const isDevelopersPage = pathname.startsWith('/developers');
   const isWorkWithUsPage = pathname === '/work-with-us';
   const isServicesPage = pathname === '/services';
   const isPricingPage = pathname === '/pricing';
   const isFullBleed =
-    pathname === '/' || isAuthPage || isContactPage || isDevelopersPage || isWorkWithUsPage || isServicesPage || isPricingPage;
-  const showFooter = !isAuthPage;
+    pathname === '/' || isAuthPage || isContactPage || isPrivacyPage || isDevelopersPage || isWorkWithUsPage || isServicesPage || isPricingPage;
+  const showFooter = !isAuthPage && !isContactPage && !isPrivacyPage;
 
   return (
     <PlatformSettingsProvider>
       <div className="flex min-h-screen flex-col bg-bg">
-        {!isAuthPage && !isContactPage && <AndelaNavbar />}
+        {!isAuthPage && !isContactPage && !isPrivacyPage && <AndelaNavbar />}
         <div className="flex flex-1 flex-col">
           {isFullBleed ? (
             <Outlet />
@@ -34,6 +36,7 @@ export function PublicLayout() {
         </div>
         {showFooter ? <PublicFooter /> : null}
         <ChatbotWidget />
+        <CookieConsent />
       </div>
     </PlatformSettingsProvider>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
@@ -321,6 +321,15 @@ export function ContactPage() {
                 </div>
               </div>
               <div className="contact-form-footer">
+                <div className="contact-form-rgpd">
+                  <p className="contact-form-rgpd__text">
+                    {t('contact.form.rgpd')}{' '}
+                    <Link to="/privacy-policy" className="contact-form-rgpd__link">
+                      {t('contact.form.rgpdLink')}
+                    </Link>
+                    .
+                  </p>
+                </div>
                 <button type="submit" className="contact-send-btn" aria-label={t('contact.form.submitAria')} disabled={submitting}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" aria-hidden>
                     <line x1="22" y1="2" x2="11" y2="13" />
@@ -341,11 +350,11 @@ export function ContactPage() {
             </div>
             <div className="contact-info-row">
               <Phone size={18} strokeWidth={1.5} fill="none" aria-hidden />
-              <p>{t('contact.info.phone')}</p>
+              <a href="tel:+33768235481" className="contact-info-link">{t('contact.info.phone')}</a>
             </div>
             <div className="contact-info-row">
               <Mail size={18} strokeWidth={1.5} fill="none" aria-hidden />
-              <p>{t('contact.info.email')}</p>
+              <a href="mailto:contact@dynesistech.fr" className="contact-info-link">{t('contact.info.email')}</a>
             </div>
             <hr className="contact-info-divider" />
             <div className="contact-social">

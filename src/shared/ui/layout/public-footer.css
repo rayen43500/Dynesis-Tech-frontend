@@ -68,6 +68,38 @@
   color: hsl(var(--color-muted));
 }
 
+.public-footer__item--link {
+  text-decoration: none;
+  color: hsl(var(--color-muted));
+  transition: color 0.2s ease;
+}
+
+.public-footer__item--link:hover {
+  color: hsl(var(--color-accent));
+}
+
+/* Privacy policy link in bar */
+.public-footer__bar-links {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.public-footer__bar-policy {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: hsl(var(--color-muted));
+  text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.public-footer__bar-policy:hover {
+  color: hsl(var(--color-accent));
+  text-decoration: underline;
+}
+
 .public-footer__divider {
   margin: 2.5rem 0 0;
   border: none;

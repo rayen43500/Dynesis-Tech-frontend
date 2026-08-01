@@ -128,8 +128,8 @@ export function PublicFooter() {
           <div className="public-footer__col">
             <h3 className="public-footer__col-title">{t('footer.contact.title')}</h3>
             <div className="public-footer__col-body">
-              <span className="public-footer__item">{footer.email}</span>
-              <span className="public-footer__item">{footer.phone}</span>
+              <a href="mailto:contact@dynesistech.fr" className="public-footer__item public-footer__item--link">{footer.email}</a>
+              <a href="tel:+33768235481" className="public-footer__item public-footer__item--link">{footer.phone}</a>
               <span className="public-footer__item">{footer.location}</span>
               <span className="public-footer__item">{footer.hours}</span>
             </div>
@@ -196,6 +196,12 @@ export function PublicFooter() {
           </Link>
 
           <p className="public-footer__copyright">{footer.copyright}</p>
+
+          <div className="public-footer__bar-links">
+            <Link to="/privacy-policy" className="public-footer__bar-policy">
+              {t('rgpd.consent.privacyLink')}
+            </Link>
+          </div>
 
           <div className="public-footer__social">
             {socialLinks.map(({ label, href, ariaLabel, icon }) => (

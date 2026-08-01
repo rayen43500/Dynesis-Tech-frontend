@@ -11,6 +11,7 @@ import { LoginPage } from '../../features/auth/LoginPage';
 import { RegisterPage } from '../../features/auth/RegisterPage';
 import { ActivationPage } from '../../features/auth/ActivationPage';
 import { ContactPage } from '../../features/contact/ContactPage';
+import { PrivacyPolicyPage } from '../../features/contact/PrivacyPolicyPage';
 import { ServicesPage } from '../../features/services/ServicesPage';
 import { PricingPage } from '../../features/pricing/PricingPage';
 import { AuthenticatedRedirect } from '../guards/AuthenticatedRedirect';
@@ -32,6 +33,7 @@ export function PublicRoutes() {
       <Route path="services" element={<ServicesPage />} />
       <Route path="work-with-us" element={<WorkWithUsPage />} />
       <Route path="contact" element={<ContactPage />} />
+      <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="pricing" element={<PricingPage />} />
 
       <Route
