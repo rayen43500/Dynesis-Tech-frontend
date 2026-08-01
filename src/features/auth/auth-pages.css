@@ -578,7 +578,7 @@ body.auth-route {
   }
 
   .auth-split__right {
-    padding: 32px 24px;
+    display: none;
   }
 
   .auth-right-headline {
@@ -617,4 +617,189 @@ body.auth-route {
   font-size: 14px;
   font-weight: 300;
   color: #2d5a2d;
+}
+
+@media (max-width: 640px) {
+  html.auth-route,
+  body.auth-route {
+    height: auto;
+    overflow: auto;
+  }
+
+  .auth-page {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .auth-logo-row {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    padding: 16px;
+    padding-top: 20px;
+    padding-bottom: 12px;
+    z-index: 30;
+    background: var(--color-bg);
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .auth-logo-only {
+    display: inline-flex;
+  }
+
+  .auth-logo-only__mark {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .auth-logo-only__text {
+    font-size: 14px;
+  }
+
+  .andela-nav__lang--auth {
+    font-size: 11px;
+  }
+
+  .andela-nav__lang--auth .andela-nav__lang-btn {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .auth-page-container {
+    height: auto;
+    display: flex;
+    overflow: visible;
+  }
+
+  .auth-split {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .auth-split > .auth-split__left,
+  .auth-split > .auth-split__right {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+  }
+
+  .auth-split__left {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    background: var(--color-bg);
+    padding: 0;
+    justify-content: flex-start;
+  }
+
+  .auth-split__right {
+    display: none;
+  }
+
+  .auth-form {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 24px 16px 32px;
+    box-sizing: border-box;
+  }
+
+  .auth-page--login .auth-form {
+    margin-left: 0;
+    padding-top: 24px;
+  }
+
+  .auth-page--register .auth-form {
+    margin-left: 0;
+    padding-top: 24px;
+  }
+
+  .auth-title {
+    font-size: 24px;
+    margin: 0 0 8px;
+  }
+
+  .auth-subtitle {
+    font-size: 14px;
+    white-space: normal;
+    max-width: 100%;
+    margin: 0 0 24px;
+  }
+
+  .auth-field {
+    margin-bottom: 16px;
+  }
+
+  .auth-label {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .auth-input,
+  .auth-submit,
+  .auth-social {
+    max-width: 100%;
+  }
+
+  .auth-input {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .auth-submit {
+    height: 50px;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+
+  .auth-social {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .auth-social + .auth-social {
+    margin-top: 12px;
+  }
+
+  .auth-error,
+  .auth-warning,
+  .auth-success {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .auth-divider {
+    margin: 20px 0;
+    gap: 10px;
+  }
+
+  .auth-bottom {
+    font-size: 13px;
+    margin-top: 20px;
+  }
+
+  .auth-forgot {
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .auth-activation-card {
+    padding: 16px;
+  }
+
+  .auth-activation-card__title {
+    font-size: 22px;
+  }
+
+  .auth-quote-banner {
+    margin-top: 16px;
+    margin-bottom: 20px;
+  }
 }

@@ -1,21 +1,45 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Route } from 'react-router-dom';
 
 import { PublicLayout } from '../layouts/PublicLayout';
 import { RoutePlaceholder } from '../../shared/ui/placeholders/RoutePlaceholder';
-import { AndelaHomePage } from '../../features/home/AndelaHomePage';
-import { DevelopersDirectoryPage } from '../../features/developers/DevelopersDirectoryPage';
-import { DeveloperProfilePage } from '../../features/developers/DeveloperProfilePage';
-import { WorkWithUsPage } from '../../features/work-with-us/WorkWithUsPage';
-import { LoginPage } from '../../features/auth/LoginPage';
-import { RegisterPage } from '../../features/auth/RegisterPage';
-import { ActivationPage } from '../../features/auth/ActivationPage';
-import { ContactPage } from '../../features/contact/ContactPage';
-import { PrivacyPolicyPage } from '../../features/contact/PrivacyPolicyPage';
-import { ServicesPage } from '../../features/services/ServicesPage';
-import { PricingPage } from '../../features/pricing/PricingPage';
+import { LoadingState } from '../../shared/ui/feedback/LoadingState';
 import { AuthenticatedRedirect } from '../guards/AuthenticatedRedirect';
 import { PublicOnlyRoute } from '../guards/PublicOnlyRoute';
+
+const AndelaHomePage = lazy(() =>
+  import('../../features/home/AndelaHomePage').then((m) => ({ default: m.AndelaHomePage }))
+);
+const DevelopersDirectoryPage = lazy(() =>
+  import('../../features/developers/DevelopersDirectoryPage').then((m) => ({ default: m.DevelopersDirectoryPage }))
+);
+const DeveloperProfilePage = lazy(() =>
+  import('../../features/developers/DeveloperProfilePage').then((m) => ({ default: m.DeveloperProfilePage }))
+);
+const ServicesPage = lazy(() =>
+  import('../../features/services/ServicesPage').then((m) => ({ default: m.ServicesPage }))
+);
+const WorkWithUsPage = lazy(() =>
+  import('../../features/work-with-us/WorkWithUsPage').then((m) => ({ default: m.WorkWithUsPage }))
+);
+const ContactPage = lazy(() =>
+  import('../../features/contact/ContactPage').then((m) => ({ default: m.ContactPage }))
+);
+const PrivacyPolicyPage = lazy(() =>
+  import('../../features/contact/PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage }))
+);
+const PricingPage = lazy(() =>
+  import('../../features/pricing/PricingPage').then((m) => ({ default: m.PricingPage }))
+);
+const LoginPage = lazy(() =>
+  import('../../features/auth/LoginPage').then((m) => ({ default: m.LoginPage }))
+);
+const RegisterPage = lazy(() =>
+  import('../../features/auth/RegisterPage').then((m) => ({ default: m.RegisterPage }))
+);
+const ActivationPage = lazy(() =>
+  import('../../features/auth/ActivationPage').then((m) => ({ default: m.ActivationPage }))
+);
 
 export function PublicRoutes() {
   return (
@@ -23,36 +47,98 @@ export function PublicRoutes() {
       <Route
         index
         element={
-          <AuthenticatedRedirect>
-            <AndelaHomePage />
-          </AuthenticatedRedirect>
+          <Suspense fallback={<LoadingState />}>
+            <AuthenticatedRedirect>
+              <AndelaHomePage />
+            </AuthenticatedRedirect>
+          </Suspense>
         }
       />
-      <Route path="developers" element={<DevelopersDirectoryPage />} />
-      <Route path="developers/:id" element={<DeveloperProfilePage />} />
-      <Route path="services" element={<ServicesPage />} />
-      <Route path="work-with-us" element={<WorkWithUsPage />} />
-      <Route path="contact" element={<ContactPage />} />
-      <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
-      <Route path="pricing" element={<PricingPage />} />
+      <Route
+        path="developers"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <DevelopersDirectoryPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="developers/:id"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <DeveloperProfilePage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="services"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <ServicesPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="work-with-us"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <WorkWithUsPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="contact"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <ContactPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="privacy-policy"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <PrivacyPolicyPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="pricing"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <PricingPage />
+          </Suspense>
+        }
+      />
 
       <Route
         path="login"
         element={
-          <PublicOnlyRoute>
-            <LoginPage />
-          </PublicOnlyRoute>
+          <Suspense fallback={<LoadingState />}>
+            <PublicOnlyRoute>
+              <LoginPage />
+            </PublicOnlyRoute>
+          </Suspense>
         }
       />
       <Route
         path="register"
         element={
-          <PublicOnlyRoute>
-            <RegisterPage />
-          </PublicOnlyRoute>
+          <Suspense fallback={<LoadingState />}>
+            <PublicOnlyRoute>
+              <RegisterPage />
+            </PublicOnlyRoute>
+          </Suspense>
         }
       />
-      <Route path="activate/:token" element={<ActivationPage />} />
+      <Route
+        path="activate/:token"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <ActivationPage />
+          </Suspense>
+        }
+      />
       <Route path="403" element={<RoutePlaceholder nameKey="placeholder.notAuthorized" />} />
     </Route>
   );

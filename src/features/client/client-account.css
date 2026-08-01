@@ -46,3 +46,29 @@
   color: var(--admin-text-subtle);
   cursor: not-allowed;
 }
+
+/* Mobile Responsive Breakpoints */
+@media (max-width: 768px) {
+  .client-account-footer {
+    gap: 10px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .client-account-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .client-account-feedback {
+    text-align: left;
+    font-size: 11px;
+  }
+
+  .admin-topbar__icon-btn--avatar {
+    width: 32px;
+    height: 32px;
+  }
+}

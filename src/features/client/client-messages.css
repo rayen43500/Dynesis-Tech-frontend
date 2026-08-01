@@ -146,3 +146,51 @@
 .admin-shell--dark .client-message-card__reply {
   background: rgba(58, 138, 58, 0.15);
 }
+
+/* Mobile Responsive Breakpoints */
+@media (max-width: 768px) {
+  .client-messages-page__title {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .client-message-card {
+    margin-bottom: 10px;
+    padding: 16px 20px;
+  }
+
+  .client-message-card__title {
+    font-size: 14px;
+  }
+
+  .client-message-card__date {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .client-messages-page__title {
+    font-size: 16px;
+  }
+
+  .client-message-card {
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+
+  .client-message-card__top {
+    gap: 8px;
+  }
+
+  .client-message-card__title {
+    font-size: 13px;
+  }
+
+  .client-message-card__preview {
+    font-size: 12px;
+  }
+
+  .client-message-card__body {
+    font-size: 13px;
+  }
+}
