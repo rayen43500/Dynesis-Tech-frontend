@@ -449,7 +449,8 @@
 }
 
 .andela-nav__mobile--open {
-  max-height: 520px;
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
 }
 
 .andela-nav__mobile a {
@@ -1057,6 +1058,22 @@
 
   .tgrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .andela-h1__line1,
+  .andela-h1__line2 {
+    font-size: 32px;
+  }
+  .andela-hero-sub {
+    font-size: 15px;
+  }
+  .andela-nav__bar {
+    padding: 0 12px;
+  }
+  .andela-nav__logo-text {
+    font-size: 16px;
   }
 }
 

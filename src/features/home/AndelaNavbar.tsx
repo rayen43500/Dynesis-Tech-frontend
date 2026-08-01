@@ -236,6 +236,9 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
         <Link to="/services" onClick={() => setMobileOpen(false)}>
           {t('nav.services')}
         </Link>
+        <Link to="/pricing" onClick={() => setMobileOpen(false)}>
+          Tarifs
+        </Link>
         <Link to="/work-with-us" onClick={() => setMobileOpen(false)}>
           {t('nav.workWithUs')}
         </Link>

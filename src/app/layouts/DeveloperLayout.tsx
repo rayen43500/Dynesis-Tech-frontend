@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Moon, Sun, User } from 'lucide-react';
+import { Moon, Sun, User, Menu, X } from 'lucide-react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -58,6 +58,7 @@ export function DeveloperLayout() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const [panelTheme, setPanelTheme] = useState<PanelTheme>(() => getStoredTheme());
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const pageTitle = usePageTitle();
 
   const displayName = user?.displayName?.trim() || user?.email?.split('@')[0] || t('nav.fallbackDeveloper');
@@ -72,15 +73,21 @@ export function DeveloperLayout() {
     window.location.replace('/');
   }
 
+  const closeNav = () => setMobileNavOpen(false);
+
   return (
     <div className={`admin-shell${panelTheme === 'dark' ? ' admin-shell--dark' : ''}`}>
-      <aside className="admin-sidebar">
-        <Link to={getRoleHomePath('developer')} className="admin-sidebar__brand" aria-label={t('nav.developerOverviewAria')}>
+      <div
+        className={`admin-sidebar-backdrop ${mobileNavOpen ? 'admin-sidebar-backdrop--visible' : ''}`}
+        onClick={closeNav}
+      />
+      <aside className={`admin-sidebar${mobileNavOpen ? ' admin-sidebar--mobile-open' : ''}`}>
+        <Link to={getRoleHomePath('developer')} onClick={closeNav} className="admin-sidebar__brand" aria-label={t('nav.developerOverviewAria')}>
           <div className="admin-sidebar__logo">{t('nav.brand')}</div>
           <div className="admin-sidebar__subtitle">{t('nav.developerPortal')}</div>
         </Link>
 
-        <nav className="admin-sidebar__nav">
+        <nav className="admin-sidebar__nav" onClick={closeNav}>
           <NavLink to="/dashboard/developer" end className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}>
             <NavIcon><IconHome /></NavIcon>
             {t('developer.nav.overview')}
@@ -157,6 +164,14 @@ export function DeveloperLayout() {
 
       <div className="admin-main">
         <header className="admin-topbar">
+          <button
+            type="button"
+            className="admin-topbar__burger"
+            aria-label="Toggle navigation"
+            onClick={() => setMobileNavOpen((v) => !v)}
+          >
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
           <h1 className="admin-topbar__title">{pageTitle}</h1>
           <div className="admin-topbar__actions">
             <LanguageSwitcher variant="dashboard" />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Moon, Sun, User } from 'lucide-react';
+import { Moon, Sun, User, Menu, X } from 'lucide-react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -29,6 +29,7 @@ export function ClientLayout() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const [panelTheme, setPanelTheme] = useState<PanelTheme>(() => getStoredClientTheme());
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const displayName = user?.displayName?.trim() || user?.email?.split('@')[0] || t('nav.fallbackClient');
   const profilePhotoUrl = user?.profilePicture ? resolveMediaUrl(user.profilePicture) : '';
@@ -42,15 +43,21 @@ export function ClientLayout() {
     window.location.replace('/');
   }
 
+  const closeNav = () => setMobileNavOpen(false);
+
   return (
     <div className={`admin-shell${panelTheme === 'dark' ? ' admin-shell--dark' : ''}`}>
-      <aside className="admin-sidebar">
-        <Link to={getRoleHomePath('client')} className="admin-sidebar__brand" aria-label={t('nav.clientOverviewAria')}>
+      <div
+        className={`admin-sidebar-backdrop ${mobileNavOpen ? 'admin-sidebar-backdrop--visible' : ''}`}
+        onClick={closeNav}
+      />
+      <aside className={`admin-sidebar${mobileNavOpen ? ' admin-sidebar--mobile-open' : ''}`}>
+        <Link to={getRoleHomePath('client')} onClick={closeNav} className="admin-sidebar__brand" aria-label={t('nav.clientOverviewAria')}>
           <div className="admin-sidebar__logo">{t('nav.brand')}</div>
           <div className="admin-sidebar__subtitle">{t('nav.clientPortal')}</div>
         </Link>
 
-        <nav className="admin-sidebar__nav">
+        <nav className="admin-sidebar__nav" onClick={closeNav}>
           <NavLink to="/dashboard/client" end className={({ isActive }) => `admin-sidebar__link${isActive ? ' admin-sidebar__link--active' : ''}`}>
             <NavIcon>
               <IconHome />
@@ -134,6 +141,14 @@ export function ClientLayout() {
 
       <div className="admin-main">
         <header className="admin-topbar">
+          <button
+            type="button"
+            className="admin-topbar__burger"
+            aria-label="Toggle navigation"
+            onClick={() => setMobileNavOpen((v) => !v)}
+          >
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
           <div className="admin-topbar__actions">
             <LanguageSwitcher variant="dashboard" />
             <button

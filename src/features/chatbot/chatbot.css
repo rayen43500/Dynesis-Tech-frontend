@@ -241,3 +241,17 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .chatbot-floating {
+    bottom: 16px;
+    right: 16px;
+  }
+  .chatbot-panel {
+    right: 12px;
+    bottom: 80px;
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 100px);
+  }
+}
+

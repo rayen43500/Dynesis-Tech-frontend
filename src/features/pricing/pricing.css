@@ -311,10 +311,27 @@
 }
 
 @media (max-width: 640px) {
+  .pricing-page {
+    padding: 40px 0 60px;
+  }
+  .pricing-page__inner {
+    padding: 0 16px;
+  }
+  .pricing-header {
+    margin-bottom: 36px;
+  }
   .pricing-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   .pricing-custom-banner {
-    padding: 24px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .pricing-custom-banner__btn {
+    width: 100%;
+    justify-content: center;
   }
 }

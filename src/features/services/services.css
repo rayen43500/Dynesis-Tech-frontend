@@ -363,3 +363,27 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 600px) {
+  .services-hero {
+    padding: 60px 16px 36px;
+  }
+  .services-hero__line1,
+  .services-hero__line2 {
+    font-size: 32px;
+  }
+  .services-grid-section,
+  .services-process,
+  .services-cta {
+    padding: 36px 16px;
+  }
+  .services-cta__title {
+    font-size: 28px;
+  }
+  .services-cta__actions {
+    flex-direction: column;
+  }
+  .services-cta__btn {
+    width: 100%;
+  }
+}
