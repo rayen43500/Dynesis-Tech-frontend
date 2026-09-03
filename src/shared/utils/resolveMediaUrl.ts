@@ -1,6 +1,7 @@
+import { getMediaApiBaseUrl } from '../api/apiBase';
+
 function getMediaApiBase() {
-  const raw = (import.meta.env.VITE_API_BASE_URL || 'https://dynesis-tech-backend.onrender.com').replace(/\/$/, '');
-  return raw.replace(/\/api\/v\d+$/, '');
+  return getMediaApiBaseUrl();
 }
 
 const API_BASE = getMediaApiBase();

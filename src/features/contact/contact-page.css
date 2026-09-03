@@ -93,8 +93,19 @@
 }
 
 .contact-hero-unified .andela-nav__link,
-.contact-hero-unified .andela-nav__logo-text {
+.contact-hero-unified .andela-nav__logo-text,
+.contact-hero-unified .andela-nav__lang-btn,
+.contact-hero-unified .andela-nav__lang-divider {
   color: #ffffff;
+}
+
+.contact-hero-unified .andela-nav__lang-btn:hover,
+.contact-hero-unified .andela-nav__lang-btn--active {
+  color: #ffffff;
+}
+
+.contact-hero-unified .andela-nav__lang-btn--active {
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .contact-hero-unified .andela-nav__logo-mark {
@@ -241,7 +252,7 @@
 
 .contact-field input:focus,
 .contact-field textarea:focus {
-  border-bottom-color: #3a8a3a;
+  border-bottom-color: hsl(var(--color-accent));
 }
 
 .contact-form-footer {
@@ -268,7 +279,7 @@
 }
 
 .contact-form-rgpd__link {
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.2s ease;
@@ -282,7 +293,7 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   color: white;
   display: flex;
   align-items: center;

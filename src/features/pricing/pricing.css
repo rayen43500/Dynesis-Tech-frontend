@@ -4,9 +4,9 @@
    ============================================================ */
 
 .pricing-page {
-  padding: 80px 0 100px;
+  padding: 68px 0 100px;
   min-height: 100vh;
-  background: #ffffff;
+  background: hsl(var(--color-bg));
 }
 
 .pricing-page__inner {
@@ -15,44 +15,8 @@
   padding: 0 24px;
 }
 
-/* ---- Header ---- */
-.pricing-header {
-  margin-bottom: 64px;
-  text-align: center;
-}
-
-.pricing-header__eyebrow {
-  display: inline-block;
-  margin-bottom: 14px;
-  padding: 5px 14px;
-  border-radius: 9999px;
-  background: #edf7f2;
-  border: 1px solid #b8ddc8;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #2d6a4f;
-}
-
-.pricing-header__title {
-  margin: 0 0 16px;
-  font-family: 'Lora', Georgia, serif;
-  font-size: clamp(32px, 5vw, 52px);
-  font-weight: 400;
-  line-height: 1.2;
-  color: #1a1a1a;
-}
-
-.pricing-header__subtitle {
-  margin: 0 auto;
-  max-width: 600px;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.7;
-  color: #4a5568;
+.pricing-hero {
+  margin-bottom: 16px;
 }
 
 /* ---- Grid ---- */
@@ -83,9 +47,9 @@
 }
 
 .pricing-card--highlighted {
-  border-color: #2d6a4f;
+  border-color: hsl(var(--color-accent));
   background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-  box-shadow: 0 0 0 1px #2d6a4f, 0 14px 40px rgba(45, 106, 79, 0.12);
+  box-shadow: 0 0 0 1px hsl(var(--color-accent)), 0 14px 40px color-mix(in srgb, hsl(var(--color-accent)) 12%, transparent);
 }
 
 .pricing-card--highlighted:hover {
@@ -100,7 +64,7 @@
   transform: translateX(-50%);
   padding: 5px 16px;
   border-radius: 9999px;
-  background: #2d6a4f;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -205,7 +169,7 @@
 
 .pricing-feature__icon--check {
   background: #edf7f2;
-  color: #2d6a4f;
+  color: hsl(var(--color-accent));
 }
 
 .pricing-feature__icon--cross {
@@ -239,8 +203,8 @@
 }
 
 .pricing-card--highlighted .pricing-card__cta {
-  border-color: #2d6a4f;
-  background: #2d6a4f;
+  border-color: hsl(var(--color-accent));
+  background: hsl(var(--color-accent));
   color: #ffffff;
 }
 
@@ -312,13 +276,10 @@
 
 @media (max-width: 640px) {
   .pricing-page {
-    padding: 40px 0 60px;
+    padding: 68px 0 60px;
   }
   .pricing-page__inner {
     padding: 0 16px;
-  }
-  .pricing-header {
-    margin-bottom: 36px;
   }
   .pricing-grid {
     grid-template-columns: 1fr;

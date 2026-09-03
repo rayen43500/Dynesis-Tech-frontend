@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+import { getApiBaseUrl } from './apiBase';
+
 type AccessTokenProvider = () => string | null;
 type AccessTokenSetter = (token: string | null) => void;
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://dynesis-tech-backend.onrender.com';
+const baseURL = getApiBaseUrl();
 
 let getAccessToken: AccessTokenProvider = () => null;
 let setAccessToken: AccessTokenSetter = () => { };

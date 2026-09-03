@@ -1,9 +1,10 @@
 /* ── Services (/services) ── */
 .services-page {
-  background: #ffffff;
+  padding-top: 68px;
+  background: hsl(var(--color-bg));
   font-family: 'Inter', sans-serif;
   font-weight: 300;
-  color: #1a1a1a;
+  color: hsl(var(--color-text));
 }
 
 .services-reveal {
@@ -19,43 +20,10 @@
   transform: translateY(0);
 }
 
-/* Section 1 — Hero */
+/* Section 1 — Hero (homepage andela-hero classes) */
 .services-hero {
-  padding: 100px 80px 60px;
-  text-align: center;
-  background: #ffffff;
-}
-
-.services-hero__line1 {
-  display: block;
-  margin: 0;
-  font-family: 'Lora', serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 68px;
-  color: #1a1a1a;
-}
-
-.services-hero__line2 {
-  display: block;
-  margin: 0;
-  font-family: 'Lora', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 68px;
-  line-height: 1.4;
-  color: #3a8a3a;
-}
-
-.services-hero__sub {
-  margin: 24px auto 0;
-  max-width: 620px;
-  font-family: 'Inter', sans-serif;
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 1.7;
-  text-align: center;
-  color: #555555;
+  padding: 0;
+  background: transparent;
 }
 
 /* Section 2 — Services grid */
@@ -92,14 +60,14 @@
   right: 0;
   left: 0;
   height: 3px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
 }
 
 .services-card:hover {
-  border-color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
   box-shadow: 0 12px 40px rgba(58, 138, 58, 0.08);
   transform: translateY(-4px);
 }
@@ -117,7 +85,7 @@
   margin-bottom: 20px;
   border-radius: 10px;
   background: #eaf4ea;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .services-card__name {
@@ -174,7 +142,7 @@
   flex-shrink: 0;
   margin-top: 1px;
   font-size: 13px;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .services-card__cta {
@@ -184,7 +152,7 @@
   margin-top: 24px;
   font-size: 13px;
   font-weight: 400;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
   text-decoration: none;
   transition: gap 0.2s ease;
 }
@@ -240,13 +208,13 @@
   width: 56px;
   height: 56px;
   margin: 0 auto 20px;
-  border: 1.5px solid #3a8a3a;
+  border: 1.5px solid hsl(var(--color-accent));
   border-radius: 50%;
   background: #ffffff;
   font-family: 'Lora', serif;
   font-size: 20px;
   font-weight: 400;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .services-process__step-title {
@@ -340,15 +308,6 @@
 }
 
 @media (max-width: 768px) {
-  .services-hero {
-    padding: 80px 24px 48px;
-  }
-
-  .services-hero__line1,
-  .services-hero__line2 {
-    font-size: 42px;
-  }
-
   .services-grid-section,
   .services-process,
   .services-cta {
@@ -365,13 +324,6 @@
 }
 
 @media (max-width: 600px) {
-  .services-hero {
-    padding: 60px 16px 36px;
-  }
-  .services-hero__line1,
-  .services-hero__line2 {
-    font-size: 32px;
-  }
   .services-grid-section,
   .services-process,
   .services-cta {

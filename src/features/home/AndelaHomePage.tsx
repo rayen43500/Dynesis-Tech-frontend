@@ -1,17 +1,19 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Code2, Layers, Monitor, type LucideIcon } from 'lucide-react';
 
 import { useHomePageContent } from '../../shared/hooks/useSiteContent';
 import { usePublicPricingPlans, type PricingPlan } from '../pricing/pricingHooks';
 import { HomePageSections } from './HomePageSections';
 import './andela-home.css';
 import './home-sections.css';
+import './home-services.css';
 
 import { DynamicCustomSections } from '../../shared/ui/content/DynamicCustomSections';
 
 export function AndelaHomePage() {
   const content = useHomePageContent();
-  const tech = useMemo(() => [...content.techStack, ...content.techStack], [content.techStack]);
 
   return (
     <div className="andela-page">
@@ -32,34 +34,6 @@ export function AndelaHomePage() {
               ))}
             </div>
           </div>
-
-          <div className="hero-card" aria-label="Hero showcase">
-
-            <img className="hero-card__photo" src={content.heroImage} alt="" loading="eager" />
-
-            <div className="hero-card__pills" aria-hidden>
-              <div className="tech-track">
-                <div className="tech-strip">
-                  {tech.map((label, idx) => (
-                    <span key={`${label}-${idx}`} className="pill">
-                      <span className="pill-dot" aria-hidden />
-                      {label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="cta" className="cta-row">
-          <Link className="btn-lg btn-lg--primary" to={content.button1Href}>
-            {content.button1}
-            <span aria-hidden>→</span>
-          </Link>
-          <Link className="btn-lg btn-lg--secondary" to={content.button2Href}>
-            {content.button2}
-          </Link>
         </section>
 
         <DynamicCustomSections />
@@ -102,7 +76,6 @@ export function AndelaHomePage() {
           </div>
         </section>
 
-        {/* Section Services / Tarifs */}
         <HomePricingSection />
 
         <HomePageSections />
@@ -112,140 +85,69 @@ export function AndelaHomePage() {
 }
 
 
-/* ────────────────────────────────────────────────────────────────
-   Section Services — adaptée au fond blanc de la page d'accueil
-   ──────────────────────────────────────────────────────────────── */
-const SERVICE_META: Record<string, { icon: string; accentColor: string; lightBg: string; lightBorder: string }> = {
-  vitrine:    { icon: '🌐', accentColor: '#2d6a4f', lightBg: '#edf7f2', lightBorder: '#b8ddc8' },
-  blockchain: { icon: '🔗', accentColor: '#1a1a1a', lightBg: '#f5f5f5', lightBorder: '#d6d6d6' },
-  custom:     { icon: '⚙️', accentColor: '#4a5e3a', lightBg: '#f0f4ed', lightBorder: '#c5d4bb' },
-  other:      { icon: '💡', accentColor: '#2d6a4f', lightBg: '#edf7f2', lightBorder: '#b8ddc8' }
+const SERVICE_ICONS: Record<string, LucideIcon> = {
+  vitrine: Monitor,
+  blockchain: Code2,
+  custom: Layers,
+  other: Monitor
 };
 
+const SERVICE_PLAN_KEYS = ['vitrine', 'blockchain', 'custom'] as const;
+
 function ServiceCard({ plan }: { plan: PricingPlan }) {
-  const meta = SERVICE_META[plan.category] ?? SERVICE_META.other;
+  const { t } = useTranslation();
+  const Icon = SERVICE_ICONS[plan.category] ?? SERVICE_ICONS.other;
+  const includedFeatures = plan.features.filter((f) => f.included);
+  const hasI18nCopy = SERVICE_PLAN_KEYS.includes(plan.category as (typeof SERVICE_PLAN_KEYS)[number]);
+  const name = hasI18nCopy ? t(`home.services.plans.${plan.category}.name`) : plan.name;
+  const description = hasI18nCopy ? t(`home.services.plans.${plan.category}.description`) : plan.description;
+  const price = hasI18nCopy
+    ? t(`home.services.plans.${plan.category}.price`)
+    : [plan.price, plan.priceNote].filter(Boolean).join(' ');
+  const cta = hasI18nCopy
+    ? t(`home.services.plans.${plan.category}.cta`)
+    : plan.ctaLabel || t('home.services.ctaFallback');
 
   return (
-    <article
-      style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '32px 28px 28px',
-        borderRadius: '16px',
-        background: '#ffffff',
-        border: plan.highlighted ? `2px solid ${meta.lightBorder}` : '1px solid #e8e8e8',
-        boxShadow: plan.highlighted
-          ? `0 8px 32px rgba(0,0,0,0.08), 0 0 0 3px ${meta.lightBg}`
-          : '0 2px 8px rgba(0,0,0,0.06)'
-      }}
-    >
-      {plan.badgeLabel && (
-        <span style={{
-          position: 'absolute', top: '-13px', left: '24px',
-          padding: '4px 14px', borderRadius: '9999px',
-          background: meta.accentColor, color: '#ffffff',
-          fontSize: '11px', fontWeight: 700, letterSpacing: '0.5px',
-          whiteSpace: 'nowrap'
-        }}>
-          {plan.badgeLabel}
-        </span>
-      )}
-
-      {/* Icon + Title */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '16px' }}>
-        <span style={{
-          flexShrink: 0,
-          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          width: '52px', height: '52px', borderRadius: '14px',
-          background: meta.lightBg, fontSize: '24px'
-        }}>
-          {meta.icon}
-        </span>
-        <div>
-          <p style={{
-            margin: '0 0 3px', fontSize: '10px', fontWeight: 700,
-            letterSpacing: '1.5px', textTransform: 'uppercase',
-            color: meta.accentColor
-          }}>
-            Service
-          </p>
-          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#1a1a1a', lineHeight: 1.2 }}>
-            {plan.name}
-          </h3>
-        </div>
+    <article className="home-svc-card">
+      <span className="home-svc-card__icon" aria-hidden>
+        <Icon size={20} strokeWidth={1.75} />
+      </span>
+      <h3 className="home-svc-card__name">{name}</h3>
+      <p className="home-svc-card__desc">{description}</p>
+      <div className="home-svc-card__price">
+        <span className="home-svc-card__price-value">{price}</span>
       </div>
-
-      {/* Description */}
-      <p style={{ margin: '0 0 16px', fontSize: '14px', color: '#4a4a4a', lineHeight: 1.6 }}>
-        {plan.description}
-      </p>
-
-      {/* Price Block */}
-      <div style={{
-        display: 'flex', alignItems: 'baseline', gap: '6px',
-        padding: '12px 16px', borderRadius: '10px',
-        background: meta.lightBg, border: `1px solid ${meta.lightBorder}`,
-        marginBottom: '20px'
-      }}>
-        <span style={{ fontSize: '28px', fontFamily: 'Lora, Georgia, serif', fontWeight: 400, color: '#1a1a1a' }}>
-          {plan.price}
-        </span>
-        {plan.priceNote && (
-          <span style={{ fontSize: '13px', color: '#6b6b6b' }}>{plan.priceNote}</span>
-        )}
-      </div>
-
-      {/* Features */}
-      <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', flex: 1 }}>
-        {plan.features.map((f, i) => (
-          <li key={i} style={{
-            display: 'flex', alignItems: 'flex-start', gap: '8px',
-            marginBottom: '8px', fontSize: '13px',
-            color: f.included ? '#2d2d2d' : '#b0b0b0'
-          }}>
-            <span style={{
-              flexShrink: 0,
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: '17px', height: '17px', borderRadius: '50%',
-              background: f.included ? meta.lightBg : '#f0f0f0',
-              color: f.included ? meta.accentColor : '#cccccc',
-              fontSize: '10px', fontWeight: 800, marginTop: '1px'
-            }}>
-              {f.included ? '✓' : '×'}
+      <hr className="home-svc-card__divider" />
+      <ul className="home-svc-card__features">
+        {includedFeatures.map((f, i) => (
+          <li key={i} className="home-svc-card__feature">
+            <span className="home-svc-card__check" aria-hidden>
+              ✓
             </span>
             {f.label}
           </li>
         ))}
       </ul>
-
-      {/* CTA */}
       <Link
-        to={plan.ctaHref || '/contact'}
+        to={plan.category === 'custom' ? '/work-with-us' : plan.ctaHref || '/contact'}
         id={`home-svc-cta-${plan._id}`}
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-          padding: '13px 18px', borderRadius: '10px',
-          background: plan.highlighted ? meta.accentColor : '#ffffff',
-          color: plan.highlighted ? '#ffffff' : meta.accentColor,
-          border: `1.5px solid ${plan.highlighted ? meta.accentColor : meta.lightBorder}`,
-          fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 600,
-          textDecoration: 'none'
-        }}
+        className="home-svc-card__cta"
       >
-        {plan.ctaLabel || 'En savoir plus'} →
+        {cta} →
       </Link>
     </article>
   );
 }
 
-function HomePricingSection() {
+export function HomePricingSection({ showHeader = true }: { showHeader?: boolean }) {
+  const { t } = useTranslation();
   const { data: plans, isLoading } = usePublicPricingPlans();
 
   if (isLoading) {
     return (
-      <section style={{ padding: '80px 24px', background: '#f8faf8', textAlign: 'center' }}>
-        <p style={{ color: '#6b6b6b', fontSize: '14px' }}>Chargement des services…</p>
+      <section className={`home-svc home-svc--loading${showHeader ? '' : ' home-svc--embedded'}`}>
+        <p className="home-svc__loading">{t('home.services.loading')}</p>
       </section>
     );
   }
@@ -253,80 +155,31 @@ function HomePricingSection() {
   if (!plans || plans.length === 0) return null;
 
   return (
-    <section style={{ padding: '80px 24px 96px', background: '#f8faf8' }}>
-      <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+    <section className={`home-svc${showHeader ? '' : ' home-svc--embedded'}`}>
+      <div className="home-svc__inner">
+        {showHeader ? (
+          <div className="home-svc__header">
+            <span className="home-svc__label">{t('home.services.label')}</span>
+            <h2 className="home-svc__headline">{t('home.services.headline')}</h2>
+            <p className="home-svc__sub">{t('home.services.sub')}</p>
+          </div>
+        ) : null}
 
-        {/* Section Header */}
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <span style={{
-            display: 'inline-block', marginBottom: '14px',
-            padding: '5px 16px', borderRadius: '9999px',
-            background: '#edf7f2', border: '1px solid #b8ddc8',
-            fontSize: '11px', fontWeight: 600, letterSpacing: '2px',
-            textTransform: 'uppercase', color: '#2d6a4f'
-          }}>
-            Nos Services
-          </span>
-          <h2 style={{
-            margin: '0 0 14px',
-            fontFamily: 'Lora, Georgia, serif',
-            fontSize: 'clamp(26px, 4vw, 38px)',
-            fontWeight: 400, lineHeight: 1.2, color: '#1a1a1a'
-          }}>
-            Des solutions adaptées à chaque projet
-          </h2>
-          <p style={{ margin: '0 auto', maxWidth: '560px', fontSize: '15px', color: '#4a4a4a', lineHeight: 1.7 }}>
-            Du site vitrine à la plateforme blockchain, nous couvrons chaque étape de votre transformation numérique.
-          </p>
-        </div>
-
-        {/* Service Cards Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
-          gap: '24px',
-          alignItems: 'stretch'
-        }}>
+        <div className="home-svc__grid">
           {plans.map((plan) => (
             <ServiceCard key={plan._id} plan={plan} />
           ))}
         </div>
 
-        {/* Custom Project Banner */}
-        <div style={{
-          marginTop: '36px',
-          padding: '24px 32px',
-          borderRadius: '12px',
-          background: '#ffffff',
-          border: '1px dashed #d1d5db',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '16px'
-        }}>
+        <div className="home-svc__banner">
           <div>
-            <p style={{ margin: '0 0 4px', fontSize: '16px', fontWeight: 700, color: '#1a1a1a' }}>
-              Votre projet est plus élaboré ?
-            </p>
-            <p style={{ margin: 0, fontSize: '14px', color: '#6b6b6b' }}>
-              Applications métier, IA sur mesure, plateformes enterprise — discutons-en.
-            </p>
+            <p className="home-svc__banner-title">{t('home.services.bannerTitle')}</p>
+            <p className="home-svc__banner-sub">{t('home.services.bannerSub')}</p>
           </div>
-          <Link
-            to="/contact"
-            id="home-svc-custom-cta"
-            style={{
-              padding: '12px 28px', borderRadius: '10px',
-              background: '#1a1a1a', color: '#ffffff',
-              fontSize: '14px', fontWeight: 600,
-              textDecoration: 'none', whiteSpace: 'nowrap'
-            }}
-          >
-            Obtenir un devis →
+          <Link to="/work-with-us" id="home-svc-custom-cta" className="home-svc__banner-cta">
+            {t('home.services.bannerCta')} →
           </Link>
         </div>
-
       </div>
     </section>
   );

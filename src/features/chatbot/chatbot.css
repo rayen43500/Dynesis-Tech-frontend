@@ -189,7 +189,7 @@
 .chatbot-msg--user {
   align-self: flex-end;
   border-bottom-right-radius: 4px;
-  background: #2d6a4f;
+  background: hsl(var(--color-accent));
   color: #ffffff;
 }
 
@@ -227,7 +227,7 @@
   height: 40px;
   border: none;
   border-radius: 10px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   color: #ffffff;
   cursor: pointer;
   transition: opacity 0.15s ease;

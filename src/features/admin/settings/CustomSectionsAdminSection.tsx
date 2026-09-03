@@ -276,7 +276,7 @@ export function CustomSectionsAdminSection({ settings }: Props) {
                           label="Lien du bouton CTA (URL / Ancre)"
                           value={sec.buttonLink || ''}
                           onChange={(buttonLink) => handleUpdateSection(sec.id, { buttonLink })}
-                          placeholder="/contact ou /pricing"
+                          placeholder="/contact ou /services"
                         />
                       </div>
                     </div>

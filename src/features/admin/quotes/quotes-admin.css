@@ -116,7 +116,7 @@
 
 .admin-quote-status--new {
   background: #eaf4ea;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .admin-quote-status--reviewed {
@@ -470,7 +470,7 @@
   padding: 10px 24px;
   border: none;
   border-radius: 8px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -491,7 +491,7 @@
 }
 
 .admin-quote-feedback--success {
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .admin-quote-feedback--error {
@@ -527,7 +527,7 @@
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 500;

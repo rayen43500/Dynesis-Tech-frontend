@@ -44,7 +44,7 @@
   padding: 14px 28px;
   border: none;
   border-radius: 6px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 500;
@@ -141,7 +141,7 @@
   width: 20px;
   height: 20px;
   border-radius: 3px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 10px;
   font-weight: 400;
@@ -180,7 +180,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .dev-card:hover .dev-card__name {
@@ -195,7 +195,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 400;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .dev-card__verified-icon {
@@ -205,7 +205,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 9px;
   font-weight: 400;
@@ -284,7 +284,7 @@
   justify-content: space-between;
   margin-top: 16px;
   padding: 12px 16px;
-  border-left: 3px solid #3a8a3a;
+  border-left: 3px solid hsl(var(--color-accent));
 }
 
 .dev-profile__availability-text {
@@ -294,7 +294,7 @@
 }
 
 .dev-profile__availability-text strong {
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
   font-weight: 400;
 }
 
@@ -302,7 +302,7 @@
   padding: 8px 20px;
   border: none;
   border-radius: 8px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 400;
@@ -343,7 +343,7 @@
 .dev-profile__verified-text {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .dev-profile__verified-strong {
@@ -396,8 +396,8 @@
 }
 
 .dev-profile__expertise-pill:hover {
-  border-color: #3a8a3a;
-  color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
+  color: hsl(var(--color-accent));
 }
 
 .dev-profile__pill {
@@ -457,8 +457,8 @@
 
 .dev-profile__nav-btn--active,
 .dev-profile__nav-btn:hover {
-  border-color: #3a8a3a;
-  background: #3a8a3a;
+  border-color: hsl(var(--color-accent));
+  background: hsl(var(--color-accent));
   color: #ffffff;
 }
 
@@ -580,7 +580,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
 }
 
 .dev-profile__timeline-top {
@@ -711,7 +711,7 @@
 }
 
 .dev-profile__share-btn:hover {
-  border-color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
 }
 
 /* ── Project Overlay ── */
@@ -795,7 +795,7 @@
 }
 
 .dev-overlay__thumb--active {
-  border-color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
 }
 
 .dev-overlay__details {

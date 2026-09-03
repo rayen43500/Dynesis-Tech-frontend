@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Bot, ShieldCheck } from 'lucide-react';
+import { X, Send, Bot, ShieldCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { endpoints } from '../../shared/api/endpoints';
 import './chatbot.css';
@@ -11,17 +12,23 @@ type Message = {
 };
 
 export function ChatbotWidget() {
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 'welcome',
-      sender: 'bot',
-      text: 'Bonjour ! 👋 Je suis l\'Assistant IA Dynesis Tech.\nComment puis-je vous aider aujourd\'hui ? Posez-moi des questions sur nos tarifs, nos technologies ou nos offres blockchain & web.'
-    }
+  const [messages, setMessages] = useState<Message[]>(() => [
+    { id: 'welcome', sender: 'bot', text: '' }
   ]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMessages((prev) => {
+      if (prev.length === 1 && prev[0].id === 'welcome') {
+        return [{ id: 'welcome', sender: 'bot', text: t('chatbot.welcome') }];
+      }
+      return prev;
+    });
+  }, [i18n.language, t]);
 
   useEffect(() => {
     if (isOpen) {
@@ -47,7 +54,7 @@ export function ChatbotWidget() {
 
     try {
       const res = await endpoints.public.chatbot.send(userText);
-      const botText = res.data?.data?.response || 'Désolé, une erreur est survenue.';
+      const botText = res.data?.data?.response || t('chatbot.error');
 
       const botMsg: Message = {
         id: `bot-${Date.now()}`,
@@ -62,7 +69,7 @@ export function ChatbotWidget() {
         {
           id: `bot-${Date.now()}`,
           sender: 'bot',
-          text: 'Désolé, je ne peux pas répondre pour le moment. N\'hésitez pas à nous contacter directement sur la page [Contact](/contact).'
+          text: t('chatbot.unavailable')
         }
       ]);
     } finally {
@@ -77,26 +84,26 @@ export function ChatbotWidget() {
           type="button"
           className="chatbot-trigger"
           onClick={() => setIsOpen(true)}
-          aria-label="Ouvrir le Chatbot IA Dynesis Tech"
+          aria-label={t('chatbot.triggerAria')}
         >
           <div className="chatbot-trigger__badge">
             <Bot size={16} />
           </div>
-          <span>Assistant IA</span>
+          <span>{t('chatbot.trigger')}</span>
         </button>
       )}
 
       {isOpen && (
-        <div className="chatbot-panel" role="dialog" aria-label="Chatbot IA Dynesis Tech">
+        <div className="chatbot-panel" role="dialog" aria-label={t('chatbot.dialogAria')}>
           <header className="chatbot-header">
             <div className="chatbot-header__title">
               <div className="chatbot-header__avatar">
                 <Bot size={18} />
               </div>
               <div>
-                <h3 className="chatbot-header__name">Assistant Dynesis</h3>
+                <h3 className="chatbot-header__name">{t('chatbot.name')}</h3>
                 <span className="chatbot-header__rgpd-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                  <ShieldCheck size={10} /> RGPD Conforme
+                  <ShieldCheck size={10} /> {t('chatbot.gdprBadge')}
                 </span>
               </div>
             </div>
@@ -104,15 +111,13 @@ export function ChatbotWidget() {
               type="button"
               className="chatbot-header__close"
               onClick={() => setIsOpen(false)}
-              aria-label="Fermer"
+              aria-label={t('chatbot.closeAria')}
             >
               <X size={16} />
             </button>
           </header>
 
-          <div className="chatbot-rgpd-banner">
-            🔒 <strong>Sécurité RGPD</strong> : Aucune donnée personnelle n'est enregistrée. Vos échanges sont 100% anonymes.
-          </div>
+          <div className="chatbot-rgpd-banner">🔒 {t('chatbot.gdprBanner')}</div>
 
           <div className="chatbot-messages">
             {messages.map((msg) => (
@@ -122,7 +127,7 @@ export function ChatbotWidget() {
             ))}
             {loading && (
               <div className="chatbot-msg chatbot-msg--bot" style={{ fontStyle: 'italic', opacity: 0.7 }}>
-                L'Assistant écrit...
+                {t('chatbot.typing')}
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -132,11 +137,11 @@ export function ChatbotWidget() {
             <input
               type="text"
               className="chatbot-input"
-              placeholder="Posez votre question..."
+              placeholder={t('chatbot.placeholder')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <button type="submit" className="chatbot-send-btn" disabled={!input.trim() || loading} aria-label="Envoyer">
+            <button type="submit" className="chatbot-send-btn" disabled={!input.trim() || loading} aria-label={t('chatbot.sendAria')}>
               <Send size={16} />
             </button>
           </form>

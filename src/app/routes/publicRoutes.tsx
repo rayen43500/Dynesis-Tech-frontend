@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Route } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom';
 
 import { PublicLayout } from '../layouts/PublicLayout';
 import { RoutePlaceholder } from '../../shared/ui/placeholders/RoutePlaceholder';
@@ -16,9 +16,6 @@ const DevelopersDirectoryPage = lazy(() =>
 const DeveloperProfilePage = lazy(() =>
   import('../../features/developers/DeveloperProfilePage').then((m) => ({ default: m.DeveloperProfilePage }))
 );
-const ServicesPage = lazy(() =>
-  import('../../features/services/ServicesPage').then((m) => ({ default: m.ServicesPage }))
-);
 const WorkWithUsPage = lazy(() =>
   import('../../features/work-with-us/WorkWithUsPage').then((m) => ({ default: m.WorkWithUsPage }))
 );
@@ -30,6 +27,12 @@ const PrivacyPolicyPage = lazy(() =>
 );
 const PricingPage = lazy(() =>
   import('../../features/pricing/PricingPage').then((m) => ({ default: m.PricingPage }))
+);
+const BlogPage = lazy(() =>
+  import('../../features/blog/BlogPage').then((m) => ({ default: m.BlogPage }))
+);
+const BlogArticlePage = lazy(() =>
+  import('../../features/blog/BlogArticlePage').then((m) => ({ default: m.BlogArticlePage }))
 );
 const LoginPage = lazy(() =>
   import('../../features/auth/LoginPage').then((m) => ({ default: m.LoginPage }))
@@ -74,7 +77,7 @@ export function PublicRoutes() {
         path="services"
         element={
           <Suspense fallback={<LoadingState />}>
-            <ServicesPage />
+            <PricingPage />
           </Suspense>
         }
       />
@@ -102,11 +105,20 @@ export function PublicRoutes() {
           </Suspense>
         }
       />
+      <Route path="pricing" element={<Navigate to="/services" replace />} />
       <Route
-        path="pricing"
+        path="blog"
         element={
           <Suspense fallback={<LoadingState />}>
-            <PricingPage />
+            <BlogPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="blog/:slug"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <BlogArticlePage />
           </Suspense>
         }
       />

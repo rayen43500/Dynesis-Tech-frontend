@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { endpoints } from '../../shared/api/endpoints';
+import '../home/andela-home.css';
 import './work-with-us.css';
 
 type ProjectType = 'Web Application' | 'Mobile App' | 'Design & Branding' | 'Other / Not sure';
@@ -323,12 +324,14 @@ export function WorkWithUsPage() {
 
   return (
     <div className="wwu-page">
-      <section className="wwu-hero" aria-label={t('nav.workWithUs')}>
-        <h1 className="wwu-hero__title">
-          <span className="wwu-hero__title-line1">{t('workWithUs.hero.title1')}</span>
-          <span className="wwu-hero__title-line2">{t('workWithUs.hero.title2')}</span>
-        </h1>
-        <p className="wwu-hero__sub">{t('workWithUs.hero.subtitle')}</p>
+      <section className="andela-hero-top wwu-hero" aria-label={t('nav.workWithUs')}>
+        <div className="andela-hero-headline">
+          <h1 className="andela-h1">
+            <span className="andela-h1__line1">{t('workWithUs.hero.title1')}</span>
+            <span className="andela-h1__line2">{t('workWithUs.hero.title2')}</span>
+          </h1>
+          <p className="andela-hero-sub">{t('workWithUs.hero.subtitle')}</p>
+        </div>
       </section>
 
       <section className="wwu-steps" aria-label={t('services.process.title')}>

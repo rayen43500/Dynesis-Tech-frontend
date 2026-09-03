@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from '../../utils/cn';
 
@@ -15,6 +16,7 @@ const FEATURED_DEVELOPER = {
 };
 
 export function HomeHero() {
+  const { t } = useTranslation();
   const dev = FEATURED_DEVELOPER;
 
   return (
@@ -44,7 +46,7 @@ export function HomeHero() {
             to="/work-with-us"
             className="inline-flex h-11 items-center justify-center rounded-md bg-accent px-5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent2"
           >
-            Start a project
+            {t('nav.workWithUs')}
           </Link>
           <Link
             to="/developers"

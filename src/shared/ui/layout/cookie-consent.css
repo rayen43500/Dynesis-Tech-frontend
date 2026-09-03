@@ -96,7 +96,7 @@
 }
 
 .cookie-consent__btn--primary {
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   color: #ffffff;
 }
 

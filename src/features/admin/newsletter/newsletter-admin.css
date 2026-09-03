@@ -60,13 +60,13 @@
 }
 
 .newsletter-admin__btn--primary {
-  background: hsl(var(--color-accent, #3A8A3A));
+  background: hsl(var(--color-accent, hsl(var(--color-accent))));
   color: #ffffff;
   box-shadow: 0 2px 8px rgba(58, 138, 58, 0.25);
 }
 
 .newsletter-admin__btn--primary:hover {
-  background: hsl(var(--color-accent-hover, #2e6f2e));
+  background: hsl(var(--color-accent-hover, hsl(var(--color-accent-2))));
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(58, 138, 58, 0.35);
 }
@@ -190,8 +190,8 @@
 }
 
 .newsletter-admin__tab--active {
-  color: hsl(var(--color-accent, #3A8A3A));
-  border-bottom-color: hsl(var(--color-accent, #3A8A3A));
+  color: hsl(var(--color-accent, hsl(var(--color-accent))));
+  border-bottom-color: hsl(var(--color-accent, hsl(var(--color-accent))));
   font-weight: 600;
 }
 
@@ -255,7 +255,7 @@
 .newsletter-admin__input:focus,
 .newsletter-admin__select:focus,
 .newsletter-admin__textarea:focus {
-  border-color: hsl(var(--color-accent, #3A8A3A));
+  border-color: hsl(var(--color-accent, hsl(var(--color-accent))));
   box-shadow: 0 0 0 2px rgba(58, 138, 58, 0.2);
 }
 
@@ -504,8 +504,8 @@
 }
 
 .newsletter-modal__tab--active {
-  color: hsl(var(--color-accent, #3A8A3A));
-  border-bottom-color: hsl(var(--color-accent, #3A8A3A));
+  color: hsl(var(--color-accent, hsl(var(--color-accent))));
+  border-bottom-color: hsl(var(--color-accent, hsl(var(--color-accent))));
   font-weight: 600;
 }
 

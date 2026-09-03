@@ -246,7 +246,7 @@
   height: 32px;
   border: none;
   border-radius: 6px;
-  background: hsl(var(--color-accent, #3A8A3A));
+  background: hsl(var(--color-accent, hsl(var(--color-accent))));
   color: #ffffff;
   cursor: pointer;
   transition: transform 0.15s ease, opacity 0.2s ease;

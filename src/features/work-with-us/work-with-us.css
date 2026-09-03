@@ -1,48 +1,14 @@
 /* ── Work With Us (/work-with-us) ── */
 .wwu-page {
-  background: #ffffff;
+  padding-top: 68px;
+  background: hsl(var(--color-bg));
   font-family: 'Inter', sans-serif;
 }
 
-/* Section 1 — Hero */
+/* Section 1 — Hero (homepage andela-hero classes) */
 .wwu-hero {
-  padding: 100px 80px 60px;
-  text-align: center;
-  background: #ffffff;
-}
-
-.wwu-hero__title {
-  margin: 0;
-}
-
-.wwu-hero__title-line1 {
-  display: block;
-  font-family: 'Lora', serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 68px;
-  color: #1a1a1a;
-}
-
-.wwu-hero__title-line2 {
-  display: block;
-  font-family: 'Lora', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 68px;
-  color: #3a8a3a;
-  line-height: 1.4;
-}
-
-.wwu-hero__sub {
-  margin: 24px auto 0;
-  max-width: 620px;
-  font-family: 'Inter', sans-serif;
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 1.7;
-  text-align: center;
-  color: #555555;
+  padding: 0;
+  background: transparent;
 }
 
 /* Section 2 — How it works */
@@ -71,12 +37,12 @@
   width: 40px;
   height: 40px;
   margin: 0 auto 16px;
-  border: 1.5px solid #3a8a3a;
+  border: 1.5px solid hsl(var(--color-accent));
   border-radius: 50%;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .wwu-step__title {
@@ -140,7 +106,7 @@
 }
 
 .wwu-service-card:hover {
-  border-color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
   box-shadow: 0 8px 32px rgba(58, 138, 58, 0.08);
   transform: translateY(-2px);
 }
@@ -154,7 +120,7 @@
   margin-bottom: 16px;
   border-radius: 10px;
   background: #eaf4ea;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .wwu-service-card__name {
@@ -225,7 +191,7 @@
 .wwu-quiz__progress-fill {
   height: 100%;
   border-radius: 9999px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   transition: width 0.3s ease;
 }
 
@@ -282,7 +248,7 @@
 }
 
 .wwu-quiz__option-card--selected {
-  border-color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
   background: #f0f8f0;
 }
 
@@ -332,9 +298,9 @@
 }
 
 .wwu-quiz__pill--selected {
-  border-color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
   background: #eaf4ea;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .wwu-quiz__textarea,
@@ -360,7 +326,7 @@
 
 .wwu-quiz__textarea:focus,
 .wwu-quiz__input:focus {
-  border-color: #3a8a3a;
+  border-color: hsl(var(--color-accent));
 }
 
 .wwu-quiz__fields {
@@ -399,7 +365,7 @@
   width: 16px;
   height: 16px;
   margin-top: 2px;
-  accent-color: #3a8a3a;
+  accent-color: hsl(var(--color-accent));
   cursor: pointer;
 }
 
@@ -446,7 +412,7 @@
   padding: 12px 28px;
   border: none;
   border-radius: 8px;
-  background: #3a8a3a;
+  background: hsl(var(--color-accent));
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -504,7 +470,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 400;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 .wwu-quiz__success-title {
@@ -532,7 +498,7 @@
   font-size: 14px;
   font-weight: 300;
   text-align: center;
-  color: #3a8a3a;
+  color: hsl(var(--color-accent));
 }
 
 /* Section 5 — CTA */
@@ -591,10 +557,6 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .wwu-hero {
-    padding: 80px 32px 48px;
-  }
-
   .wwu-steps {
     padding: 48px 32px;
   }

@@ -106,7 +106,7 @@ export function HomePageSettingsSection({ settings }: Props) {
     <>
       <SettingsSectionCard
         title={t('admin.settings.tabs.homePage')}
-        subtitle="Personnalisez le contenu de votre page d'accueil — hero, témoignages, intro & onglets."
+        subtitle={t('admin.settings.home.pageSubtitle')}
         icon={homeIcon}
         onSave={() => void handleSave()}
         onReset={() => setResetOpen(true)}
