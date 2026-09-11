@@ -54,19 +54,9 @@ export function AndelaHomePage() {
 
         <HomePageSections />
 
-        {/* DERNIÈRE SECTION AVANT FOOTER : AVIS CLIENTS & RATINGS */}
-        <section className="testimonials-section" id="avis" aria-label="Avis et témoignages clients">
+        {/* DERNIÈRE SECTION AVANT FOOTER : TÉMOIGNAGES CLIENTS */}
+        <section className="testimonials-section" id="avis" aria-label="Témoignages clients">
           <div className="testimonials-section__inner">
-            <div className="ratings-capsule-wrap">
-              <div className="ratings-capsule">
-                <span className="g2dot" aria-hidden>G2</span>
-                <span className="rating-num">{content.ratingScore}</span>
-                <span className="stars" aria-hidden>★★★★★</span>
-                <span className="reviews">| {content.reviewCountText}</span>
-                <span className="verified-badge">✓ Avis vérifiés</span>
-              </div>
-            </div>
-
             <header className="testimonials__header">
               <span className="testimonials__eyebrow">Témoignages & Confiance</span>
               <h2 className="testimonials__title">{content.testimonialsHeading}</h2>
