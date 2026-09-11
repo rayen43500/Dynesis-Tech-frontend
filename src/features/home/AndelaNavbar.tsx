@@ -160,11 +160,13 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
       <div className="andela-nav__bar">
         <Link to={logoTo} className="andela-nav__logo" aria-label={t('footer.brand.homeAria')}>
           {branding.logoUrl ? (
-            <img src={branding.logoUrl} alt="" className="andela-nav__logo-img" />
+            <img src={branding.logoUrl} alt={branding.siteName || ''} className="andela-nav__logo-img" />
           ) : (
-            <span className="andela-nav__logo-mark">{branding.logoMark}</span>
+            <>
+              <span className="andela-nav__logo-mark">{branding.logoMark}</span>
+              <span className="andela-nav__logo-text">{branding.siteName}</span>
+            </>
           )}
-          <span className="andela-nav__logo-text">{branding.siteName}</span>
         </Link>
 
         <div className="andela-nav__center">

@@ -104,6 +104,10 @@ export type PlatformSettings = {
       feature3?: LocalizedString;
       heroImage?: string;
       heroBackgroundImage?: string;
+      showcaseBackgroundImage?: string;
+      servicesBackgroundImage?: string;
+      heroVideoUrl?: string;
+      heroVideoPoster?: string;
       techStack?: string[];
       ctaPrimary?: LocalizedString;
       ctaPrimaryHref?: string;

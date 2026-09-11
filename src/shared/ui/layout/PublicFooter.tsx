@@ -188,11 +188,13 @@ export function PublicFooter() {
         <div className="public-footer__bar">
           <Link to="/" className="public-footer__bar-brand" aria-label={t('footer.brand.homeAria')}>
             {branding.logoUrl ? (
-              <img src={branding.logoUrl} alt="" className="public-footer__bar-brand-logo" />
+              <img src={branding.logoUrl} alt={branding.siteName || ''} className="public-footer__bar-brand-logo" />
             ) : (
-              <span className="public-footer__bar-brand-mark">{branding.logoMark}</span>
+              <>
+                <span className="public-footer__bar-brand-mark">{branding.logoMark}</span>
+                <span className="public-footer__bar-brand-text">{branding.siteName}</span>
+              </>
             )}
-            <span className="public-footer__bar-brand-text">{branding.siteName}</span>
           </Link>
 
           <p className="public-footer__copyright">{footer.copyright}</p>

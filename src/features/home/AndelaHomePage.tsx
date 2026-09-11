@@ -36,6 +36,8 @@ export function AndelaHomePage() {
                 {content.button2}
               </Link>
             </div>
+
+
             <div className="home-proof-bar" aria-label="Chiffres clés">
               <HomeProofStat icon={Users} value="50+" label="Clients satisfaits" />
               <HomeProofStat icon={Settings} value="100+" label="Projets réalisés" />
@@ -46,38 +48,53 @@ export function AndelaHomePage() {
         </section>
 
         <DynamicCustomSections />
-        <HomeShowcaseSlider images={content.showcaseImages} backgroundImage={content.heroBackgroundImage} />
+        <HomeShowcaseSlider images={content.showcaseImages} backgroundImage={content.showcaseBackgroundImage || content.heroBackgroundImage} />
 
-        <section className="ratings">
+        <HomePricingSection />
+
+        <HomePageSections />
+
+        {/* DERNIÈRE SECTION AVANT FOOTER : AVIS CLIENTS & RATINGS */}
+        <section className="ratings" id="avis">
           <div className="ratings__inner">
             <span className="g2dot" aria-hidden>
               G2
             </span>
             <span className="rating-num">{content.ratingScore}</span>
             <span className="stars" aria-hidden>
-              ★★★★½
+              ★★★★★
             </span>
             <span className="reviews">| {content.reviewCountText}</span>
+            <span className="verified-badge">✓ Avis clients vérifiés</span>
           </div>
         </section>
 
         <section className="testimonials">
           <div className="testimonials__inner">
-            <h2 className="testimonials__title">{content.testimonialsHeading}</h2>
+            <div className="testimonials__header">
+              <p className="testimonials__eyebrow">TÉMOIGNAGES CLIENTS</p>
+              <h2 className="testimonials__title">{content.testimonialsHeading}</h2>
+            </div>
             <div className="tgrid">
-              {content.testimonials.map((item) => (
-                <article key={`${item.name}-${item.quote.slice(0, 24)}`} className="tcard">
-                  <div className="tstars" aria-hidden>
-                    ★★★★★
+              {content.testimonials.map((item, index) => (
+                <article key={`${item.name}-${index}`} className="tcard">
+                  <div className="tcard__top">
+                    <div className="tstars" aria-hidden>
+                      ★★★★★
+                    </div>
+                    <span className="tcard__quote-mark" aria-hidden>“</span>
                   </div>
                   <p className="tquote">{item.quote}</p>
                   <div className="tfoot">
-                    <div>
-                      <div className="tname">{item.name}</div>
-                      <div className="trole">{item.role}</div>
+                    <div className="tavatar" aria-hidden>
+                      {item.name.charAt(0)}
                     </div>
-                    <div className="tlogo" aria-hidden>
-                      Co
+                    <div className="tinfo">
+                      <div className="tname-row">
+                        <span className="tname">{item.name}</span>
+                        <span className="tcheck" title="Client vérifié">✓</span>
+                      </div>
+                      <div className="trole">{item.role}</div>
                     </div>
                   </div>
                 </article>
@@ -85,10 +102,6 @@ export function AndelaHomePage() {
             </div>
           </div>
         </section>
-
-        <HomePricingSection />
-
-        <HomePageSections />
       </main>
     </div>
   );
@@ -173,6 +186,7 @@ function ServiceCard({ plan }: { plan: PricingPlan }) {
 }
 
 export function HomePricingSection({ showHeader = true }: { showHeader?: boolean }) {
+  const content = useHomePageContent();
   const { t } = useTranslation();
   const { data: plans, isLoading } = usePublicPricingPlans();
 
@@ -187,7 +201,10 @@ export function HomePricingSection({ showHeader = true }: { showHeader?: boolean
   if (!plans || plans.length === 0) return null;
 
   return (
-    <section className={`home-svc${showHeader ? '' : ' home-svc--embedded'}`}>
+    <section
+      className={`home-svc${showHeader ? '' : ' home-svc--embedded'}${content.servicesBackgroundImage ? ' home-svc--has-bg' : ''}`}
+      style={content.servicesBackgroundImage ? { backgroundImage: `url("${content.servicesBackgroundImage}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+    >
       <div className="home-svc__inner">
         {showHeader ? (
           <div className="home-svc__header">
@@ -216,3 +233,5 @@ export function HomePricingSection({ showHeader = true }: { showHeader?: boolean
     </section>
   );
 }
+
+

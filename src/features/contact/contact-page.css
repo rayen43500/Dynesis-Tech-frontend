@@ -109,8 +109,8 @@
 }
 
 .contact-hero-unified .andela-nav__logo-mark {
-  background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: linear-gradient(135deg, rgba(8, 124, 240, 0.9) 0%, rgba(0, 86, 179, 0.9) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
   color: #ffffff;
 }
 

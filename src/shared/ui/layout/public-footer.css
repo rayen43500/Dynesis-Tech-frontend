@@ -140,10 +140,13 @@
 }
 
 .public-footer__bar-brand-logo {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  height: 48px;
+  width: auto;
+  max-height: 52px;
+  max-width: 240px;
+  border-radius: 8px;
   object-fit: contain;
+  display: block;
 }
 
 .public-footer__bar-brand-text {

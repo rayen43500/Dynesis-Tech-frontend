@@ -1,6 +1,6 @@
 .home-svc {
   background: hsl(var(--color-bg));
-  padding: 80px 80px 60px;
+  padding: 72px 24px;
 }
 
 .home-svc--embedded {
@@ -9,24 +9,24 @@
 }
 
 .home-svc__inner {
-  max-width: 1160px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .home-svc__header {
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 48px;
 }
 
 .home-svc__label {
   display: block;
-  margin: 0 0 16px;
-  font-family: Inter, sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 2.5px;
+  margin: 0 0 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: hsl(var(--color-accent));
+  color: #087cf0;
   text-align: center;
   background: none;
   border: none;
@@ -34,29 +34,29 @@
 
 .home-svc__headline {
   margin: 0;
-  font-family: Lora, serif;
-  font-size: 40px;
+  font-family: 'Lora', serif;
+  font-size: clamp(28px, 3.5vw, 42px);
   font-weight: 400;
-  color: hsl(var(--color-text));
+  color: #0f172a;
   text-align: center;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .home-svc__sub {
-  margin: 16px auto 0;
-  max-width: 560px;
-  font-family: Inter, sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  color: #6b6b6b;
+  margin: 14px auto 0;
+  max-width: 680px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  color: #64748b;
   text-align: center;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .home-svc__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
   align-items: stretch;
 }
 
@@ -65,11 +65,12 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: hsl(var(--color-surface-2));
-  border: 1px solid hsl(var(--color-border));
-  border-radius: 12px;
-  padding: 28px 24px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: #ffffff;
+  border: 1px solid rgba(8, 124, 240, 0.16);
+  border-radius: 20px;
+  padding: 32px 26px;
+  box-shadow: 0 6px 24px rgba(8, 124, 240, 0.05);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .home-svc-card::before {
@@ -79,16 +80,16 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: hsl(var(--color-accent));
+  background: linear-gradient(90deg, #12d9ef, #087cf0);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
 }
 
 .home-svc-card:hover {
-  border-color: hsl(var(--color-accent));
-  box-shadow: 0 8px 32px rgba(58, 138, 58, 0.08);
-  transform: translateY(-2px);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(8, 124, 240, 0.14);
+  border-color: rgba(8, 124, 240, 0.38);
 }
 
 .home-svc-card:hover::before {
@@ -96,33 +97,35 @@
 }
 
 .home-svc-card__icon {
-  width: 44px;
-  height: 44px;
-  margin-bottom: 8px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #eaf4ea;
-  border-radius: 10px;
-  color: hsl(var(--color-accent));
+  background: linear-gradient(135deg, rgba(8, 124, 240, 0.12) 0%, rgba(8, 124, 240, 0.04) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(8, 124, 240, 0.2);
+  color: #087cf0;
   font-size: 20px;
+  box-shadow: 0 4px 12px rgba(8, 124, 240, 0.1);
 }
 
 .home-svc-card__name {
   margin: 0 0 10px;
-  font-family: Lora, serif;
-  font-size: 18px;
+  font-family: 'Lora', serif;
+  font-size: 22px;
   font-weight: 400;
-  color: hsl(var(--color-text));
+  color: #0f172a;
 }
 
 .home-svc-card__desc {
   margin: 0 0 20px;
-  font-family: Inter, sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: #6b6b6b;
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: #64748b;
+  line-height: 1.65;
 }
 
 .home-svc-card__price {
@@ -131,24 +134,24 @@
 }
 
 .home-svc-card__price-value {
-  font-family: Lora, serif;
-  font-size: 28px;
-  font-weight: 400;
-  color: hsl(var(--color-text));
+  font-family: 'Lora', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #087cf0;
 }
 
 .home-svc-card__price-note {
   margin-left: 6px;
-  font-family: Inter, sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 300;
-  color: #aaaaaa;
+  font-weight: 400;
+  color: #94a3b8;
 }
 
 .home-svc-card__divider {
   height: 1px;
   margin: 20px 0;
-  background: #f0f0f4;
+  background: #f1f5f9;
   border: none;
 }
 
@@ -162,44 +165,57 @@
 .home-svc-card__feature {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-family: Inter, sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  color: hsl(var(--color-muted));
+  gap: 10px;
+  margin-bottom: 10px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #334155;
   line-height: 1.5;
 }
 
 .home-svc-card__check {
   flex-shrink: 0;
-  margin-top: 1px;
-  color: hsl(var(--color-accent));
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(8, 124, 240, 0.12);
+  color: #087cf0;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .home-svc-card__cta {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   box-sizing: border-box;
   margin-top: 24px;
-  padding: 11px 20px;
-  border: 1.5px solid hsl(var(--color-border));
-  border-radius: 8px;
-  background: hsl(var(--color-surface-2));
-  color: hsl(var(--color-text));
-  font-family: Inter, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  background: #087cf0;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  box-shadow: 0 8px 20px rgba(8, 124, 240, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .home-svc-card__cta:hover {
-  border-color: hsl(var(--color-accent));
-  color: hsl(var(--color-accent));
+  transform: translateY(-2px);
+  background: #0056b3;
+  box-shadow: 0 12px 28px rgba(8, 124, 240, 0.35);
+  color: #ffffff;
 }
 
 .home-svc__banner {

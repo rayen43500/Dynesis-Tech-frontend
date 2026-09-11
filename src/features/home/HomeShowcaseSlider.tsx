@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const IMAGES_PER_SLIDE = 3;
 
 export function HomeShowcaseSlider({ images, backgroundImage }: { images: string[]; backgroundImage?: string }) {
-  const visibleImages = images.filter(Boolean).slice(0, 6);
+  const visibleImages = images.filter(Boolean);
   const slideCount = visibleImages.length;
   const [activeSlide, setActiveSlide] = useState(0);
 

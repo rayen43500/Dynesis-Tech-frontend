@@ -24,9 +24,12 @@ export function HomePageSettingsSection({ settings }: Props) {
   const resetMutation = useResetAdminSettings();
   const { message, setMessage } = useSettingsSectionFeedback();
   const [form, setForm] = useState(settings.homeContent || {});
-  const [homeColors, setHomeColors] = useState<HomeThemeColors>(settings.theme?.home || {});
   const [resetOpen, setResetOpen] = useState(false);
   const [uploadingBackground, setUploadingBackground] = useState(false);
+  const [uploadingShowcaseBg, setUploadingShowcaseBg] = useState(false);
+  const [uploadingServicesBg, setUploadingServicesBg] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+  const [uploadingPoster, setUploadingPoster] = useState(false);
   const [uploadingShowcase, setUploadingShowcase] = useState<number | null>(null);
 
   useEffect(() => {
@@ -171,6 +174,196 @@ export function HomePageSettingsSection({ settings }: Props) {
     }
   }
 
+  async function handleShowcaseBgUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingShowcaseBg(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/backgrounds', resourceType: 'image' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/backgrounds',
+        altText: 'Showcase background image',
+        tags: ['homepage', 'showcase', 'background']
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), showcaseBackgroundImage: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage('Arrière-plan de la Galerie (Showcase) téléversé et enregistré sur Cloudinary !');
+    } catch {
+      setMessage('Échec du téléversement de l\'arrière-plan Showcase sur Cloudinary');
+    } finally {
+      setUploadingShowcaseBg(false);
+    }
+  }
+
+  async function handleServicesBgUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingServicesBg(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/backgrounds', resourceType: 'image' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/backgrounds',
+        altText: 'Services background image',
+        tags: ['homepage', 'services', 'background']
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), servicesBackgroundImage: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage('Arrière-plan des Services téléversé et enregistré sur Cloudinary !');
+    } catch {
+      setMessage('Échec du téléversement de l\'arrière-plan Services sur Cloudinary');
+    } finally {
+      setUploadingServicesBg(false);
+    }
+  }
+
+  async function handleVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingVideo(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/videos', resourceType: 'video' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/videos',
+        altText: 'Homepage hero video',
+        tags: ['homepage', 'video']
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), heroVideoUrl: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+
+      setMessage('Vidéo téléversée et publiée sur l\'accueil avec succès !');
+    } catch {
+      setMessage('Échec du téléversement de la vidéo sur Cloudinary');
+    } finally {
+      setUploadingVideo(false);
+    }
+  }
+
+  async function handlePosterUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingPoster(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/videos', resourceType: 'image' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/videos',
+        altText: 'Homepage hero video poster',
+        tags: ['homepage', 'video', 'poster']
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), heroVideoPoster: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+
+      setMessage('Couverture vidéo téléversée et enregistrée avec succès !');
+    } catch {
+      setMessage('Échec du téléversement de la couverture vidéo sur Cloudinary');
+    } finally {
+      setUploadingPoster(false);
+    }
+  }
+
   const hero = form.hero || {};
   const ratings = form.ratings || {};
   const testimonials = form.testimonials || { items: [] };
@@ -229,32 +422,75 @@ export function HomePageSettingsSection({ settings }: Props) {
         value={hero.feature3 || {}}
         onChange={(v) => setHero('feature3', v)}
       />
-      <h3 className="admin-settings-subtitle">Médias du hero</h3>
-      <div className="admin-settings-media">
+      <h3 className="admin-settings-subtitle">🖼️ Personnalisation des Arrière-plans des Sections (Cloudinary)</h3>
+      <div className="admin-settings-media" style={{ marginBottom: '32px' }}>
         <div className="admin-settings-media__controls">
           <SimpleField
-            label={t('admin.settings.home.heroImage')}
-            value={hero.heroImage || ''}
-            onChange={(v) => setHero('heroImage', v)}
-            type="url"
-          />
-          <SimpleField
-            label={t('admin.settings.home.heroBackgroundImage')}
+            label="Arrière-plan du Hero"
             value={hero.heroBackgroundImage || ''}
             onChange={(v) => setHero('heroBackgroundImage', v)}
             type="url"
           />
           <label className="admin-field">
-            <span className="admin-field__label admin-field__label--primary">{t('admin.settings.home.backgroundUpload')}</span>
+            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Hero sur Cloudinary</span>
             <input type="file" accept="image/*" onChange={(event) => void handleBackgroundUpload(event)} disabled={uploadingBackground} />
+            {uploadingBackground ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+          </label>
+
+          <hr style={{ border: 'none', borderTop: '1px solid #e8e8e8', margin: '14px 0' }} />
+
+          <SimpleField
+            label="Arrière-plan de la Galerie (Showcase)"
+            value={hero.showcaseBackgroundImage || ''}
+            onChange={(v) => setHero('showcaseBackgroundImage', v)}
+            type="url"
+          />
+          <label className="admin-field">
+            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Showcase sur Cloudinary</span>
+            <input type="file" accept="image/*" onChange={(event) => void handleShowcaseBgUpload(event)} disabled={uploadingShowcaseBg} />
+            {uploadingShowcaseBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+          </label>
+
+          <hr style={{ border: 'none', borderTop: '1px solid #e8e8e8', margin: '14px 0' }} />
+
+          <SimpleField
+            label="Arrière-plan de la section Services"
+            value={hero.servicesBackgroundImage || ''}
+            onChange={(v) => setHero('servicesBackgroundImage', v)}
+            type="url"
+          />
+          <label className="admin-field">
+            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Services sur Cloudinary</span>
+            <input type="file" accept="image/*" onChange={(event) => void handleServicesBgUpload(event)} disabled={uploadingServicesBg} />
+            {uploadingServicesBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
           </label>
         </div>
+
         <div
           className="admin-settings-media__preview admin-settings-media__preview--background"
-          style={hero.heroBackgroundImage ? { backgroundImage: `url("${hero.heroBackgroundImage}")` } : undefined}
-          aria-label="Aperçu de l'arrière-plan du hero"
+          aria-label="Aperçu des arrière-plans"
         >
-          {!hero.heroBackgroundImage ? <span className="admin-settings-media__empty">Aucun arrière-plan sélectionné</span> : null}
+          {hero.heroBackgroundImage ? (
+            <div style={{ marginBottom: '10px' }}>
+              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Hero :</small>
+              <img src={hero.heroBackgroundImage} alt="Aperçu arrière-plan Hero" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+            </div>
+          ) : null}
+          {hero.showcaseBackgroundImage ? (
+            <div style={{ marginBottom: '10px' }}>
+              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Showcase :</small>
+              <img src={hero.showcaseBackgroundImage} alt="Aperçu arrière-plan Showcase" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+            </div>
+          ) : null}
+          {hero.servicesBackgroundImage ? (
+            <div>
+              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Services :</small>
+              <img src={hero.servicesBackgroundImage} alt="Aperçu arrière-plan Services" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+            </div>
+          ) : null}
+          {!hero.heroBackgroundImage && !hero.showcaseBackgroundImage && !hero.servicesBackgroundImage && (
+            <span className="admin-settings-media__empty">Aucun arrière-plan sélectionné</span>
+          )}
         </div>
       </div>
       <h3 className="admin-settings-subtitle">Galerie du site — 6 images</h3>
