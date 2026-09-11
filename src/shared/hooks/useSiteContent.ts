@@ -17,7 +17,8 @@ export function useBrandingContent() {
       siteName: pickLocalized(settings?.branding?.siteName, language, t('nav.brand')),
       tagline: pickLocalized(settings?.branding?.tagline, language, t('topBar.tagline')),
       logoUrl: settings?.branding?.logoUrl || getCloudinaryImageUrl(DEFAULT_LOGO_PUBLIC_ID) || '/images/image.png',
-      logoMark: settings?.branding?.logoMark || 'D'
+      logoMark: settings?.branding?.logoMark || 'D',
+      authBackgroundImage: settings?.branding?.authBackgroundImage || settings?.homeContent?.hero?.authBackgroundImage || ''
     }),
     [settings, language, t]
   );
@@ -96,6 +97,7 @@ export function useHomePageContent() {
       heroBackgroundImage: h?.heroBackgroundImage || '',
       showcaseBackgroundImage: h?.showcaseBackgroundImage || '',
       servicesBackgroundImage: h?.servicesBackgroundImage || '',
+      authBackgroundImage: h?.authBackgroundImage || settings?.branding?.authBackgroundImage || '',
       heroVideoUrl: h?.heroVideoUrl || '',
       heroVideoPoster: h?.heroVideoPoster || '',
       showcaseImages: showcaseImages.filter(Boolean).slice(0, 6),

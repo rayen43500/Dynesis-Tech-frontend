@@ -28,9 +28,11 @@ export function HomePageSettingsSection({ settings }: Props) {
   const [uploadingBackground, setUploadingBackground] = useState(false);
   const [uploadingShowcaseBg, setUploadingShowcaseBg] = useState(false);
   const [uploadingServicesBg, setUploadingServicesBg] = useState(false);
+  const [uploadingAuthBg, setUploadingAuthBg] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
   const [uploadingPoster, setUploadingPoster] = useState(false);
   const [uploadingShowcase, setUploadingShowcase] = useState<number | null>(null);
+  const [homeColors, setHomeColors] = useState<Record<string, string>>(settings.theme?.home || {});
 
   useEffect(() => {
     setForm(settings.homeContent || {});
@@ -268,6 +270,54 @@ export function HomePageSettingsSection({ settings }: Props) {
     }
   }
 
+  async function handleAuthBgUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingAuthBg(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'auth/backgrounds', resourceType: 'image' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'auth/backgrounds',
+        altText: 'Authentication page background image',
+        tags: ['auth', 'background']
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), authBackgroundImage: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        branding: { ...(settings.branding || {}), authBackgroundImage: uploaded.secure_url },
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage('Arrière-plan de Connexion / Inscription téléversé et enregistré sur Cloudinary !');
+    } catch {
+      setMessage('Échec du téléversement de l\'arrière-plan Auth sur Cloudinary');
+    } finally {
+      setUploadingAuthBg(false);
+    }
+  }
+
   async function handleVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = '';
@@ -464,6 +514,20 @@ export function HomePageSettingsSection({ settings }: Props) {
             <input type="file" accept="image/*" onChange={(event) => void handleServicesBgUpload(event)} disabled={uploadingServicesBg} />
             {uploadingServicesBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
           </label>
+
+          <hr style={{ border: 'none', borderTop: '1px solid #e8e8e8', margin: '14px 0' }} />
+
+          <SimpleField
+            label="Arrière-plan Page Connexion / Inscription"
+            value={hero.authBackgroundImage || ''}
+            onChange={(v) => setHero('authBackgroundImage', v)}
+            type="url"
+          />
+          <label className="admin-field">
+            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Auth sur Cloudinary</span>
+            <input type="file" accept="image/*" onChange={(event) => void handleAuthBgUpload(event)} disabled={uploadingAuthBg} />
+            {uploadingAuthBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+          </label>
         </div>
 
         <div
@@ -483,12 +547,18 @@ export function HomePageSettingsSection({ settings }: Props) {
             </div>
           ) : null}
           {hero.servicesBackgroundImage ? (
-            <div>
+            <div style={{ marginBottom: '10px' }}>
               <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Services :</small>
               <img src={hero.servicesBackgroundImage} alt="Aperçu arrière-plan Services" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
             </div>
           ) : null}
-          {!hero.heroBackgroundImage && !hero.showcaseBackgroundImage && !hero.servicesBackgroundImage && (
+          {hero.authBackgroundImage ? (
+            <div>
+              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Connexion / Inscription :</small>
+              <img src={hero.authBackgroundImage} alt="Aperçu arrière-plan Auth" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+            </div>
+          ) : null}
+          {!hero.heroBackgroundImage && !hero.showcaseBackgroundImage && !hero.servicesBackgroundImage && !hero.authBackgroundImage && (
             <span className="admin-settings-media__empty">Aucun arrière-plan sélectionné</span>
           )}
         </div>

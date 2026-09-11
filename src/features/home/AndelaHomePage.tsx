@@ -55,26 +55,26 @@ export function AndelaHomePage() {
         <HomePageSections />
 
         {/* DERNIÈRE SECTION AVANT FOOTER : AVIS CLIENTS & RATINGS */}
-        <section className="ratings" id="avis">
-          <div className="ratings__inner">
-            <span className="g2dot" aria-hidden>
-              G2
-            </span>
-            <span className="rating-num">{content.ratingScore}</span>
-            <span className="stars" aria-hidden>
-              ★★★★★
-            </span>
-            <span className="reviews">| {content.reviewCountText}</span>
-            <span className="verified-badge">✓ Avis clients vérifiés</span>
-          </div>
-        </section>
-
-        <section className="testimonials">
-          <div className="testimonials__inner">
-            <div className="testimonials__header">
-              <p className="testimonials__eyebrow">TÉMOIGNAGES CLIENTS</p>
-              <h2 className="testimonials__title">{content.testimonialsHeading}</h2>
+        <section className="testimonials-section" id="avis" aria-label="Avis et témoignages clients">
+          <div className="testimonials-section__inner">
+            <div className="ratings-capsule-wrap">
+              <div className="ratings-capsule">
+                <span className="g2dot" aria-hidden>G2</span>
+                <span className="rating-num">{content.ratingScore}</span>
+                <span className="stars" aria-hidden>★★★★★</span>
+                <span className="reviews">| {content.reviewCountText}</span>
+                <span className="verified-badge">✓ Avis vérifiés</span>
+              </div>
             </div>
+
+            <header className="testimonials__header">
+              <span className="testimonials__eyebrow">Témoignages & Confiance</span>
+              <h2 className="testimonials__title">{content.testimonialsHeading}</h2>
+              <p className="testimonials__sub">
+                Découvrez comment nos clients accélèrent leurs déploiements et sécurisent leur vision technologique à nos côtés.
+              </p>
+            </header>
+
             <div className="tgrid">
               {content.testimonials.map((item, index) => (
                 <article key={`${item.name}-${index}`} className="tcard">

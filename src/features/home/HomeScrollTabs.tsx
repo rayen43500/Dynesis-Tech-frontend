@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { endpoints } from '../../shared/api/endpoints';
 
@@ -23,6 +24,8 @@ function pickLocalized(value: Localized | undefined, lang: string) {
 
 export function HomeScrollTabs() {
   const { i18n, t } = useTranslation();
+  const trackRef = useRef<HTMLDivElement>(null);
+
   const query = useQuery({
     queryKey: ['public', 'blog', 'home-carousel'],
     queryFn: async () => {
@@ -34,9 +37,39 @@ export function HomeScrollTabs() {
   const articles = query.data || [];
   if (query.isLoading || articles.length === 0) return null;
 
+  function scroll(direction: 'left' | 'right') {
+    if (!trackRef.current) return;
+    const scrollAmount = trackRef.current.clientWidth * 0.75;
+    trackRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+
   return (
-    <section className="home-blog-carousel" aria-label={t('home.blog.sectionAria')}>
-      <div className="home-blog-carousel__track">
+    <div className="home-blog-carousel" aria-label={t('home.blog.sectionAria')}>
+      {articles.length > 3 ? (
+        <div className="home-blog-carousel__controls">
+          <button
+            type="button"
+            className="home-blog-carousel__nav-btn"
+            onClick={() => scroll('left')}
+            aria-label="Articles précédents"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            type="button"
+            className="home-blog-carousel__nav-btn"
+            onClick={() => scroll('right')}
+            aria-label="Articles suivants"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      ) : null}
+
+      <div className="home-blog-carousel__track" ref={trackRef}>
         {articles.map((article) => {
           const title = pickLocalized(article.title, i18n.language);
           const excerpt = pickLocalized(article.excerpt, i18n.language);
@@ -44,23 +77,28 @@ export function HomeScrollTabs() {
 
           return (
             <article key={article._id} className="home-blog-carousel__card">
-              {article.coverImageUrl ? (
-                <img className="home-blog-carousel__image" src={article.coverImageUrl} alt="" loading="lazy" />
-              ) : (
-                <div className="home-blog-carousel__image home-blog-carousel__image--empty" aria-hidden />
-              )}
+              <Link to={`/blog/${article.slug}`} className="home-blog-carousel__media-link" tabIndex={-1} aria-hidden>
+                {article.coverImageUrl ? (
+                  <img className="home-blog-carousel__image" src={article.coverImageUrl} alt="" loading="lazy" />
+                ) : (
+                  <div className="home-blog-carousel__image home-blog-carousel__image--empty" />
+                )}
+              </Link>
               <div className="home-blog-carousel__body">
                 <span className="home-blog-carousel__tag">{tag}</span>
-                <h3 className="home-blog-carousel__title">{title}</h3>
+                <h3 className="home-blog-carousel__title">
+                  <Link to={`/blog/${article.slug}`}>{title}</Link>
+                </h3>
                 {excerpt ? <p className="home-blog-carousel__excerpt">{excerpt}</p> : null}
                 <Link to={`/blog/${article.slug}`} className="home-blog-carousel__cta">
-                  {t('home.blog.cta')}
+                  <span>{t('home.blog.cta')}</span>
+                  <ArrowRight size={16} className="home-blog-carousel__cta-arrow" />
                 </Link>
               </div>
             </article>
           );
         })}
       </div>
-    </section>
+    </div>
   );
 }

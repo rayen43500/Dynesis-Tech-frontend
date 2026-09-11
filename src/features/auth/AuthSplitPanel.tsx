@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useBrandingContent } from '../../shared/hooks/useSiteContent';
+
 type AuthSplitPanelProps = {
   variant: 'login' | 'register';
 };
@@ -14,10 +16,19 @@ const AVATARS = {
 
 export function AuthSplitPanel({ variant }: AuthSplitPanelProps) {
   const { t } = useTranslation();
+  const branding = useBrandingContent();
   const prefix = `auth.splitPanel.${variant}`;
 
   return (
-    <aside className="auth-split__right" aria-label={t('auth.splitPanel.trusted')}>
+    <aside
+      className={`auth-split__right${branding.authBackgroundImage ? ' auth-split__right--custom-bg' : ''}`}
+      aria-label={t('auth.splitPanel.trusted')}
+      style={branding.authBackgroundImage ? {
+        backgroundImage: `linear-gradient(rgba(10, 25, 47, 0.72), rgba(6, 15, 28, 0.88)), url("${branding.authBackgroundImage}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      } : undefined}
+    >
       <div className="auth-split__glow" aria-hidden />
       <div className="auth-split__right-inner">
         <div className="auth-right-top">
