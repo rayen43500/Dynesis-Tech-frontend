@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Cookie, ShieldCheck } from 'lucide-react';
 import './cookie-consent.css';
 
 const CONSENT_KEY = 'dynesis_cookie_consent';
@@ -14,7 +15,6 @@ export function CookieConsent() {
   useEffect(() => {
     const stored = localStorage.getItem(CONSENT_KEY) as ConsentValue;
     if (!stored) {
-      // small delay so the page is rendered first
       const id = setTimeout(() => setVisible(true), 800);
       return () => clearTimeout(id);
     }
@@ -40,17 +40,30 @@ export function CookieConsent() {
       aria-label={t('rgpd.consent.title')}
     >
       <div className="cookie-consent__inner">
-        <div className="cookie-consent__text">
-          <p className="cookie-consent__title">{t('rgpd.consent.title')}</p>
-          <p className="cookie-consent__desc">
-            {t('rgpd.consent.description')}{' '}
-            <Link to="/privacy-policy" className="cookie-consent__link" onClick={() => setVisible(false)}>
-              {t('rgpd.consent.privacyLink')}
-            </Link>
-          </p>
+        <div className="cookie-consent__header">
+          <div className="cookie-consent__icon-wrap" aria-hidden>
+            <Cookie size={22} className="cookie-consent__icon" />
+          </div>
+          <div className="cookie-consent__text">
+            <div className="cookie-consent__title-row">
+              <h3 className="cookie-consent__title">{t('rgpd.consent.title')}</h3>
+              <span className="cookie-consent__badge">
+                <ShieldCheck size={12} />
+                <span>RGPD / Privacy</span>
+              </span>
+            </div>
+            <p className="cookie-consent__desc">
+              {t('rgpd.consent.description')}{' '}
+              <Link to="/privacy-policy" className="cookie-consent__link" onClick={() => setVisible(false)}>
+                {t('rgpd.consent.privacyLink')}
+              </Link>
+            </p>
+          </div>
         </div>
+
         <div className="cookie-consent__actions">
           <button
+            type="button"
             id="cookie-decline-btn"
             className="cookie-consent__btn cookie-consent__btn--outline"
             onClick={decline}
@@ -58,6 +71,7 @@ export function CookieConsent() {
             {t('rgpd.consent.decline')}
           </button>
           <button
+            type="button"
             id="cookie-accept-btn"
             className="cookie-consent__btn cookie-consent__btn--primary"
             onClick={accept}
