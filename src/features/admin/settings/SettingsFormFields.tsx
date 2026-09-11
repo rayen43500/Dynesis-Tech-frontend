@@ -14,32 +14,26 @@ type Props = {
 };
 
 export function LocalizedField({ label, value, onChange, multiline }: Props) {
+  const frenchValue = value.fr || value.en || '';
+
   return (
     <div className="admin-settings-localized">
       <FieldLabel label={label} />
       <div className="admin-settings-localized__grid">
         <label className="admin-field">
-          <span className="admin-field__label">EN</span>
+          <span className="admin-field__label">Français</span>
           {multiline ? (
             <textarea
               rows={3}
-              value={value.en || ''}
-              onChange={(e) => onChange({ ...value, en: e.target.value })}
+              value={frenchValue}
+              onChange={(e) => onChange({ ...value, en: e.target.value, fr: e.target.value })}
             />
           ) : (
-            <input type="text" value={value.en || ''} onChange={(e) => onChange({ ...value, en: e.target.value })} />
-          )}
-        </label>
-        <label className="admin-field">
-          <span className="admin-field__label">FR</span>
-          {multiline ? (
-            <textarea
-              rows={3}
-              value={value.fr || ''}
-              onChange={(e) => onChange({ ...value, fr: e.target.value })}
+            <input
+              type="text"
+              value={frenchValue}
+              onChange={(e) => onChange({ ...value, en: e.target.value, fr: e.target.value })}
             />
-          ) : (
-            <input type="text" value={value.fr || ''} onChange={(e) => onChange({ ...value, fr: e.target.value })} />
           )}
         </label>
       </div>
@@ -71,7 +65,7 @@ type ColorFieldProps = {
 };
 
 export function ColorField({ label, value, onChange }: ColorFieldProps) {
-  const pickerValue = value.startsWith('#') && value.length >= 7 ? value.slice(0, 7) : '#2d6a4f';
+  const pickerValue = value.startsWith('#') && value.length >= 7 ? value.slice(0, 7) : '#087cf0';
   return (
     <label className="admin-field admin-settings-color">
       <FieldLabel label={label} />

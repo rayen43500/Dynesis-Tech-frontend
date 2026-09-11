@@ -167,7 +167,7 @@ export function CustomSectionsAdminSection({ settings }: Props) {
                           fontSize: '11px',
                           fontWeight: 600,
                           background: sec.enabled ? 'rgba(74, 222, 128, 0.15)' : 'rgba(255, 255, 255, 0.1)',
-                          color: sec.enabled ? '#4ade80' : 'rgba(255, 255, 255, 0.4)'
+                          color: sec.enabled ? '#12d9ef' : 'rgba(255, 255, 255, 0.4)'
                         }}
                       >
                         {sec.enabled ? 'ACTIF' : 'MASQUÉ'}

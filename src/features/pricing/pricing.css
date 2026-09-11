@@ -168,7 +168,7 @@
 }
 
 .pricing-feature__icon--check {
-  background: #edf7f2;
+  background: #edf7ff;
   color: hsl(var(--color-accent));
 }
 
@@ -221,7 +221,7 @@
   justify-content: space-between;
   gap: 20px;
   padding: 32px 40px;
-  border: 1px dashed #b8ddc8;
+  border: 1px dashed #b8dfff;
   border-radius: 16px;
   background: #f0fdf4;
 }

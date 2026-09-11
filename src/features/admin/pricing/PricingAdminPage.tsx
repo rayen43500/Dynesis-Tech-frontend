@@ -104,7 +104,7 @@ export function PricingAdminPage() {
             <div>
               <strong style={{ color: 'var(--admin-text)' }}>{plan.name}</strong>
               {plan.highlighted && (
-                <span className="admin-pill" style={{ marginLeft: '8px', background: 'rgba(74, 222, 128, 0.15)', color: '#3a8a3a' }}>
+                <span className="admin-pill" style={{ marginLeft: '8px', background: 'rgba(8, 124, 240, 0.15)', color: '#087cf0' }}>
                   {plan.badgeLabel || 'Mise en avant'}
                 </span>
               )}

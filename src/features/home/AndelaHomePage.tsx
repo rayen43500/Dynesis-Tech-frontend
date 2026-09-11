@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Code2, Layers, Monitor, type LucideIcon } from 'lucide-react';
+import { BarChart3, Code2, Layers, Monitor, ShieldCheck, Settings, Users, type LucideIcon } from 'lucide-react';
 
 import { useHomePageContent } from '../../shared/hooks/useSiteContent';
 import { usePublicPricingPlans, type PricingPlan } from '../pricing/pricingHooks';
@@ -11,6 +11,7 @@ import './home-sections.css';
 import './home-services.css';
 
 import { DynamicCustomSections } from '../../shared/ui/content/DynamicCustomSections';
+import { HomeShowcaseSlider } from './HomeShowcaseSlider';
 
 export function AndelaHomePage() {
   const content = useHomePageContent();
@@ -18,25 +19,34 @@ export function AndelaHomePage() {
   return (
     <div className="andela-page">
       <main>
-        <section className="andela-hero-top">
+        <section
+          className={`andela-hero-top${content.heroBackgroundImage ? ' andela-hero-top--has-background' : ''}`}
+          style={content.heroBackgroundImage ? { backgroundImage: `url("${content.heroBackgroundImage}")` } : undefined}
+        >
           <div className="andela-hero-headline">
             <h1 className="andela-h1">
               <span className="andela-h1__line1">{content.headline1}</span>
               <span className="andela-h1__line2">{content.headline2}</span>
             </h1>
-            <p className="andela-hero-sub">{content.subheading}</p>
-            <div className="andela-checkrow" aria-label={content.headline1}>
-              {content.features.map((f) => (
-                <span key={f} className="andela-check">
-                  <span className="andela-check__mark">✓</span>
-                  {f}
-                </span>
-              ))}
+            <div className="andela-hero-actions">
+              <Link to={content.button1Href} className="andela-hero-action andela-hero-action--primary">
+                {content.button1} <span aria-hidden>→</span>
+              </Link>
+              <Link to={content.button2Href} className="andela-hero-action andela-hero-action--secondary">
+                {content.button2}
+              </Link>
+            </div>
+            <div className="home-proof-bar" aria-label="Chiffres clés">
+              <HomeProofStat icon={Users} value="50+" label="Clients satisfaits" />
+              <HomeProofStat icon={Settings} value="100+" label="Projets réalisés" />
+              <HomeProofStat icon={BarChart3} value="3+" label="Années d'expérience" />
+              <HomeProofStat icon={ShieldCheck} value="99%" label="Taux de satisfaction" />
             </div>
           </div>
         </section>
 
         <DynamicCustomSections />
+        <HomeShowcaseSlider images={content.showcaseImages} backgroundImage={content.heroBackgroundImage} />
 
         <section className="ratings">
           <div className="ratings__inner">
@@ -80,6 +90,28 @@ export function AndelaHomePage() {
 
         <HomePageSections />
       </main>
+    </div>
+  );
+}
+
+function HomeProofStat({
+  icon: Icon,
+  value,
+  label
+}: {
+  icon: LucideIcon;
+  value: string;
+  label: string;
+}) {
+  return (
+    <div className="home-proof-stat">
+      <span className="home-proof-stat__icon" aria-hidden>
+        <Icon size={22} strokeWidth={2.2} />
+      </span>
+      <span className="home-proof-stat__copy">
+        <strong>{value}</strong>
+        <span>{label}</span>
+      </span>
     </div>
   );
 }

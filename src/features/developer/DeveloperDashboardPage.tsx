@@ -15,7 +15,7 @@ function priorityBadge(priority?: string) {
   const map: Record<string, string> = {
     urgent: '#e05555',
     high: '#d97706',
-    medium: '#3a8a3a',
+    medium: '#087cf0',
     low: '#8a8a9a'
   };
   const color = (priority && map[priority]) || '#8a8a9a';
@@ -40,7 +40,7 @@ function priorityBadge(priority?: string) {
 function statusBadge(status: string, label: string) {
   const map: Record<string, string> = {
     todo: '#8a8a9a',
-    in_progress: '#3a8a3a',
+    in_progress: '#087cf0',
     blocked: '#e05555',
     review: '#d97706',
     testing: '#6366f1',

@@ -5,6 +5,7 @@ import { useI18n } from '../../app/providers/I18nProvider';
 import { usePlatformSettings } from '../../app/providers/PlatformSettingsProvider';
 import { pickLocalized } from '../platform/platformSettingsUtils';
 import type { ScrollTabContent, TestimonialItem } from '../types/platformSettings';
+import { DEFAULT_LOGO_PUBLIC_ID, getCloudinaryImageUrl } from '../utils/cloudinary';
 
 export function useBrandingContent() {
   const { settings } = usePlatformSettings();
@@ -15,7 +16,7 @@ export function useBrandingContent() {
     () => ({
       siteName: pickLocalized(settings?.branding?.siteName, language, t('nav.brand')),
       tagline: pickLocalized(settings?.branding?.tagline, language, t('topBar.tagline')),
-      logoUrl: settings?.branding?.logoUrl || '/images/image.png',
+      logoUrl: settings?.branding?.logoUrl || getCloudinaryImageUrl(DEFAULT_LOGO_PUBLIC_ID) || '/images/image.png',
       logoMark: settings?.branding?.logoMark || 'D'
     }),
     [settings, language, t]
@@ -53,6 +54,7 @@ export function useHomePageContent() {
   return useMemo(() => {
     const h = settings?.homeContent?.hero;
     const r = settings?.homeContent?.ratings;
+    const showcaseImages = settings?.homeContent?.showcaseImages || [];
     const tm = settings?.homeContent?.testimonials;
     const intro = settings?.homeContent?.intro;
     const tabs = settings?.homeContent?.scrollTabs;
@@ -91,6 +93,8 @@ export function useHomePageContent() {
         title: pickLocalized(h?.featuredRole, language, t('home.featured.role'))
       },
       heroImage: h?.heroImage || '/images/hero-developer.png',
+      heroBackgroundImage: h?.heroBackgroundImage || '',
+      showcaseImages: showcaseImages.filter(Boolean).slice(0, 6),
       techStack: h?.techStack?.length ? h.techStack : ['HuggingFace', 'PyTorch', 'LangChain', 'OpenAI', 'AWS', 'FastAPI'],
       testimonials: cmsTestimonials.some((x: { quote: string }) => x.quote) ? cmsTestimonials : fallbackTestimonials,
       intro: {

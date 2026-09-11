@@ -149,11 +149,11 @@ export function ContactPage() {
       className={isEmbedded ? 'contact-logged-in-feedback' : undefined}
       style={
         isEmbedded
-          ? { color: feedback.type === 'success' ? '#3A8A3A' : '#E05555' }
+          ? { color: feedback.type === 'success' ? '#087CF0' : '#E05555' }
           : {
               fontFamily: 'Inter, sans-serif',
               fontSize: 13,
-              color: feedback.type === 'success' ? '#3A8A3A' : '#E05555',
+              color: feedback.type === 'success' ? '#087CF0' : '#E05555',
               marginTop: 12,
               textAlign: 'center'
             }
@@ -258,10 +258,10 @@ export function ContactPage() {
               <h2 className="contact-form-col__title">{t('contact.form.title')}</h2>
               <div className="contact-form-header__icon" aria-hidden>
                 <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <line x1="0" y1="2" x2="14" y2="2" stroke="#3A8A3A" strokeWidth="2" strokeLinecap="round" />
-                  <line x1="0" y1="9" x2="14" y2="9" stroke="#3A8A3A" strokeWidth="2" strokeLinecap="round" />
-                  <rect x="16" y="4" width="12" height="14" rx="1" stroke="#3A8A3A" strokeWidth="2" />
-                  <path d="M16 6 L22 11 L28 6" stroke="#3A8A3A" strokeWidth="2" strokeLinejoin="round" />
+                  <line x1="0" y1="2" x2="14" y2="2" stroke="#087CF0" strokeWidth="2" strokeLinecap="round" />
+                  <line x1="0" y1="9" x2="14" y2="9" stroke="#087CF0" strokeWidth="2" strokeLinecap="round" />
+                  <rect x="16" y="4" width="12" height="14" rx="1" stroke="#087CF0" strokeWidth="2" />
+                  <path d="M16 6 L22 11 L28 6" stroke="#087CF0" strokeWidth="2" strokeLinejoin="round" />
                 </svg>
               </div>
             </div>

@@ -3,8 +3,8 @@
   --color-text-primary: #1a1a1a;
   --color-text-body: #4a4a4a;
   --color-text-muted: #6b6b6b;
-  --color-accent: #2d6a4f;
-  --color-accent-light: #d1e8dc;
+  --color-accent: #087cf0;
+  --color-accent-light: #d9f3ff;
   --color-card-bg: #ffffff;
   --color-card-border: #e8e8e8;
   --color-hero-card-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -12,7 +12,7 @@
   --color-btn-secondary: #ffffff;
   --color-star: #f59e0b;
   --color-g2-orange: #ff492c;
-  --color-check: #2d6a4f;
+  --color-check: #087cf0;
   --font-serif: 'Lora', 'Georgia', serif;
   --font-sans: 'Inter', 'DM Sans', sans-serif;
 }
@@ -71,14 +71,14 @@
   height: 34px;
   border-radius: 10px;
   background: #eaf3ec;
-  border: 1px solid #b8ddc8;
+  border: 1px solid #b8dfff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 14px;
-  color: #2d6a4f;
+  color: #087cf0;
 }
 
 .andela-nav__logo-img {
@@ -122,7 +122,7 @@
 }
 
 .andela-nav__link:hover {
-  color: #2d6a4f;
+  color: #087cf0;
 }
 
 .andela-nav__chev {
@@ -229,7 +229,7 @@
 }
 
 .andela-nav__btn--primary:hover {
-  background: #2d6a4f;
+  background: #087cf0;
   color: #ffffff;
   box-shadow: 0 4px 16px rgba(45, 106, 79, 0.25);
 }
@@ -355,7 +355,7 @@
 }
 
 .andela-nav__dropdown-learn {
-  color: #2d6a4f;
+  color: #087cf0;
   font-size: 14px;
   font-weight: 500;
   margin-top: 8px;
@@ -371,7 +371,7 @@
 
 .andela-nav__dropdown-right {
   background: #eaf3ec;
-  border: 1px solid #b8ddc8;
+  border: 1px solid #b8dfff;
   border-radius: 12px;
   padding: 20px;
   position: relative;
@@ -388,7 +388,7 @@
 }
 
 .andela-nav__dropdown-right-link {
-  color: #2d6a4f;
+  color: #087cf0;
   font-size: 14px;
   text-decoration: none;
   font-family: Inter, var(--font-sans);
@@ -475,15 +475,33 @@
 
 /* HERO TOP — headline block only */
 .andela-hero-top {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 0 48px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.andela-hero-top--has-background {
+  min-height: 0;
+  background-position: center;
+  background-size: cover;
+  border-radius: 0;
+  border-bottom: 2px solid rgba(8, 124, 240, 0.28);
+  overflow: hidden;
+}
+
+.andela-hero-top--has-background .andela-hero-headline {
+  background: transparent;
 }
 
 .andela-hero-headline {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
   text-align: center;
-  padding-top: 40px;
-  padding-bottom: 48px;
+  padding-top: 32px;
+  padding-bottom: 0;
   background: transparent;
 }
 
@@ -496,7 +514,7 @@
   font-family: 'Lora', serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 72px;
+  font-size: 62px;
   color: hsl(var(--color-text));
   line-height: 1.4;
 }
@@ -506,9 +524,113 @@
   font-family: 'Lora', serif;
   font-style: italic;
   font-weight: 400;
-  font-size: 72px;
-  color: #3a8a3a;
+  font-size: 62px;
+  color: #087cf0;
   line-height: 1.4;
+}
+
+.andela-hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.andela-hero-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.andela-hero-action:hover {
+  transform: translateY(-2px);
+}
+
+.andela-hero-action--primary {
+  gap: 8px;
+  color: #fff;
+  background: #087cf0;
+  box-shadow: 0 10px 22px rgba(8, 124, 240, 0.22);
+}
+
+.andela-hero-action--secondary {
+  color: #087cf0;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(8, 124, 240, 0.35);
+}
+
+.home-proof-bar {
+  width: 100vw;
+  max-width: none;
+  margin: 136px 0 0;
+  margin-left: calc(50% - 50vw);
+  position: relative;
+  z-index: 2;
+  transform: translateY(-18px);
+  margin-bottom: -18px;
+  padding: 20px 26px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: rgba(245, 251, 255, 0.88);
+  border: 1px solid rgba(8, 124, 240, 0.2);
+  border-radius: 0;
+  box-shadow: 0 12px 30px rgba(8, 124, 240, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.home-proof-stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-width: 0;
+  padding: 0 22px;
+  border-right: 1px solid rgba(8, 124, 240, 0.24);
+}
+
+.home-proof-stat:last-child {
+  border-right: 0;
+}
+
+.home-proof-stat__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  color: #087cf0;
+  background: linear-gradient(145deg, #eaf7ff, #d8efff);
+  border: 1px solid rgba(8, 124, 240, 0.22);
+  border-radius: 12px;
+}
+
+.home-proof-stat__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-align: left;
+}
+
+.home-proof-stat__copy strong {
+  color: #073a9a;
+  font-size: 27px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.home-proof-stat__copy span {
+  color: #19356c;
+  font-size: 12px;
+  line-height: 1.25;
+  white-space: nowrap;
 }
 
 .andela-hero-sub {
@@ -540,7 +662,7 @@
 }
 
 .andela-check__mark {
-  color: #3a8a3a;
+  color: #087cf0;
   margin-right: 7px;
   font-weight: 400;
 }
@@ -578,7 +700,7 @@
 
 .match-badge {
   background: #e8f5ee;
-  color: #2d6a4f;
+  color: #087cf0;
   border-radius: 9999px;
   font-size: 12px;
   padding: 2px 10px;
@@ -736,7 +858,7 @@
   font-weight: 500;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: #3a8a3a;
+  color: #087cf0;
 }
 
 .g2dot {
@@ -772,7 +894,7 @@
 }
 
 .reviews {
-  color: #3a8a3a;
+  color: #087cf0;
   font-family: Inter, sans-serif;
   font-size: 11px;
   font-weight: 500;
@@ -910,15 +1032,61 @@
   }
 
   .andela-hero-top {
-    padding: 0 18px;
+    padding: 0;
   }
   .andela-hero-headline {
-    padding-top: 54px;
-    padding-bottom: 32px;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 38px;
+    padding-bottom: 0;
+  }
+
+  .home-proof-bar {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-top: 72px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 0;
+    padding: 16px 8px;
+  }
+
+  .home-proof-stat:nth-child(2) {
+    border-right: 0;
+  }
+
+  .home-proof-stat:nth-child(-n + 2) {
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(8, 124, 240, 0.2);
+  }
+
+  .home-proof-stat {
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .home-proof-stat__icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .home-proof-stat__copy strong {
+    font-size: 22px;
+  }
+
+  .home-proof-stat__copy span {
+    font-size: 10px;
+    white-space: normal;
   }
   .andela-h1__line1,
   .andela-h1__line2 {
-    font-size: 42px;
+    font-size: 38px;
+  }
+
+  .andela-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 20px;
   }
 
   .hero-card {

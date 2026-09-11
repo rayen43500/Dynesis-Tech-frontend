@@ -384,7 +384,15 @@ export const endpoints = {
       http.post('/api/v1/invitations/accept', payload)
   },
   media: {
-    signUpload: (payload: { folder?: string; resourceType?: 'image' | 'video' | 'raw' }) => http.post('/api/v1/media/sign-upload', payload)
+    signUpload: (payload: { folder?: string; resourceType?: 'image' | 'video' | 'raw' }) => http.post('/api/v1/admin/media/sign-upload', payload),
+    createAsset: (payload: {
+      cloudinaryPublicId: string;
+      secureUrl: string;
+      resourceType?: 'image' | 'video' | 'raw';
+      folder: string;
+      altText?: string;
+      tags?: string[];
+    }) => http.post('/api/v1/admin/media/assets', payload)
   },
   payments: {
     createCheckout: (payload: { amount: number; currency: string; successUrl: string; cancelUrl: string; metadata?: Record<string, string> }) =>

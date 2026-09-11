@@ -67,7 +67,7 @@ export function ContactSettingsSection({ settings }: Props) {
         saveLabel={t('common.save', 'Enregistrer')}
         resetLabel={t('admin.settings.reset', 'Réinitialiser')}
       >
-        <h3 className="admin-settings-subtitle" style={{ fontSize: '15px', fontWeight: 600, color: '#4ade80', marginBottom: '16px' }}>
+        <h3 className="admin-settings-subtitle" style={{ fontSize: '15px', fontWeight: 600, color: '#087cf0', marginBottom: '16px' }}>
           Informations de Contact Principales
         </h3>
 
@@ -106,7 +106,7 @@ export function ContactSettingsSection({ settings }: Props) {
           multiline
         />
 
-        <h3 className="admin-settings-subtitle" style={{ fontSize: '15px', fontWeight: 600, color: '#4ade80', marginTop: '28px', marginBottom: '16px' }}>
+        <h3 className="admin-settings-subtitle" style={{ fontSize: '15px', fontWeight: 600, color: '#087cf0', marginTop: '28px', marginBottom: '16px' }}>
           Réseaux Sociaux & Copyright
         </h3>
 

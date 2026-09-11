@@ -9,6 +9,7 @@ import {
 import { ColorField, LocalizedField, SettingsSectionCard, SimpleField } from './SettingsFormFields';
 import { SettingsResetModal } from './SettingsResetModal';
 import type { HomeThemeColors, LocalizedString, PlatformSettings, ScrollTabContent, TestimonialItem } from '../../../shared/types/platformSettings';
+import { endpoints } from '../../../shared/api/endpoints';
 
 type Props = {
   settings: PlatformSettings;
@@ -25,6 +26,8 @@ export function HomePageSettingsSection({ settings }: Props) {
   const [form, setForm] = useState(settings.homeContent || {});
   const [homeColors, setHomeColors] = useState<HomeThemeColors>(settings.theme?.home || {});
   const [resetOpen, setResetOpen] = useState(false);
+  const [uploadingBackground, setUploadingBackground] = useState(false);
+  const [uploadingShowcase, setUploadingShowcase] = useState<number | null>(null);
 
   useEffect(() => {
     setForm(settings.homeContent || {});
@@ -55,6 +58,47 @@ export function HomePageSettingsSection({ settings }: Props) {
       items[index] = { ...items[index], ...patch };
       return { ...prev, testimonials: { ...prev.testimonials, items } };
     });
+  }
+  async function handleShowcaseUpload(index: number, event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingShowcase(index);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/showcase', resourceType: 'image' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/showcase',
+        altText: `Homepage showcase image ${index + 1}`,
+        tags: ['homepage', 'showcase']
+      });
+
+      setForm((prev) => {
+        const images = [...(prev.showcaseImages || [])];
+        images[index] = uploaded.secure_url;
+        return { ...prev, showcaseImages: images.slice(0, 6) };
+      });
+      setMessage(t('admin.settings.home.showcaseUploaded'));
+    } catch {
+      setMessage(t('admin.settings.home.showcaseUploadFailed'));
+    } finally {
+      setUploadingShowcase(null);
+    }
   }
 
   function updateHomeColor(key: (typeof HOME_COLOR_KEYS)[number], value: string) {
@@ -87,6 +131,43 @@ export function HomePageSettingsSection({ settings }: Props) {
       setMessage(t('admin.settings.resetSuccess'));
     } catch {
       setMessage(t('admin.settings.resetFailed'));
+    }
+  }
+
+  async function handleBackgroundUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingBackground(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/backgrounds', resourceType: 'image' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/backgrounds',
+        altText: 'Homepage hero background',
+        tags: ['homepage', 'background']
+      });
+      setHero('heroBackgroundImage', uploaded.secure_url);
+      setMessage(t('admin.settings.home.backgroundUploaded'));
+    } catch {
+      setMessage(t('admin.settings.home.backgroundUploadFailed'));
+    } finally {
+      setUploadingBackground(false);
     }
   }
 
@@ -148,12 +229,56 @@ export function HomePageSettingsSection({ settings }: Props) {
         value={hero.feature3 || {}}
         onChange={(v) => setHero('feature3', v)}
       />
-      <SimpleField
-        label={t('admin.settings.home.heroImage')}
-        value={hero.heroImage || ''}
-        onChange={(v) => setHero('heroImage', v)}
-        type="url"
-      />
+      <h3 className="admin-settings-subtitle">Médias du hero</h3>
+      <div className="admin-settings-media">
+        <div className="admin-settings-media__controls">
+          <SimpleField
+            label={t('admin.settings.home.heroImage')}
+            value={hero.heroImage || ''}
+            onChange={(v) => setHero('heroImage', v)}
+            type="url"
+          />
+          <SimpleField
+            label={t('admin.settings.home.heroBackgroundImage')}
+            value={hero.heroBackgroundImage || ''}
+            onChange={(v) => setHero('heroBackgroundImage', v)}
+            type="url"
+          />
+          <label className="admin-field">
+            <span className="admin-field__label admin-field__label--primary">{t('admin.settings.home.backgroundUpload')}</span>
+            <input type="file" accept="image/*" onChange={(event) => void handleBackgroundUpload(event)} disabled={uploadingBackground} />
+          </label>
+        </div>
+        <div
+          className="admin-settings-media__preview admin-settings-media__preview--background"
+          style={hero.heroBackgroundImage ? { backgroundImage: `url("${hero.heroBackgroundImage}")` } : undefined}
+          aria-label="Aperçu de l'arrière-plan du hero"
+        >
+          {!hero.heroBackgroundImage ? <span className="admin-settings-media__empty">Aucun arrière-plan sélectionné</span> : null}
+        </div>
+      </div>
+      <h3 className="admin-settings-subtitle">Galerie du site — 6 images</h3>
+      <div className="admin-showcase-editor">
+        {Array.from({ length: 6 }).map((_, index) => {
+          const image = form.showcaseImages?.[index] || '';
+          return (
+            <div className="admin-showcase-editor__slot" key={index}>
+              <div className="admin-showcase-editor__preview">
+                {image ? <img src={image} alt={`Aperçu ${index + 1}`} /> : <span>Image {index + 1}</span>}
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                aria-label={`Choisir l'image ${index + 1}`}
+                onChange={(event) => void handleShowcaseUpload(index, event)}
+                disabled={uploadingShowcase !== null}
+              />
+              {uploadingShowcase === index ? <small>Téléversement…</small> : null}
+            </div>
+          );
+        })}
+      </div>
+      <h3 className="admin-settings-subtitle">Actions et informations complémentaires</h3>
       <SimpleField
         label={t('admin.settings.home.techStack')}
         value={(hero.techStack || []).join(', ')}

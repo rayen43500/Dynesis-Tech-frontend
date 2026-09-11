@@ -43,8 +43,8 @@ function CustomSectionCard({ section, lang }: { section: CustomSectionItem; lang
         style={{
           padding: '40px 48px',
           borderRadius: '24px',
-          background: 'linear-gradient(135deg, #eaf4ea 0%, #ffffff 100%)',
-          border: '1px solid #b8ddc8',
+          background: 'linear-gradient(135deg, #eaf7ff 0%, #ffffff 100%)',
+          border: '1px solid #b8dfff',
           boxShadow: '0 10px 30px rgba(0, 0, 0, 0.04)',
           display: 'flex',
           flexDirection: 'column',
@@ -53,7 +53,7 @@ function CustomSectionCard({ section, lang }: { section: CustomSectionItem; lang
         }}
       >
         {badge && (
-          <span style={{ padding: '5px 14px', borderRadius: '9999px', background: '#edf7f2', border: '1px solid #b8ddc8', color: '#2d6a4f', fontSize: '11px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+          <span style={{ padding: '5px 14px', borderRadius: '9999px', background: '#edf7ff', border: '1px solid #b8dfff', color: '#087cf0', fontSize: '11px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>
             {badge}
           </span>
         )}
@@ -88,7 +88,7 @@ function CustomSectionCard({ section, lang }: { section: CustomSectionItem; lang
       }}
     >
       {badge && (
-        <span style={{ alignSelf: 'flex-start', padding: '4px 12px', borderRadius: '9999px', background: '#edf7f2', border: '1px solid #b8ddc8', color: '#2d6a4f', fontSize: '11px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+        <span style={{ alignSelf: 'flex-start', padding: '4px 12px', borderRadius: '9999px', background: '#edf7ff', border: '1px solid #b8dfff', color: '#087cf0', fontSize: '11px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>
           {badge}
         </span>
       )}
@@ -101,7 +101,7 @@ function CustomSectionCard({ section, lang }: { section: CustomSectionItem; lang
           style={{
             alignSelf: 'flex-start',
             marginTop: '6px',
-            color: '#2d6a4f',
+            color: '#087cf0',
             fontWeight: 600,
             fontSize: '14px',
             textDecoration: 'none',

@@ -9,7 +9,7 @@ const STATUS_OPTIONS: DeveloperTaskStatus[] = ['todo', 'in_progress', 'blocked',
 
 const STATUS_COLORS: Record<DeveloperTaskStatus, string> = {
   todo: '#8a8a9a',
-  in_progress: '#3a8a3a',
+  in_progress: '#087cf0',
   blocked: '#e05555',
   review: '#d97706',
   testing: '#6366f1',
@@ -19,7 +19,7 @@ const STATUS_COLORS: Record<DeveloperTaskStatus, string> = {
 const PRIORITY_COLORS: Record<string, string> = {
   urgent: '#e05555',
   high: '#d97706',
-  medium: '#3a8a3a',
+  medium: '#087cf0',
   low: '#8a8a9a'
 };
 

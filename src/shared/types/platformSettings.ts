@@ -103,6 +103,7 @@ export type PlatformSettings = {
       feature2?: LocalizedString;
       feature3?: LocalizedString;
       heroImage?: string;
+      heroBackgroundImage?: string;
       techStack?: string[];
       ctaPrimary?: LocalizedString;
       ctaPrimaryHref?: string;
@@ -112,6 +113,7 @@ export type PlatformSettings = {
       featuredName?: LocalizedString;
       featuredRole?: LocalizedString;
     };
+    showcaseImages?: string[];
     ratings?: {
       score?: string;
       reviewCount?: LocalizedString;

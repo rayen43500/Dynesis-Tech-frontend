@@ -14,7 +14,7 @@ const SEVERITY_COLORS: Record<string, string> = {
 const STATUS_COLORS: Record<string, string> = {
   open: '#e05555',
   in_progress: '#d97706',
-  resolved: '#3a8a3a',
+  resolved: '#087cf0',
   closed: '#8a8a9a'
 };
 

@@ -183,7 +183,7 @@ export function ProjectsAdminPage() {
                       border: '1px solid var(--admin-row-border, #e2e8f0)'
                     }}
                   >
-                    <span style={{ fontSize: '13px', fontWeight: 500, color: stage.completed ? '#2d6a4f' : 'var(--admin-text)' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 500, color: stage.completed ? '#087cf0' : 'var(--admin-text)' }}>
                       {stage.completed ? '✓ ' : '○ '} {stage.title}
                     </span>
 
@@ -198,7 +198,7 @@ export function ProjectsAdminPage() {
                         Valider & Signer Hash
                       </button>
                     ) : (
-                      <span style={{ fontSize: '11px', color: '#2d6a4f', fontWeight: 600 }}>Inscrit on-chain</span>
+                      <span style={{ fontSize: '11px', color: '#087cf0', fontWeight: 600 }}>Inscrit on-chain</span>
                     )}
                   </li>
                 ))}

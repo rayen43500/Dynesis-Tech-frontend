@@ -5,6 +5,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
+import { useI18n } from '../providers/I18nProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
 import { resolveMediaUrl } from '../../shared/utils/resolveMediaUrl';
 import { AdminNotificationsDropdown } from '../../features/admin/AdminNotificationsDropdown';
@@ -19,7 +20,6 @@ import {
   IconUser,
   IconUsers
 } from '../../shared/ui/navigation/icons';
-import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
 import '../../features/admin/admin-dashboard.css';
 import '../../features/admin/quotes/quotes-admin.css';
 import '../../features/client/client-account.css';
@@ -40,6 +40,7 @@ function NavIcon({ children }: { children: React.ReactNode }) {
 
 export function AdminLayout() {
   const { t } = useTranslation();
+  const { setLanguage } = useI18n();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const bellWrapRef = useRef<HTMLDivElement>(null);
@@ -54,6 +55,10 @@ export function AdminLayout() {
   const newQuotes = notificationsQuery.data?.newQuotes ?? 0;
   const newMessages = notificationsQuery.data?.newMessages ?? 0;
   const totalNotifications = newQuotes + newMessages;
+
+  useEffect(() => {
+    setLanguage('fr');
+  }, [setLanguage]);
 
   useEffect(() => {
     localStorage.setItem(ADMIN_THEME_KEY, adminTheme);
@@ -247,7 +252,6 @@ export function AdminLayout() {
             {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <div className="admin-topbar__actions">
-            <LanguageSwitcher variant="dashboard" />
             <button
               type="button"
               className="admin-topbar__icon-btn"

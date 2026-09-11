@@ -94,7 +94,7 @@ const TABS: { id: SettingsTab; label: string; icon: React.ReactNode }[] = [
 export function SettingsAdminPage() {
   const { t } = useTranslation();
   const query = useAdminSettings();
-  const [activeTab, setActiveTab] = useState<SettingsTab>('homePage');
+  const [activeTab, setActiveTab] = useState<SettingsTab>('navbar');
 
   if (query.isLoading || !query.data) {
     return (

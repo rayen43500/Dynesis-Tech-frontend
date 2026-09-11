@@ -1,7 +1,7 @@
 :root {
   --font-serif: 'Lora', Georgia, serif;
   --font-sans: 'Inter', sans-serif;
-  --color-green: #3a8a3a;
+  --color-green: #087cf0;
   --color-dark: #1a1a1a;
   --color-bg: #ffffff;
 }
@@ -285,7 +285,7 @@ body.auth-route {
 }
 
 .auth-submit:hover:not(:disabled) {
-  background: #2d6a4f;
+  background: #087cf0;
 }
 
 .auth-submit:disabled {
@@ -321,7 +321,7 @@ body.auth-route {
   margin-top: 12px;
   font-family: var(--font-sans);
   font-size: 13px;
-  color: #3a8a3a;
+  color: #087cf0;
 }
 
 .auth-activation-card {
@@ -598,7 +598,7 @@ body.auth-route {
   margin-top: 0;
   margin-bottom: 24px;
   padding: 12px 16px;
-  border-left: 3px solid #3a8a3a;
+  border-left: 3px solid #087cf0;
   border-radius: 8px;
   background: #eaf4ea;
 }

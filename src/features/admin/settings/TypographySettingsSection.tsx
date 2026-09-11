@@ -154,7 +154,7 @@ export function TypographySettingsSection({ settings }: Props) {
             color: '#ffffff'
           }}
         >
-          <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '2px', color: '#4ade80', fontWeight: 600 }}>
+          <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '2px', color: '#087cf0', fontWeight: 600 }}>
             Aperçu du style d'écriture
           </span>
           <h2

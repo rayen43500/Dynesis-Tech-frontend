@@ -160,7 +160,7 @@ export function DeveloperAccountPage() {
             {feedback ? (
               <p
                 className="client-account-feedback"
-                style={{ color: feedback.type === 'success' ? '#3A8A3A' : '#E05555' }}
+                style={{ color: feedback.type === 'success' ? '#087CF0' : '#E05555' }}
               >
                 {feedback.text}
               </p>
@@ -223,7 +223,7 @@ export function DeveloperAccountPage() {
             {passwordFeedback ? (
               <p
                 className="client-account-feedback"
-                style={{ color: passwordFeedback.type === 'success' ? '#3A8A3A' : '#E05555' }}
+                style={{ color: passwordFeedback.type === 'success' ? '#087CF0' : '#E05555' }}
               >
                 {passwordFeedback.text}
               </p>
