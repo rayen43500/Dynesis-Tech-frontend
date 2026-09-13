@@ -7,6 +7,7 @@ import { PublicFooter } from '../../shared/ui/layout/PublicFooter';
 import { PageContainer } from '../../shared/ui/layout/PageContainer';
 import { ChatbotWidget } from '../../features/chatbot/ChatbotWidget';
 import { CookieConsent } from '../../shared/ui/layout/CookieConsent';
+import { DynamicFavicon } from '../../shared/ui/DynamicFavicon';
 
 export function PublicLayout() {
   const { pathname } = useLocation();
@@ -23,6 +24,7 @@ export function PublicLayout() {
 
   return (
     <PlatformSettingsProvider>
+      <DynamicFavicon />
       <div className="flex min-h-screen flex-col bg-bg">
         {!isAuthPage && !isContactPage && !isPrivacyPage && <AndelaNavbar />}
         <div className="flex flex-1 flex-col">

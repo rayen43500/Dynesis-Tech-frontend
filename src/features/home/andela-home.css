@@ -59,9 +59,9 @@
 }
 
 .andela-nav__logo-img {
-  height: 48px;
+  height: 56px;
   width: auto;
-  max-width: 220px;
+  max-width: 280px;
   object-fit: contain;
   display: block;
 }
