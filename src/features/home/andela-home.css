@@ -586,28 +586,40 @@
   }
 }
 
-/* ── KEY STATS PROOF BAR ── */
+/* ── KEY STATS PROOF BAR (FULL WIDTH EDGE TO EDGE) ── */
 .tech-stats {
   width: 100%;
-  padding: 0 36px;
-  margin-bottom: 56px;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-top: 1px solid var(--tech-border);
+  border-bottom: 1px solid var(--tech-border);
+  background: #ffffff;
 }
 
 .tech-stats__container {
-  max-width: 1280px;
-  margin: 0 auto;
-  border: 1px solid var(--tech-border);
-  background: #fbfcfe;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  border: none !important;
+  background: #ffffff;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
 
 .tech-stat-col {
-  padding: 32px 36px;
+  padding: 34px 24px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   gap: 6px;
   border-right: 1px solid var(--tech-border);
+  transition: background 0.2s ease;
+}
+
+.tech-stat-col:hover {
+  background: #f8fafc;
 }
 
 .tech-stat-col:last-child {
@@ -887,7 +899,6 @@
     display: inline-flex;
   }
   .tech-hero,
-  .tech-stats,
   .tech-expertises,
   .tech-testimonials {
     padding-left: 20px;
@@ -946,7 +957,8 @@
   overflow: hidden;
 }
 
-.tech-hero__bg-video {
+.tech-hero__bg-video,
+.tech-hero__bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;

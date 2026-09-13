@@ -852,6 +852,44 @@ export function HomePageSettingsSection({ settings }: Props) {
               <input type="file" accept="video/*" onChange={(event) => void handleHeroBgVideoUpload(event)} disabled={uploadingHeroBgVideo} />
               {uploadingHeroBgVideo ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement de la vidéo en cours…</small> : null}
             </label>
+
+            {/* LIVE PREVIEW OF HERO BACKGROUND */}
+            {(hero.heroBackgroundVideo || hero.heroBackgroundImage) ? (
+              <div style={{ marginTop: '12px', padding: '10px', background: '#ffffff', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '6px' }}>
+                  Aperçu de l'arrière-plan Hero actif :
+                </span>
+                {hero.heroBackgroundVideo ? (
+                  <video
+                    src={hero.heroBackgroundVideo}
+                    poster={hero.heroBackgroundImage || undefined}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '4px' }}
+                  />
+                ) : hero.heroBackgroundImage ? (
+                  <img
+                    src={hero.heroBackgroundImage}
+                    alt="Aperçu arrière-plan Hero"
+                    style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '4px' }}
+                  />
+                ) : null}
+                <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+                  {hero.heroBackgroundVideo ? (
+                    <span style={{ fontSize: '10.5px', background: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: '999px', fontWeight: 600 }}>
+                      🎥 Vidéo d'arrière-plan active
+                    </span>
+                  ) : null}
+                  {hero.heroBackgroundImage ? (
+                    <span style={{ fontSize: '10.5px', background: '#f1f5f9', color: '#334155', padding: '2px 8px', borderRadius: '999px', fontWeight: 600 }}>
+                      🖼️ Image d'arrière-plan active
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
           </div>
 
           {/* SECTION 2: SHOWCASE */}

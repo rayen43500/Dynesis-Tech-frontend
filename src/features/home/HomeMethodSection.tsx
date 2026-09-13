@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lightbulb, Pencil, Code2, ShieldCheck, BarChart3, ArrowRight } from 'lucide-react';
+import { Lightbulb, Pencil, Code2, ShieldCheck, BarChart3, ArrowRight, type LucideIcon } from 'lucide-react';
 import './home-method.css';
 
 interface HomeMethodSectionProps {
@@ -9,7 +9,7 @@ interface HomeMethodSectionProps {
 
 interface MethodStep {
   number: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   title: string;
   bullets: string[];
 }

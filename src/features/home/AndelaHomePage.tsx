@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHomePageContent, useBrandingContent } from '../../shared/hooks/useSiteContent';
 import { usePublicPricingPlans, type PricingPlan } from '../pricing/pricingHooks';
 import { HomePageSections } from './HomePageSections';
 import { DynamicCustomSections } from '../../shared/ui/content/DynamicCustomSections';
-import { HomeShowcaseSlider } from './HomeShowcaseSlider';
+import { HomeMethodSection } from './HomeMethodSection';
+import { HomeWhyDynesisSection } from './HomeWhyDynesisSection';
 
 import './andela-home.css';
 import './home-sections.css';
@@ -16,7 +17,6 @@ function isVideoUrl(url?: string): boolean {
   return /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(url) || url.includes('/video/upload/');
 }
 
-const EXPERTISES_LIST = ['WEB', 'MOBILE', 'AI', 'CLOUD', 'SECURITY', 'UI/UX'] as const;
 
 const DEFAULT_PLANS: PricingPlan[] = [
   {
@@ -117,7 +117,6 @@ const DEFAULT_TESTIMONIALS = [
 export function AndelaHomePage() {
   const content = useHomePageContent();
   const branding = useBrandingContent();
-  const [selectedExpertise, setSelectedExpertise] = useState<string>('SECURITY');
 
   const rawHeadline1 = content.headline1 || 'Logiciel premium,';
   const rawHeadline2 = content.headline2 || 'conçu pour votre croissance.';
@@ -155,6 +154,16 @@ export function AndelaHomePage() {
                 loop
                 muted
                 playsInline
+              />
+              <div className="tech-hero__bg-video-overlay" />
+            </div>
+          ) : heroBgImage ? (
+            <div className="tech-hero__bg-video-wrap" aria-hidden="true">
+              <img
+                className="tech-hero__bg-img"
+                src={heroBgImage}
+                alt=""
+                loading="eager"
               />
               <div className="tech-hero__bg-video-overlay" />
             </div>
@@ -237,40 +246,14 @@ export function AndelaHomePage() {
           </div>
         </section>
 
-        {/* (B) EXPERTISES FILTER BAR */}
-        <section className="tech-expertises" aria-label="Expertises">
-          <div className="tech-expertises__container">
-            <div className="tech-expertises__header">
-              <span className="tech-expertises__tag">(B) EXPERTISES</span>
-              <div className="tech-expertises__line" aria-hidden="true" />
-            </div>
-            <div className="tech-expertises__tags" role="tablist">
-              {EXPERTISES_LIST.map((exp) => {
-                const isActive = selectedExpertise === exp;
-                return (
-                  <button
-                    key={exp}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    className={`tech-expertise-tag${isActive ? ' tech-expertise-tag--active' : ''}`}
-                    onClick={() => setSelectedExpertise(exp)}
-                  >
-                    {exp}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+        {/* (B) NOTRE MÉTHODE */}
+        <HomeMethodSection
+          backgroundImage={showcaseBgImage}
+          backgroundVideo={showcaseBgVideo}
+        />
 
-        {content.showcaseImages && content.showcaseImages.length > 0 ? (
-          <HomeShowcaseSlider
-            images={content.showcaseImages}
-            backgroundImage={showcaseBgImage}
-            backgroundVideo={showcaseBgVideo}
-          />
-        ) : null}
+        {/* (C) POURQUOI DYNESISTECH */}
+        <HomeWhyDynesisSection />
 
         <DynamicCustomSections />
 
