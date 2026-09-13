@@ -43,7 +43,8 @@
       style-src   'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src    'self' https://fonts.gstatic.com;
       img-src     'self' data: blob: https://res.cloudinary.com https://images.unsplash.com https://i.pravatar.cc https://picsum.photos https://logo.clearbit.com https://*.basemaps.cartocdn.com https://dynesis-tech-backend.onrender.com https://*.googleusercontent.com;
-      connect-src 'self' https://dynesis-tech-backend.onrender.com wss://dynesis-tech-backend.onrender.com https://dynesis-tech-backend.onrender.com ws:https://dynesis-tech-backend.onrender.com https://accounts.google.com;
+      media-src   'self' blob: https://res.cloudinary.com https://*.cloudinary.com;
+      connect-src 'self' https://dynesis-tech-backend.onrender.com wss://dynesis-tech-backend.onrender.com ws://dynesis-tech-backend.onrender.com https://accounts.google.com https://api.cloudinary.com https://res.cloudinary.com https://*.cloudinary.com;
       frame-src   https://accounts.google.com;
     """
 
