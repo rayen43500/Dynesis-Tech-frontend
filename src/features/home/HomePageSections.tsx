@@ -7,20 +7,16 @@ import './home-sections.css';
 export function HomePageSections() {
   const content = useHomePageContent();
 
+  const titleLine = content.intro.line1 && content.intro.line1 !== 'One platform to design,'
+    ? `${content.intro.line1} ${content.intro.line2 || ''}`.trim()
+    : 'Une plateforme pour concevoir et faire grandir votre produit';
+
   return (
-    <section className="home-perspectives-section" aria-label={content.intro.line1}>
+    <section className="home-perspectives-section" id="perspectives" aria-label="Perspectives & Stratégie">
       <div className="home-perspectives-section__inner">
         <header className="home-perspectives-header">
-          <span className="home-perspectives-eyebrow">Perspectives & Stratégie</span>
-          <h2 className="home-perspectives-title">
-            <span className="home-perspectives-title__line">{content.intro.line1}</span>
-            {content.intro.line2 ? (
-              <span className="home-perspectives-title__line">{content.intro.line2}</span>
-            ) : null}
-          </h2>
-          <p className="home-perspectives-sub">
-            Découvrez nos analyses, méthodologies et retours d'expérience pour réussir la transformation et l'échelle de vos produits.
-          </p>
+          <span className="home-perspectives-eyebrow">(D) — PERSPECTIVES & STRATÉGIE</span>
+          <h2 className="home-perspectives-title">{titleLine}</h2>
         </header>
 
         <HomeScrollTabs />

@@ -4,7 +4,15 @@ import { Link } from 'react-router-dom';
 
 const IMAGES_PER_SLIDE = 3;
 
-export function HomeShowcaseSlider({ images, backgroundImage }: { images: string[]; backgroundImage?: string }) {
+export function HomeShowcaseSlider({
+  images,
+  backgroundImage,
+  backgroundVideo
+}: {
+  images: string[];
+  backgroundImage?: string;
+  backgroundVideo?: string;
+}) {
   const visibleImages = images.filter(Boolean);
   const slideCount = visibleImages.length;
   const [activeSlide, setActiveSlide] = useState(0);
@@ -33,15 +41,31 @@ export function HomeShowcaseSlider({ images, backgroundImage }: { images: string
     setActiveSlide((current) => (current + 1) % slideCount);
   }
 
+  const hasBg = Boolean(backgroundImage || backgroundVideo);
+
   return (
     <section
       className="home-showcase"
       aria-label="Galerie de réalisations"
     >
       <header
-        className={`home-showcase__header${backgroundImage ? ' home-showcase__header--has-background' : ''}`}
-        style={backgroundImage ? { backgroundImage: `url("${backgroundImage}")` } : undefined}
+        className={`home-showcase__header${hasBg ? ' home-showcase__header--has-background' : ''}`}
+        style={backgroundImage && !backgroundVideo ? { backgroundImage: `url("${backgroundImage}")` } : undefined}
       >
+        {backgroundVideo ? (
+          <div className="home-showcase__bg-video-wrap" aria-hidden="true">
+            <video
+              className="home-showcase__bg-video"
+              src={backgroundVideo}
+              poster={backgroundImage || undefined}
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+            <div className="home-showcase__bg-video-overlay" />
+          </div>
+        ) : null}
         <p className="home-showcase__eyebrow">Nos expertises</p>
         <h2>Des solutions digitales conçues pour votre entreprise.</h2>
         <div className="home-showcase__proof" aria-label="Étapes d'expertise">

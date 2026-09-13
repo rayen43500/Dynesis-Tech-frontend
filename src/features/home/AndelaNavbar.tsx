@@ -167,6 +167,7 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
               <span className="andela-nav__logo-text">{branding.siteName}</span>
             </>
           )}
+          <span className="andela-nav__badge-status">ACTIF</span>
         </Link>
 
         <div className="andela-nav__center">
@@ -176,7 +177,7 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
             onMouseLeave={scheduleClose}
           >
             <Link to="/developers" className="andela-nav__link">
-              {t('nav.developers')} <span className="andela-nav__chev">▾</span>
+              {t('nav.developers')}
             </Link>
           </div>
 
@@ -186,22 +187,25 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
             onMouseLeave={scheduleClose}
           >
             <Link to="/services" className="andela-nav__link">
-              {t('nav.services')} <span className="andela-nav__chev">▾</span>
+              {t('nav.services')}
             </Link>
           </div>
 
           <Link to="/work-with-us" className="andela-nav__link">
-            {t('nav.workWithUs')}
+            Devis
           </Link>
           <Link to="/contact" className="andela-nav__link">
             {t('nav.contact')}
           </Link>
+
+          <span className="andela-nav__center-divider" aria-hidden>|</span>
+
+          <LanguageSwitcher variant="public" />
         </div>
 
         <div className="andela-nav__right">
-          <LanguageSwitcher variant="public" />
-          <Link to="/login" className="andela-nav__btn andela-nav__btn--primary" onClick={handleLoginClick}>
-            {t('nav.login')}
+          <Link to="/login" className="andela-nav__btn andela-nav__btn--login" onClick={handleLoginClick}>
+            CONNEXION
           </Link>
 
           <button
@@ -236,20 +240,20 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
           {t('nav.services')}
         </Link>
         <Link to="/work-with-us" onClick={() => setMobileOpen(false)}>
-          {t('nav.workWithUs')}
+          Devis
         </Link>
         <Link to="/contact" onClick={() => setMobileOpen(false)}>
           {t('nav.contact')}
         </Link>
         <Link
           to="/login"
-          className="andela-nav__btn andela-nav__btn--primary"
+          className="andela-nav__btn andela-nav__btn--login andela-nav__btn--mobile-login"
           onClick={(e) => {
             handleLoginClick(e);
             setMobileOpen(false);
           }}
         >
-          {t('nav.login')}
+          CONNEXION
         </Link>
       </div>
     </nav>

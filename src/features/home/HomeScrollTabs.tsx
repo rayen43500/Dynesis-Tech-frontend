@@ -22,6 +22,51 @@ function pickLocalized(value: Localized | undefined, lang: string) {
   return lang.startsWith('fr') ? value.fr || value.en || '' : value.en || value.fr || '';
 }
 
+const DEFAULT_ARTICLES: BlogCard[] = [
+  {
+    _id: 'default-1',
+    slug: 'transformation-digitale-qui-ne-casse-pas',
+    coverImageUrl: '/images/blog/transform.jpg',
+    categories: ['TRANSFORMATION DIGITALE'],
+    title: {
+      fr: 'Une transformation qui ne casse pas ce qui marche',
+      en: 'A transformation that preserves what works'
+    },
+    excerpt: {
+      fr: 'Moderniser l\'existant, passer au cloud et automatiser le travail répétitif, sans geler l\'activité pendant six mois.',
+      en: 'Modernize existing systems, move to the cloud and automate repetitive work without freezing operations for six months.'
+    }
+  },
+  {
+    _id: 'default-2',
+    slug: 'des-apps-pensees-pour-la-prod',
+    coverImageUrl: '/images/blog/web.jpg',
+    categories: ['DÉVELOPPEMENT WEB & MOBILE'],
+    title: {
+      fr: 'Des apps pensées pour la prod, pas la démo',
+      en: 'Apps built for production, not the demo'
+    },
+    excerpt: {
+      fr: 'React, mobile natif et APIs solides : des produits rapides qui restent maintenables après le lancement.',
+      en: 'React, native mobile and solid APIs: fast products that stay maintainable after launch.'
+    }
+  },
+  {
+    _id: 'default-3',
+    slug: 'un-design-produit-que-vos-equipes-peuvent-livrer',
+    coverImageUrl: '/images/blog/design.jpg',
+    categories: ['DESIGN PRODUIT & DÉVELOPPEMENT'],
+    title: {
+      fr: 'Un design produit que vos équipes peuvent livrer',
+      en: 'Product design your teams can actually ship'
+    },
+    excerpt: {
+      fr: 'De la recherche au handoff, un process qui aligne ingénierie, marque et utilisateurs.',
+      en: 'From research to handoff, a process that aligns engineering, brand, and users.'
+    }
+  }
+];
+
 export function HomeScrollTabs() {
   const { i18n, t } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
@@ -34,8 +79,8 @@ export function HomeScrollTabs() {
     }
   });
 
-  const articles = query.data || [];
-  if (query.isLoading || articles.length === 0) return null;
+  const queryArticles = query.data || [];
+  const articles = queryArticles.length > 0 ? queryArticles : DEFAULT_ARTICLES;
 
   function scroll(direction: 'left' | 'right') {
     if (!trackRef.current) return;
@@ -73,7 +118,7 @@ export function HomeScrollTabs() {
         {articles.map((article) => {
           const title = pickLocalized(article.title, i18n.language);
           const excerpt = pickLocalized(article.excerpt, i18n.language);
-          const tag = article.categories?.[0] || t('home.blog.defaultTag');
+          const tag = article.categories?.[0] || 'TECH & ARCHITECTURE';
 
           return (
             <article key={article._id} className="home-blog-carousel__card">
@@ -91,8 +136,8 @@ export function HomeScrollTabs() {
                 </h3>
                 {excerpt ? <p className="home-blog-carousel__excerpt">{excerpt}</p> : null}
                 <Link to={`/blog/${article.slug}`} className="home-blog-carousel__cta">
-                  <span>{t('home.blog.cta')}</span>
-                  <ArrowRight size={16} className="home-blog-carousel__cta-arrow" />
+                  <span>LIRE L'ARTICLE</span>
+                  <span className="home-blog-carousel__cta-arrow" aria-hidden>→</span>
                 </Link>
               </div>
             </article>

@@ -70,6 +70,7 @@ export type PlatformSettings = {
     logoUrl?: string;
     logoMark?: string;
     authBackgroundImage?: string;
+    authBackgroundVideo?: string;
   };
   contact?: {
     email?: string;
@@ -105,9 +106,13 @@ export type PlatformSettings = {
       feature3?: LocalizedString;
       heroImage?: string;
       heroBackgroundImage?: string;
+      heroBackgroundVideo?: string;
       showcaseBackgroundImage?: string;
+      showcaseBackgroundVideo?: string;
       servicesBackgroundImage?: string;
+      servicesBackgroundVideo?: string;
       authBackgroundImage?: string;
+      authBackgroundVideo?: string;
       heroVideoUrl?: string;
       heroVideoPoster?: string;
       techStack?: string[];

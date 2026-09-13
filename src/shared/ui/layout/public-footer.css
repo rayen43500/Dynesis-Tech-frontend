@@ -168,8 +168,25 @@
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   line-height: 1.4;
-  color: hsl(var(--color-text));
+  color: #64748b;
   text-align: center;
+}
+
+.public-footer__bar-links {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+.public-footer__bar-policy {
+  color: #64748b;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.public-footer__bar-policy:hover {
+  color: #0080ff;
 }
 
 .public-footer__social {

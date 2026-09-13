@@ -29,6 +29,10 @@ export function HomePageSettingsSection({ settings }: Props) {
   const [uploadingShowcaseBg, setUploadingShowcaseBg] = useState(false);
   const [uploadingServicesBg, setUploadingServicesBg] = useState(false);
   const [uploadingAuthBg, setUploadingAuthBg] = useState(false);
+  const [uploadingHeroBgVideo, setUploadingHeroBgVideo] = useState(false);
+  const [uploadingShowcaseBgVideo, setUploadingShowcaseBgVideo] = useState(false);
+  const [uploadingServicesBgVideo, setUploadingServicesBgVideo] = useState(false);
+  const [uploadingAuthBgVideo, setUploadingAuthBgVideo] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
   const [uploadingPoster, setUploadingPoster] = useState(false);
   const [uploadingShowcase, setUploadingShowcase] = useState<number | null>(null);
@@ -144,10 +148,14 @@ export function HomePageSettingsSection({ settings }: Props) {
     event.target.value = '';
     if (!file) return;
 
+    const isVideo = file.type.startsWith('video/');
+    const resourceType = isVideo ? 'video' : 'image';
+    const folder = isVideo ? 'homepage/videos' : 'homepage/backgrounds';
+
     setMessage('');
     setUploadingBackground(true);
     try {
-      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/backgrounds', resourceType: 'image' });
+      const signedResponse = await endpoints.media.signUpload({ folder, resourceType });
       const signed = signedResponse.data?.data;
       const formData = new FormData();
       formData.append('file', file);
@@ -163,16 +171,76 @@ export function HomePageSettingsSection({ settings }: Props) {
       await endpoints.media.createAsset({
         cloudinaryPublicId: uploaded.public_id,
         secureUrl: uploaded.secure_url,
-        folder: 'homepage/backgrounds',
-        altText: 'Homepage hero background',
-        tags: ['homepage', 'background']
+        folder,
+        altText: isVideo ? 'Homepage hero background video' : 'Homepage hero background',
+        tags: ['homepage', 'hero', 'background', isVideo ? 'video' : 'image'],
+        resourceType
       });
-      setHero('heroBackgroundImage', uploaded.secure_url);
-      setMessage(t('admin.settings.home.backgroundUploaded'));
+
+      const fieldKey = isVideo ? 'heroBackgroundVideo' : 'heroBackgroundImage';
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), [fieldKey]: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage(isVideo ? 'Vidéo d\'arrière-plan Hero téléversée et enregistrée sur Cloudinary !' : t('admin.settings.home.backgroundUploaded'));
     } catch {
       setMessage(t('admin.settings.home.backgroundUploadFailed'));
     } finally {
       setUploadingBackground(false);
+    }
+  }
+
+  async function handleHeroBgVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingHeroBgVideo(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/videos', resourceType: 'video' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/videos',
+        altText: 'Homepage hero background video',
+        tags: ['homepage', 'hero', 'background', 'video'],
+        resourceType: 'video'
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), heroBackgroundVideo: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage('Vidéo d\'arrière-plan Hero téléversée et enregistrée sur Cloudinary !');
+    } catch {
+      setMessage('Échec du téléversement de la vidéo d\'arrière-plan Hero sur Cloudinary');
+    } finally {
+      setUploadingHeroBgVideo(false);
     }
   }
 
@@ -181,10 +249,14 @@ export function HomePageSettingsSection({ settings }: Props) {
     event.target.value = '';
     if (!file) return;
 
+    const isVideo = file.type.startsWith('video/');
+    const resourceType = isVideo ? 'video' : 'image';
+    const folder = isVideo ? 'homepage/videos' : 'homepage/backgrounds';
+
     setMessage('');
     setUploadingShowcaseBg(true);
     try {
-      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/backgrounds', resourceType: 'image' });
+      const signedResponse = await endpoints.media.signUpload({ folder, resourceType });
       const signed = signedResponse.data?.data;
       const formData = new FormData();
       formData.append('file', file);
@@ -200,14 +272,16 @@ export function HomePageSettingsSection({ settings }: Props) {
       await endpoints.media.createAsset({
         cloudinaryPublicId: uploaded.public_id,
         secureUrl: uploaded.secure_url,
-        folder: 'homepage/backgrounds',
-        altText: 'Showcase background image',
-        tags: ['homepage', 'showcase', 'background']
+        folder,
+        altText: isVideo ? 'Showcase background video' : 'Showcase background image',
+        tags: ['homepage', 'showcase', 'background', isVideo ? 'video' : 'image'],
+        resourceType
       });
 
+      const fieldKey = isVideo ? 'showcaseBackgroundVideo' : 'showcaseBackgroundImage';
       const updatedForm = {
         ...form,
-        hero: { ...(form.hero || {}), showcaseBackgroundImage: uploaded.secure_url }
+        hero: { ...(form.hero || {}), [fieldKey]: uploaded.secure_url }
       };
       setForm(updatedForm);
 
@@ -215,11 +289,59 @@ export function HomePageSettingsSection({ settings }: Props) {
         homeContent: updatedForm,
         theme: { ...settings.theme, home: homeColors }
       });
-      setMessage('Arrière-plan de la Galerie (Showcase) téléversé et enregistré sur Cloudinary !');
+      setMessage(isVideo ? 'Vidéo d\'arrière-plan Showcase téléversée et enregistrée sur Cloudinary !' : 'Arrière-plan de la Galerie (Showcase) téléversé et enregistré sur Cloudinary !');
     } catch {
       setMessage('Échec du téléversement de l\'arrière-plan Showcase sur Cloudinary');
     } finally {
       setUploadingShowcaseBg(false);
+    }
+  }
+
+  async function handleShowcaseBgVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingShowcaseBgVideo(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/videos', resourceType: 'video' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'homepage/videos',
+        altText: 'Showcase background video',
+        tags: ['homepage', 'showcase', 'background', 'video'],
+        resourceType: 'video'
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), showcaseBackgroundVideo: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage('Vidéo d\'arrière-plan Showcase téléversée et enregistrée sur Cloudinary !');
+    } catch {
+      setMessage('Échec du téléversement de la vidéo d\'arrière-plan Showcase sur Cloudinary');
+    } finally {
+      setUploadingShowcaseBgVideo(false);
     }
   }
 
@@ -228,10 +350,14 @@ export function HomePageSettingsSection({ settings }: Props) {
     event.target.value = '';
     if (!file) return;
 
+    const isVideo = file.type.startsWith('video/');
+    const resourceType = isVideo ? 'video' : 'image';
+    const folder = isVideo ? 'services' : 'homepage/backgrounds';
+
     setMessage('');
     setUploadingServicesBg(true);
     try {
-      const signedResponse = await endpoints.media.signUpload({ folder: 'homepage/backgrounds', resourceType: 'image' });
+      const signedResponse = await endpoints.media.signUpload({ folder, resourceType });
       const signed = signedResponse.data?.data;
       const formData = new FormData();
       formData.append('file', file);
@@ -247,14 +373,16 @@ export function HomePageSettingsSection({ settings }: Props) {
       await endpoints.media.createAsset({
         cloudinaryPublicId: uploaded.public_id,
         secureUrl: uploaded.secure_url,
-        folder: 'homepage/backgrounds',
-        altText: 'Services background image',
-        tags: ['homepage', 'services', 'background']
+        folder,
+        altText: isVideo ? 'Services background video' : 'Services background image',
+        tags: ['homepage', 'services', 'background', isVideo ? 'video' : 'image'],
+        resourceType
       });
 
+      const fieldKey = isVideo ? 'servicesBackgroundVideo' : 'servicesBackgroundImage';
       const updatedForm = {
         ...form,
-        hero: { ...(form.hero || {}), servicesBackgroundImage: uploaded.secure_url }
+        hero: { ...(form.hero || {}), [fieldKey]: uploaded.secure_url }
       };
       setForm(updatedForm);
 
@@ -262,11 +390,59 @@ export function HomePageSettingsSection({ settings }: Props) {
         homeContent: updatedForm,
         theme: { ...settings.theme, home: homeColors }
       });
-      setMessage('Arrière-plan des Services téléversé et enregistré sur Cloudinary !');
+      setMessage(isVideo ? 'Vidéo d\'arrière-plan Services téléversée et enregistrée sur Cloudinary !' : 'Arrière-plan des Services téléversé et enregistré sur Cloudinary !');
     } catch {
       setMessage('Échec du téléversement de l\'arrière-plan Services sur Cloudinary');
     } finally {
       setUploadingServicesBg(false);
+    }
+  }
+
+  async function handleServicesBgVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingServicesBgVideo(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'services', resourceType: 'video' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'services',
+        altText: 'Services background video',
+        tags: ['services', 'background', 'video'],
+        resourceType: 'video'
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), servicesBackgroundVideo: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage('Vidéo d\'arrière-plan Services téléversée et enregistrée sur Cloudinary !');
+    } catch {
+      setMessage('Échec du téléversement de la vidéo d\'arrière-plan Services sur Cloudinary');
+    } finally {
+      setUploadingServicesBgVideo(false);
     }
   }
 
@@ -275,10 +451,14 @@ export function HomePageSettingsSection({ settings }: Props) {
     event.target.value = '';
     if (!file) return;
 
+    const isVideo = file.type.startsWith('video/');
+    const resourceType = isVideo ? 'video' : 'image';
+    const folder = isVideo ? 'auth' : 'auth';
+
     setMessage('');
     setUploadingAuthBg(true);
     try {
-      const signedResponse = await endpoints.media.signUpload({ folder: 'auth/backgrounds', resourceType: 'image' });
+      const signedResponse = await endpoints.media.signUpload({ folder, resourceType });
       const signed = signedResponse.data?.data;
       const formData = new FormData();
       formData.append('file', file);
@@ -294,27 +474,78 @@ export function HomePageSettingsSection({ settings }: Props) {
       await endpoints.media.createAsset({
         cloudinaryPublicId: uploaded.public_id,
         secureUrl: uploaded.secure_url,
-        folder: 'auth/backgrounds',
-        altText: 'Authentication page background image',
-        tags: ['auth', 'background']
+        folder,
+        altText: isVideo ? 'Authentication page background video' : 'Authentication page background image',
+        tags: ['auth', 'background', isVideo ? 'video' : 'image'],
+        resourceType
       });
 
+      const fieldKey = isVideo ? 'authBackgroundVideo' : 'authBackgroundImage';
       const updatedForm = {
         ...form,
-        hero: { ...(form.hero || {}), authBackgroundImage: uploaded.secure_url }
+        hero: { ...(form.hero || {}), [fieldKey]: uploaded.secure_url }
       };
       setForm(updatedForm);
 
       await mutation.mutateAsync({
         homeContent: updatedForm,
-        branding: { ...(settings.branding || {}), authBackgroundImage: uploaded.secure_url },
+        branding: { ...(settings.branding || {}), [fieldKey]: uploaded.secure_url },
         theme: { ...settings.theme, home: homeColors }
       });
-      setMessage('Arrière-plan de Connexion / Inscription téléversé et enregistré sur Cloudinary !');
+      setMessage(isVideo ? 'Vidéo d\'arrière-plan Auth téléversée et enregistrée sur Cloudinary !' : 'Arrière-plan de Connexion / Inscription téléversé et enregistré sur Cloudinary !');
     } catch {
       setMessage('Échec du téléversement de l\'arrière-plan Auth sur Cloudinary');
     } finally {
       setUploadingAuthBg(false);
+    }
+  }
+
+  async function handleAuthBgVideoUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setMessage('');
+    setUploadingAuthBgVideo(true);
+    try {
+      const signedResponse = await endpoints.media.signUpload({ folder: 'auth', resourceType: 'video' });
+      const signed = signedResponse.data?.data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', signed.apiKey);
+      formData.append('timestamp', String(signed.timestamp));
+      formData.append('signature', signed.signature);
+      formData.append('folder', signed.folder);
+
+      const uploadResponse = await fetch(signed.uploadUrl, { method: 'POST', body: formData });
+      if (!uploadResponse.ok) throw new Error('Cloudinary upload failed');
+      const uploaded = await uploadResponse.json();
+
+      await endpoints.media.createAsset({
+        cloudinaryPublicId: uploaded.public_id,
+        secureUrl: uploaded.secure_url,
+        folder: 'auth',
+        altText: 'Authentication page background video',
+        tags: ['auth', 'background', 'video'],
+        resourceType: 'video'
+      });
+
+      const updatedForm = {
+        ...form,
+        hero: { ...(form.hero || {}), authBackgroundVideo: uploaded.secure_url }
+      };
+      setForm(updatedForm);
+
+      await mutation.mutateAsync({
+        homeContent: updatedForm,
+        branding: { ...(settings.branding || {}), authBackgroundVideo: uploaded.secure_url },
+        theme: { ...settings.theme, home: homeColors }
+      });
+      setMessage('Vidéo d\'arrière-plan Auth téléversée et enregistrée sur Cloudinary !');
+    } catch {
+      setMessage('Échec du téléversement de la vidéo d\'arrière-plan Auth sur Cloudinary');
+    } finally {
+      setUploadingAuthBgVideo(false);
     }
   }
 
@@ -472,94 +703,465 @@ export function HomePageSettingsSection({ settings }: Props) {
         value={hero.feature3 || {}}
         onChange={(v) => setHero('feature3', v)}
       />
-      <h3 className="admin-settings-subtitle">🖼️ Personnalisation des Arrière-plans des Sections (Cloudinary)</h3>
+      <h3 className="admin-settings-subtitle">📹 Vidéo Principale du Hero (remplace le logo 3D / Cloudinary)</h3>
       <div className="admin-settings-media" style={{ marginBottom: '32px' }}>
         <div className="admin-settings-media__controls">
           <SimpleField
-            label="Arrière-plan du Hero"
-            value={hero.heroBackgroundImage || ''}
-            onChange={(v) => setHero('heroBackgroundImage', v)}
+            label="URL de la Vidéo Hero (Cloudinary)"
+            value={hero.heroVideoUrl || ''}
+            onChange={(v) => setHero('heroVideoUrl', v)}
             type="url"
           />
           <label className="admin-field">
-            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Hero sur Cloudinary</span>
-            <input type="file" accept="image/*" onChange={(event) => void handleBackgroundUpload(event)} disabled={uploadingBackground} />
-            {uploadingBackground ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+            <span className="admin-field__label admin-field__label--primary">📹 Téléverser une vidéo Hero vers Cloudinary</span>
+            <input type="file" accept="video/*" onChange={(event) => void handleVideoUpload(event)} disabled={uploadingVideo} />
+            {uploadingVideo ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement de la vidéo en cours sur Cloudinary…</small> : null}
           </label>
 
           <hr style={{ border: 'none', borderTop: '1px solid #e8e8e8', margin: '14px 0' }} />
 
           <SimpleField
-            label="Arrière-plan de la Galerie (Showcase)"
-            value={hero.showcaseBackgroundImage || ''}
-            onChange={(v) => setHero('showcaseBackgroundImage', v)}
+            label="Image de couverture de la vidéo (Poster)"
+            value={hero.heroVideoPoster || ''}
+            onChange={(v) => setHero('heroVideoPoster', v)}
             type="url"
           />
           <label className="admin-field">
-            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Showcase sur Cloudinary</span>
-            <input type="file" accept="image/*" onChange={(event) => void handleShowcaseBgUpload(event)} disabled={uploadingShowcaseBg} />
-            {uploadingShowcaseBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'image de couverture vidéo sur Cloudinary</span>
+            <input type="file" accept="image/*" onChange={(event) => void handlePosterUpload(event)} disabled={uploadingPoster} />
+            {uploadingPoster ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement de l'image en cours…</small> : null}
           </label>
 
-          <hr style={{ border: 'none', borderTop: '1px solid #e8e8e8', margin: '14px 0' }} />
+          {hero.heroVideoUrl ? (
+            <button
+              type="button"
+              onClick={() => {
+                const updated = {
+                  ...form,
+                  hero: { ...(form.hero || {}), heroVideoUrl: '', heroVideoPoster: '' }
+                };
+                setForm(updated);
+                void mutation.mutateAsync({ homeContent: updated, theme: { ...settings.theme, home: homeColors } });
+                setMessage('Vidéo supprimée — le logo 3D est réactivé');
+              }}
+              style={{
+                marginTop: '12px',
+                padding: '8px 14px',
+                background: '#fee2e2',
+                color: '#dc2626',
+                border: '1px solid #fca5a5',
+                borderRadius: '6px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              🗑️ Supprimer la vidéo (revenir au logo 3D)
+            </button>
+          ) : null}
+        </div>
 
-          <SimpleField
-            label="Arrière-plan de la section Services"
-            value={hero.servicesBackgroundImage || ''}
-            onChange={(v) => setHero('servicesBackgroundImage', v)}
-            type="url"
-          />
-          <label className="admin-field">
-            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Services sur Cloudinary</span>
-            <input type="file" accept="image/*" onChange={(event) => void handleServicesBgUpload(event)} disabled={uploadingServicesBg} />
-            {uploadingServicesBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
-          </label>
+        <div className="admin-settings-media__preview" aria-label="Aperçu vidéo">
+          {hero.heroVideoUrl ? (
+            <div>
+              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '4px' }}>Aperçu de la vidéo Hero :</small>
+              <video
+                src={hero.heroVideoUrl}
+                poster={hero.heroVideoPoster || undefined}
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #e2e8f0' }}
+              />
+            </div>
+          ) : (
+            <span className="admin-settings-media__empty">Aucune vidéo active (le logo 3D est affiché par défaut)</span>
+          )}
+        </div>
+      </div>
 
-          <hr style={{ border: 'none', borderTop: '1px solid #e8e8e8', margin: '14px 0' }} />
+      <h3 className="admin-settings-subtitle">🖼️ / 🎥 Personnalisation des Arrière-plans des Sections (Cloudinary)</h3>
+      <p style={{ fontSize: '13px', color: '#64748b', marginTop: '-8px', marginBottom: '20px' }}>
+        Vous pouvez définir une <strong>image</strong> fixe ou une <strong>vidéo</strong> d'arrière-plan (MP4, WebM) pour chaque section clé. Si les deux sont définis, la vidéo est lue en arrière-plan et l'image sert de préchargement / secours.
+      </p>
 
-          <SimpleField
-            label="Arrière-plan Page Connexion / Inscription"
-            value={hero.authBackgroundImage || ''}
-            onChange={(v) => setHero('authBackgroundImage', v)}
-            type="url"
-          />
-          <label className="admin-field">
-            <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser l'arrière-plan Auth sur Cloudinary</span>
-            <input type="file" accept="image/*" onChange={(event) => void handleAuthBgUpload(event)} disabled={uploadingAuthBg} />
-            {uploadingAuthBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
-          </label>
+      <div className="admin-settings-media" style={{ marginBottom: '32px' }}>
+        <div className="admin-settings-media__controls">
+          {/* SECTION 1: HERO */}
+          <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '16px' }}>
+            <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', fontWeight: 600, color: '#0f172a' }}>
+              1. Arrière-plan du Hero
+            </h4>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Image d'arrière-plan Hero"
+                  value={hero.heroBackgroundImage || ''}
+                  onChange={(v) => setHero('heroBackgroundImage', v)}
+                  type="url"
+                />
+              </div>
+              {hero.heroBackgroundImage ? (
+                <button
+                  type="button"
+                  title="Supprimer l'image"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), heroBackgroundImage: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({ homeContent: u, theme: { ...settings.theme, home: homeColors } });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field" style={{ marginBottom: '12px' }}>
+              <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser image Hero sur Cloudinary</span>
+              <input type="file" accept="image/*" onChange={(event) => void handleBackgroundUpload(event)} disabled={uploadingBackground} />
+              {uploadingBackground ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+            </label>
+
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Vidéo d'arrière-plan Hero (MP4 / WebM)"
+                  value={hero.heroBackgroundVideo || ''}
+                  onChange={(v) => setHero('heroBackgroundVideo', v)}
+                  type="url"
+                />
+              </div>
+              {hero.heroBackgroundVideo ? (
+                <button
+                  type="button"
+                  title="Supprimer la vidéo"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), heroBackgroundVideo: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({ homeContent: u, theme: { ...settings.theme, home: homeColors } });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field">
+              <span className="admin-field__label admin-field__label--primary">🎥 Téléverser vidéo d'arrière-plan Hero sur Cloudinary</span>
+              <input type="file" accept="video/*" onChange={(event) => void handleHeroBgVideoUpload(event)} disabled={uploadingHeroBgVideo} />
+              {uploadingHeroBgVideo ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement de la vidéo en cours…</small> : null}
+            </label>
+          </div>
+
+          {/* SECTION 2: SHOWCASE */}
+          <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '16px' }}>
+            <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', fontWeight: 600, color: '#0f172a' }}>
+              2. Arrière-plan de la Galerie (Showcase)
+            </h4>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Image d'arrière-plan Showcase"
+                  value={hero.showcaseBackgroundImage || ''}
+                  onChange={(v) => setHero('showcaseBackgroundImage', v)}
+                  type="url"
+                />
+              </div>
+              {hero.showcaseBackgroundImage ? (
+                <button
+                  type="button"
+                  title="Supprimer l'image"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), showcaseBackgroundImage: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({ homeContent: u, theme: { ...settings.theme, home: homeColors } });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field" style={{ marginBottom: '12px' }}>
+              <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser image Showcase sur Cloudinary</span>
+              <input type="file" accept="image/*" onChange={(event) => void handleShowcaseBgUpload(event)} disabled={uploadingShowcaseBg} />
+              {uploadingShowcaseBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+            </label>
+
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Vidéo d'arrière-plan Showcase (MP4 / WebM)"
+                  value={hero.showcaseBackgroundVideo || ''}
+                  onChange={(v) => setHero('showcaseBackgroundVideo', v)}
+                  type="url"
+                />
+              </div>
+              {hero.showcaseBackgroundVideo ? (
+                <button
+                  type="button"
+                  title="Supprimer la vidéo"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), showcaseBackgroundVideo: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({ homeContent: u, theme: { ...settings.theme, home: homeColors } });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field">
+              <span className="admin-field__label admin-field__label--primary">🎥 Téléverser vidéo d'arrière-plan Showcase sur Cloudinary</span>
+              <input type="file" accept="video/*" onChange={(event) => void handleShowcaseBgVideoUpload(event)} disabled={uploadingShowcaseBgVideo} />
+              {uploadingShowcaseBgVideo ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement de la vidéo en cours…</small> : null}
+            </label>
+          </div>
+
+          {/* SECTION 3: SERVICES */}
+          <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '16px' }}>
+            <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', fontWeight: 600, color: '#0f172a' }}>
+              3. Arrière-plan de la section Services
+            </h4>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Image d'arrière-plan Services"
+                  value={hero.servicesBackgroundImage || ''}
+                  onChange={(v) => setHero('servicesBackgroundImage', v)}
+                  type="url"
+                />
+              </div>
+              {hero.servicesBackgroundImage ? (
+                <button
+                  type="button"
+                  title="Supprimer l'image"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), servicesBackgroundImage: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({ homeContent: u, theme: { ...settings.theme, home: homeColors } });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field" style={{ marginBottom: '12px' }}>
+              <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser image Services sur Cloudinary</span>
+              <input type="file" accept="image/*" onChange={(event) => void handleServicesBgUpload(event)} disabled={uploadingServicesBg} />
+              {uploadingServicesBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+            </label>
+
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Vidéo d'arrière-plan Services (MP4 / WebM)"
+                  value={hero.servicesBackgroundVideo || ''}
+                  onChange={(v) => setHero('servicesBackgroundVideo', v)}
+                  type="url"
+                />
+              </div>
+              {hero.servicesBackgroundVideo ? (
+                <button
+                  type="button"
+                  title="Supprimer la vidéo"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), servicesBackgroundVideo: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({ homeContent: u, theme: { ...settings.theme, home: homeColors } });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field">
+              <span className="admin-field__label admin-field__label--primary">🎥 Téléverser vidéo d'arrière-plan Services sur Cloudinary</span>
+              <input type="file" accept="video/*" onChange={(event) => void handleServicesBgVideoUpload(event)} disabled={uploadingServicesBgVideo} />
+              {uploadingServicesBgVideo ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement de la vidéo en cours…</small> : null}
+            </label>
+          </div>
+
+          {/* SECTION 4: AUTH */}
+          <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '16px' }}>
+            <h4 style={{ margin: '0 0 10px 0', fontSize: '13px', fontWeight: 600, color: '#0f172a' }}>
+              4. Arrière-plan Page Connexion / Inscription (Auth)
+            </h4>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Image d'arrière-plan Auth"
+                  value={hero.authBackgroundImage || ''}
+                  onChange={(v) => setHero('authBackgroundImage', v)}
+                  type="url"
+                />
+              </div>
+              {hero.authBackgroundImage ? (
+                <button
+                  type="button"
+                  title="Supprimer l'image"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), authBackgroundImage: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({
+                      homeContent: u,
+                      branding: { ...(settings.branding || {}), authBackgroundImage: '' },
+                      theme: { ...settings.theme, home: homeColors }
+                    });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field" style={{ marginBottom: '12px' }}>
+              <span className="admin-field__label admin-field__label--primary">🖼️ Téléverser image Auth sur Cloudinary</span>
+              <input type="file" accept="image/*" onChange={(event) => void handleAuthBgUpload(event)} disabled={uploadingAuthBg} />
+              {uploadingAuthBg ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement en cours…</small> : null}
+            </label>
+
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <SimpleField
+                  label="URL Vidéo d'arrière-plan Auth (MP4 / WebM)"
+                  value={hero.authBackgroundVideo || ''}
+                  onChange={(v) => setHero('authBackgroundVideo', v)}
+                  type="url"
+                />
+              </div>
+              {hero.authBackgroundVideo ? (
+                <button
+                  type="button"
+                  title="Supprimer la vidéo"
+                  onClick={() => {
+                    const u = { ...form, hero: { ...(form.hero || {}), authBackgroundVideo: '' } };
+                    setForm(u);
+                    void mutation.mutateAsync({
+                      homeContent: u,
+                      branding: { ...(settings.branding || {}), authBackgroundVideo: '' },
+                      theme: { ...settings.theme, home: homeColors }
+                    });
+                  }}
+                  style={{ marginTop: '24px', padding: '6px 10px', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </div>
+            <label className="admin-field">
+              <span className="admin-field__label admin-field__label--primary">🎥 Téléverser vidéo d'arrière-plan Auth sur Cloudinary</span>
+              <input type="file" accept="video/*" onChange={(event) => void handleAuthBgVideoUpload(event)} disabled={uploadingAuthBgVideo} />
+              {uploadingAuthBgVideo ? <small style={{ color: '#087cf0', marginTop: '4px', display: 'block' }}>Téléversement de la vidéo en cours…</small> : null}
+            </label>
+          </div>
         </div>
 
         <div
           className="admin-settings-media__preview admin-settings-media__preview--background"
           aria-label="Aperçu des arrière-plans"
         >
-          {hero.heroBackgroundImage ? (
-            <div style={{ marginBottom: '10px' }}>
-              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Hero :</small>
-              <img src={hero.heroBackgroundImage} alt="Aperçu arrière-plan Hero" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+          <div style={{ fontWeight: 600, fontSize: '13px', color: '#0f172a', marginBottom: '12px' }}>
+            Aperçu des Médias Actifs :
+          </div>
+
+          {/* Hero Previews */}
+          {(hero.heroBackgroundVideo || hero.heroBackgroundImage) ? (
+            <div style={{ marginBottom: '14px', background: '#fff', padding: '8px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <small style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
+                Hero {hero.heroBackgroundVideo ? '🎥 Vidéo' : '🖼️ Image'}
+              </small>
+              {hero.heroBackgroundVideo ? (
+                <video
+                  src={hero.heroBackgroundVideo}
+                  poster={hero.heroBackgroundImage || undefined}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }}
+                />
+              ) : (
+                <img src={hero.heroBackgroundImage} alt="Aperçu arrière-plan Hero" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+              )}
             </div>
           ) : null}
-          {hero.showcaseBackgroundImage ? (
-            <div style={{ marginBottom: '10px' }}>
-              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Showcase :</small>
-              <img src={hero.showcaseBackgroundImage} alt="Aperçu arrière-plan Showcase" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+
+          {/* Showcase Previews */}
+          {(hero.showcaseBackgroundVideo || hero.showcaseBackgroundImage) ? (
+            <div style={{ marginBottom: '14px', background: '#fff', padding: '8px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <small style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
+                Galerie (Showcase) {hero.showcaseBackgroundVideo ? '🎥 Vidéo' : '🖼️ Image'}
+              </small>
+              {hero.showcaseBackgroundVideo ? (
+                <video
+                  src={hero.showcaseBackgroundVideo}
+                  poster={hero.showcaseBackgroundImage || undefined}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }}
+                />
+              ) : (
+                <img src={hero.showcaseBackgroundImage} alt="Aperçu arrière-plan Showcase" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+              )}
             </div>
           ) : null}
-          {hero.servicesBackgroundImage ? (
-            <div style={{ marginBottom: '10px' }}>
-              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Services :</small>
-              <img src={hero.servicesBackgroundImage} alt="Aperçu arrière-plan Services" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+
+          {/* Services Previews */}
+          {(hero.servicesBackgroundVideo || hero.servicesBackgroundImage) ? (
+            <div style={{ marginBottom: '14px', background: '#fff', padding: '8px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <small style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
+                Services {hero.servicesBackgroundVideo ? '🎥 Vidéo' : '🖼️ Image'}
+              </small>
+              {hero.servicesBackgroundVideo ? (
+                <video
+                  src={hero.servicesBackgroundVideo}
+                  poster={hero.servicesBackgroundImage || undefined}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }}
+                />
+              ) : (
+                <img src={hero.servicesBackgroundImage} alt="Aperçu arrière-plan Services" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+              )}
             </div>
           ) : null}
-          {hero.authBackgroundImage ? (
-            <div>
-              <small style={{ display: 'block', fontSize: '11px', color: '#64748b', marginBottom: '2px' }}>Aperçu Connexion / Inscription :</small>
-              <img src={hero.authBackgroundImage} alt="Aperçu arrière-plan Auth" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+
+          {/* Auth Previews */}
+          {(hero.authBackgroundVideo || hero.authBackgroundImage) ? (
+            <div style={{ marginBottom: '14px', background: '#fff', padding: '8px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <small style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
+                Connexion / Inscription {hero.authBackgroundVideo ? '🎥 Vidéo' : '🖼️ Image'}
+              </small>
+              {hero.authBackgroundVideo ? (
+                <video
+                  src={hero.authBackgroundVideo}
+                  poster={hero.authBackgroundImage || undefined}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }}
+                />
+              ) : (
+                <img src={hero.authBackgroundImage} alt="Aperçu arrière-plan Auth" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />
+              )}
             </div>
           ) : null}
-          {!hero.heroBackgroundImage && !hero.showcaseBackgroundImage && !hero.servicesBackgroundImage && !hero.authBackgroundImage && (
-            <span className="admin-settings-media__empty">Aucun arrière-plan sélectionné</span>
+
+          {!hero.heroBackgroundImage && !hero.heroBackgroundVideo &&
+           !hero.showcaseBackgroundImage && !hero.showcaseBackgroundVideo &&
+           !hero.servicesBackgroundImage && !hero.servicesBackgroundVideo &&
+           !hero.authBackgroundImage && !hero.authBackgroundVideo && (
+            <span className="admin-settings-media__empty">Aucun arrière-plan personnalisé actif</span>
           )}
         </div>
       </div>

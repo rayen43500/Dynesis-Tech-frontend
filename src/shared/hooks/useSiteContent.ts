@@ -18,7 +18,8 @@ export function useBrandingContent() {
       tagline: pickLocalized(settings?.branding?.tagline, language, t('topBar.tagline')),
       logoUrl: settings?.branding?.logoUrl || getCloudinaryImageUrl(DEFAULT_LOGO_PUBLIC_ID) || '/images/image.png',
       logoMark: settings?.branding?.logoMark || 'D',
-      authBackgroundImage: settings?.branding?.authBackgroundImage || settings?.homeContent?.hero?.authBackgroundImage || ''
+      authBackgroundImage: settings?.branding?.authBackgroundImage || settings?.homeContent?.hero?.authBackgroundImage || '',
+      authBackgroundVideo: settings?.branding?.authBackgroundVideo || settings?.homeContent?.hero?.authBackgroundVideo || ''
     }),
     [settings, language, t]
   );
@@ -95,9 +96,13 @@ export function useHomePageContent() {
       },
       heroImage: h?.heroImage || '/images/hero-developer.png',
       heroBackgroundImage: h?.heroBackgroundImage || '',
+      heroBackgroundVideo: h?.heroBackgroundVideo || '',
       showcaseBackgroundImage: h?.showcaseBackgroundImage || '',
+      showcaseBackgroundVideo: h?.showcaseBackgroundVideo || '',
       servicesBackgroundImage: h?.servicesBackgroundImage || '',
+      servicesBackgroundVideo: h?.servicesBackgroundVideo || '',
       authBackgroundImage: h?.authBackgroundImage || settings?.branding?.authBackgroundImage || '',
+      authBackgroundVideo: h?.authBackgroundVideo || settings?.branding?.authBackgroundVideo || '',
       heroVideoUrl: h?.heroVideoUrl || '',
       heroVideoPoster: h?.heroVideoPoster || '',
       showcaseImages: showcaseImages.filter(Boolean).slice(0, 6),
