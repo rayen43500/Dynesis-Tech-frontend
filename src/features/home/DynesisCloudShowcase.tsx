@@ -44,11 +44,11 @@ export function DynesisCloudShowcase() {
   const [isLoadTesting, setIsLoadTesting] = useState(false);
   const [requestsCount, setRequestsCount] = useState(48290);
   const [logs, setLogs] = useState<string[]>([
-    '[SYSTEM] ⚡ Dynesis Cloud Core v4.2 initialisé',
-    '[NETWORK] 🌐 18 nœuds Edge Anycast synchronisés',
-    '[SECURITY] 🛡 Bouclier WAF actif • 0 menace',
-    '[DATABASE] 💾 PostgreSQL & Redis actifs (0ms lag)',
-    '[AUTOSCALE] 🚀 Équilibrage de charge adaptatif activé'
+    '[SYSTEM]    Dynesis Cloud Core v4.2 — initialisé',
+    '[NETWORK]   18 nœuds Edge Anycast — synchronisés',
+    '[SECURITY]  Bouclier WAF actif — 0 menace détectée',
+    '[DATABASE]  PostgreSQL & Redis — actifs (0 ms lag)',
+    '[AUTOSCALE] Équilibrage de charge adaptatif — actif'
   ]);
 
   // Live request counter increment
@@ -71,15 +71,15 @@ export function DynesisCloudShowcase() {
     
     const time = new Date().toLocaleTimeString('fr-FR');
     setLogs((prev) => [
-      `[${time}] ⚡ TEST DE CHARGE : +5k req simulées...`,
-      `[${time}] 📈 Auto-scaling : +4 workers GPU prêts`,
+      `[${time}] [LOAD]      Test de charge : +5 000 req simulées...`,
+      `[${time}] [SCALING]   Auto-scaling : +4 workers GPU alloués`,
       ...prev.slice(0, 4)
     ]);
 
     setTimeout(() => {
       const finishTime = new Date().toLocaleTimeString('fr-FR');
       setLogs((prev) => [
-        `[${finishTime}] ✔ Succès : 100% requêtes (8.4ms)`,
+        `[${finishTime}] [OK]        100 % des requêtes traitées (8.4 ms)`,
         ...prev.slice(0, 5)
       ]);
       setIsLoadTesting(false);
@@ -90,7 +90,7 @@ export function DynesisCloudShowcase() {
     const time = new Date().toLocaleTimeString('fr-FR');
     const newLatency = Math.floor(Math.random() * 6) + 4;
     setLogs((prev) => [
-      `[${time}] 📶 Ping EU-Paris : ${newLatency}ms (OK)`,
+      `[${time}] [PING]      EU-Paris — ${newLatency} ms — PONG OK`,
       ...prev.slice(0, 5)
     ]);
   }
