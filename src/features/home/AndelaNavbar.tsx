@@ -129,6 +129,7 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
 
   const isDevelopersActive = pathname.startsWith('/developers');
   const isServicesActive = pathname.startsWith('/services') || pathname === '/pricing';
+  const isPortfolioActive = pathname.startsWith('/portfolio');
   const isBlogActive = pathname.startsWith('/blog');
   const isDevisActive = pathname === '/work-with-us';
   const isContactActive = pathname === '/contact';
@@ -196,6 +197,14 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
               {t('nav.services')}
             </Link>
           </div>
+
+          <Link
+            to="/portfolio"
+            className={`andela-nav__link${isPortfolioActive ? ' andela-nav__link--active' : ''}`}
+            onClick={closeMenus}
+          >
+            {t('nav.portfolio', 'Portfolio')}
+          </Link>
 
           <Link
             to="/blog"
@@ -268,6 +277,13 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
           onClick={closeMenus}
         >
           {t('nav.services')}
+        </Link>
+        <Link
+          to="/portfolio"
+          className={isPortfolioActive ? 'andela-nav__mobile-link--active' : ''}
+          onClick={closeMenus}
+        >
+          {t('nav.portfolio', 'Portfolio')}
         </Link>
         <Link
           to="/blog"

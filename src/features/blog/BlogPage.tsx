@@ -57,24 +57,41 @@ export function BlogPage() {
     return ['all', ...Array.from(set)];
   }, [articles]);
 
+  const featuredSlugs = useMemo(() => {
+    return new Set(articles.slice(0, 8).map((a) => a.slug));
+  }, [articles]);
+
   const filteredArticles = useMemo(() => {
     return articles.filter((a: ArticleItem) => {
-      const matchesCat = selectedCategory === 'all' || a.category.toLowerCase() === selectedCategory.toLowerCase();
       const matchesSearch = !searchTerm.trim() ||
         a.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         a.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesCat && matchesSearch;
+      
+      if (searchTerm.trim()) {
+        return matchesSearch;
+      }
+
+      if (selectedCategory !== 'all') {
+        return a.category.toLowerCase() === selectedCategory.toLowerCase();
+      }
+
+      // In 'all' view without search query, exclude articles already showcased in Featured News
+      return !featuredSlugs.has(a.slug);
     });
-  }, [articles, selectedCategory, searchTerm]);
+  }, [articles, selectedCategory, searchTerm, featuredSlugs]);
+
+  const isFiltering = selectedCategory !== 'all' || Boolean(searchTerm.trim());
 
   return (
     <div className="blog-page-root">
-      {/* Featured News Hero Grid */}
-      <FeaturedNewsBlog
-        sectionTitle="Featured News"
-        recentlyPublishedLabel="Recently Published"
-        recentlyPublishedHref="#all-articles"
-      />
+      {/* Featured News Hero Grid (shown when not filtering) */}
+      {!isFiltering && (
+        <FeaturedNewsBlog
+          sectionTitle="Featured News"
+          recentlyPublishedLabel="Recently Published"
+          recentlyPublishedHref="#all-articles"
+        />
+      )}
 
       {/* Archive / All Articles Section */}
       <section className="blog-archive-section" id="all-articles">

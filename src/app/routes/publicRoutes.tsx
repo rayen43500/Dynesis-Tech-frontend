@@ -28,6 +28,9 @@ const PrivacyPolicyPage = lazy(() =>
 const PricingPage = lazy(() =>
   import('../../features/pricing/PricingPage').then((m) => ({ default: m.PricingPage }))
 );
+const PortfolioPage = lazy(() =>
+  import('../../features/portfolio/PortfolioPage').then((m) => ({ default: m.PortfolioPage }))
+);
 const BlogPage = lazy(() =>
   import('../../features/blog/BlogPage').then((m) => ({ default: m.BlogPage }))
 );
@@ -78,6 +81,14 @@ export function PublicRoutes() {
         element={
           <Suspense fallback={<LoadingState />}>
             <PricingPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="portfolio"
+        element={
+          <Suspense fallback={<LoadingState />}>
+            <PortfolioPage />
           </Suspense>
         }
       />
