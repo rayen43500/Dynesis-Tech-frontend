@@ -1,0 +1,262 @@
+/* ══════════════════════════════════════════════════════════════════
+   Dynesis Tech - High-Fidelity Pure Light Splash Screen
+   Exact visual match with central 3D emblem, spaced motto,
+   gradient progress bar, percentage indicator, and 'CHARGEMENT...'
+   ══════════════════════════════════════════════════════════════════ */
+
+.dynesis-splash-root {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  background: radial-gradient(circle at 50% 45%, #ffffff 0%, #f7faff 60%, #eef6ff 100%);
+  overflow: hidden;
+  user-select: none;
+  opacity: 1;
+  padding: 24px;
+  box-sizing: border-box;
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--tech-font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+}
+
+.dynesis-splash-root--exiting {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+/* ── Background Subtle Light Waves ── */
+.dynesis-splash-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.dynesis-splash-glow-center {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0, 140, 255, 0.12) 0%, rgba(0, 210, 255, 0.04) 50%, transparent 75%);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: splashPulseGlow 3.5s ease-in-out infinite alternate;
+}
+
+.dynesis-splash-curve-bottom-left {
+  position: absolute;
+  bottom: -15%;
+  left: -15%;
+  width: 65%;
+  height: 65%;
+  background: radial-gradient(ellipse at center, rgba(0, 128, 255, 0.06) 0%, rgba(0, 200, 255, 0.02) 60%, transparent 80%);
+  border-radius: 50% 50% 0 0;
+  filter: blur(40px);
+  transform: rotate(-15deg);
+}
+
+.dynesis-splash-curve-top-right {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 150, 255, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+/* ── Center Main Stage ── */
+.dynesis-splash-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  animation: splashStageEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes splashStageEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Brand Logo & 3D Symbol ── */
+.dynesis-splash-brand-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 38px;
+}
+
+.dynesis-splash-logo-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(0, 128, 255, 0.18) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(35px);
+  z-index: 0;
+  pointer-events: none;
+  animation: logoGlowBreathe 3s ease-in-out infinite alternate;
+}
+
+.dynesis-splash-logo-img {
+  position: relative;
+  z-index: 1;
+  max-width: 320px;
+  height: auto;
+  max-height: 140px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 12px 30px rgba(0, 128, 255, 0.18));
+  animation: logoFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes logoFloat {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    transform: translateY(-5px) scale(1.015);
+  }
+}
+
+@keyframes logoGlowBreathe {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* ── Catchphrase Motto (DES IDÉES AU IMPACT) ── */
+.dynesis-splash-motto {
+  font-family: var(--tech-font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #4a6382;
+  margin: 0 0 46px 0;
+  padding-left: 0.32em; /* optical balance */
+  opacity: 0.95;
+}
+
+/* ── Progress Bar System ── */
+.dynesis-splash-progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto 28px;
+}
+
+.dynesis-splash-progress-rail {
+  position: relative;
+  flex: 1;
+  height: 9px;
+  background: rgba(226, 232, 240, 0.85);
+  border-radius: 999px;
+  overflow: visible;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.dynesis-splash-progress-fill {
+  position: relative;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0052cc 0%, #0080ff 65%, #00d2ff 100%);
+  box-shadow: 
+    0 0 14px rgba(0, 150, 255, 0.65), 
+    0 0 24px rgba(0, 128, 255, 0.35);
+  transition: width 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dynesis-splash-progress-glow-tip {
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px 2px #00d2ff;
+}
+
+.dynesis-splash-progress-pct {
+  font-family: var(--tech-font-mono, 'JetBrains Mono', monospace);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #475569;
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ── Bottom Loading Label (C H A R G E M E N T . . .) ── */
+.dynesis-splash-loading-text {
+  font-family: var(--tech-font-mono, 'JetBrains Mono', monospace);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: #8da4be;
+  text-align: center;
+  padding-left: 0.38em; /* optical alignment */
+}
+
+/* ── Background Pulse Keyframe ── */
+@keyframes splashPulseGlow {
+  0% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+/* ── Responsive Mobile Adjustments ── */
+@media (max-width: 640px) {
+  .dynesis-splash-logo-img {
+    max-width: 250px;
+  }
+  .dynesis-splash-motto {
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    margin-bottom: 36px;
+  }
+  .dynesis-splash-progress-container {
+    max-width: 300px;
+    gap: 12px;
+  }
+  .dynesis-splash-loading-text {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+  }
+}

@@ -99,6 +99,18 @@
   color: #ffffff;
 }
 
+.contact-hero-unified .andela-nav__link:hover,
+.contact-hero-unified .andela-nav__link--active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.contact-hero-unified .andela-nav__link--devis {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
 .contact-hero-unified .andela-nav__lang-btn:hover,
 .contact-hero-unified .andela-nav__lang-btn--active {
   color: #ffffff;
@@ -279,43 +291,44 @@
 }
 
 .contact-form-rgpd__link {
-  color: hsl(var(--color-accent));
+  color: var(--tech-blue);
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.2s ease;
 }
 
 .contact-form-rgpd__link:hover {
-  color: #2d7a2d;
+  color: var(--tech-blue-hover);
 }
 
 .contact-send-btn {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: hsl(var(--color-accent));
+  background: var(--tech-blue);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(58, 138, 58, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 128, 255, 0.4);
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .contact-send-btn:hover {
-  background: #2d7a2d;
+  background: var(--tech-blue-hover);
   transform: scale(1.05);
 }
 
 .contact-info-col {
-  background: #194d28;
+  background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
   padding: 48px 40px;
   color: white;
   position: relative;
   overflow: hidden;
   border-radius: 0 4px 4px 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .contact-info-col__decor {
@@ -330,12 +343,13 @@
 }
 
 .contact-info-col__title {
-  font-family: 'Lora', Georgia, serif;
-  font-size: 17px;
-  font-weight: 400;
+  font-family: var(--tech-font-sans);
+  font-size: 18px;
+  font-weight: 700;
   color: white;
   margin: 0 0 28px;
   position: relative;
+  letter-spacing: -0.01em;
 }
 
 .contact-info-row {

@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHomePageContent, useBrandingContent } from '../../shared/hooks/useSiteContent';
 import { usePublicPricingPlans, type PricingPlan } from '../pricing/pricingHooks';
-import { HomePageSections } from './HomePageSections';
 import { DynamicCustomSections } from '../../shared/ui/content/DynamicCustomSections';
 import { HomeMethodSection } from './HomeMethodSection';
 import { HomeWhyDynesisSection } from './HomeWhyDynesisSection';
+import { FeaturedNewsBlog } from '../blog/FeaturedNewsBlog';
+import { NeuralTechBackground } from './NeuralTechBackground';
+import { DynesisCloudShowcase } from './DynesisCloudShowcase';
 
 import './andela-home.css';
-import './home-sections.css';
 import './home-services.css';
 
 function isVideoUrl(url?: string): boolean {
@@ -114,9 +115,31 @@ const DEFAULT_TESTIMONIALS = [
   }
 ];
 
+const ROTATING_WORDS = [
+  'croissance.',
+  'performance.',
+  'innovation.',
+  'évolution.',
+  'succès.'
+];
+
 export function AndelaHomePage() {
   const content = useHomePageContent();
   const branding = useBrandingContent();
+
+  const [wordIndex, setWordIndex] = useState(0);
+  const [fadeState, setFadeState] = useState<'in' | 'out'>('in');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFadeState('out');
+      setTimeout(() => {
+        setWordIndex((prev: number) => (prev + 1) % ROTATING_WORDS.length);
+        setFadeState('in');
+      }, 350);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
 
   const rawHeadline1 = content.headline1 || 'Logiciel premium,';
   const rawHeadline2 = content.headline2 || 'conçu pour votre croissance.';
@@ -141,7 +164,7 @@ export function AndelaHomePage() {
       <main>
         {/* (A) HERO SECTION */}
         <section
-          className={`tech-hero${(heroBgVideo || heroBgImage) ? ' tech-hero--has-custom-bg' : ''}`}
+          className={`tech-hero${(heroBgVideo || heroBgImage) ? ' tech-hero--has-custom-bg' : ' tech-hero--neural'}`}
           style={heroBgImage && !heroBgVideo ? { backgroundImage: `url("${heroBgImage}")` } : undefined}
         >
           {heroBgVideo ? (
@@ -167,18 +190,22 @@ export function AndelaHomePage() {
               />
               <div className="tech-hero__bg-video-overlay" />
             </div>
-          ) : null}
+          ) : (
+            <NeuralTechBackground />
+          )}
           <div className="tech-hero__container">
-            {/* Left Column: Technical Copy */}
+            {/* Technical Copy */}
             <div className="tech-hero__copy">
               <div className="tech-hero__dot-grid" aria-hidden="true" />
-              <span className="tech-hero__eyebrow">(A) — PLATEFORME DE DÉVELOPPEMENT</span>
 
               <h1 className="tech-hero__title">
                 <span className="tech-hero__line">Logiciel premium,</span>
                 <span className="tech-hero__line">conçu pour</span>
                 <span className="tech-hero__line">
-                  votre <span className="tech-hero__line--accent">croissance.</span>
+                  votre{' '}
+                  <span className={`tech-hero__rotating-word tech-hero__rotating-word--${fadeState}`}>
+                    {ROTATING_WORDS[wordIndex]}
+                  </span>
                 </span>
               </h1>
 
@@ -195,32 +222,6 @@ export function AndelaHomePage() {
                 </Link>
               </div>
             </div>
-
-            {/* Right Column: Cloudinary Video (only when video is set) */}
-            {content.heroVideoUrl ? (
-              <div className="tech-hero__visual">
-                <div className="tech-hero__card">
-                  <div className="tech-hero__card-canvas tech-hero__card-canvas--video">
-                    <video
-                      className="tech-hero__card-video"
-                      src={content.heroVideoUrl}
-                      poster={content.heroVideoPoster || undefined}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                  </div>
-                  <div className="tech-hero__card-footer">
-                    <span className="tech-hero__card-tag">VIDÉO PRODUIT • CLOUDINARY</span>
-                    <span className="tech-hero__card-status">
-                      <span className="tech-hero__status-dot" aria-hidden="true" />
-                      EN DIRECT
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : null}
           </div>
         </section>
 
@@ -260,8 +261,12 @@ export function AndelaHomePage() {
         {/* (C) NOS SERVICES */}
         <HomePricingSection />
 
-        {/* (D) PERSPECTIVES & STRATÉGIE */}
-        <HomePageSections />
+        {/* (D) FEATURED NEWS & BLOG */}
+        <FeaturedNewsBlog
+          sectionTitle="Featured News"
+          recentlyPublishedLabel="Recently Published"
+          recentlyPublishedHref="/blog"
+        />
 
         {/* (E) TÉMOIGNAGES & CONFIANCE */}
         <section className="tech-testimonials" id="avis" aria-label="Témoignages & Confiance">
@@ -297,6 +302,9 @@ export function AndelaHomePage() {
             </div>
           </div>
         </section>
+
+        {/* (F) DYNESIS CLOUD SHOWCASE */}
+        <DynesisCloudShowcase />
       </main>
     </div>
   );

@@ -61,3 +61,81 @@ html.page-fade-out body {
   transition: opacity 0.32s ease;
 }
 
+/* ── Global Tech Design System ── */
+:root {
+  --tech-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --tech-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --tech-blue: #0080ff;
+  --tech-blue-hover: #0070e0;
+  --tech-blue-subtle: rgba(0, 128, 255, 0.06);
+  --tech-blue-border: rgba(0, 128, 255, 0.35);
+  --tech-border: #e2e8f0;
+  --tech-border-light: #f1f5f9;
+  --tech-card-bg: #ffffff;
+  --tech-bg: #ffffff;
+  --tech-text-title: #0f172a;
+  --tech-text-body: #334155;
+  --tech-text-muted: #64748b;
+}
+
+.tech-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: var(--tech-font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 13px 22px;
+  border-radius: 4px;
+  transition: all 0.16s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tech-btn--primary {
+  background: var(--tech-blue);
+  color: #ffffff !important;
+  border: 1px solid var(--tech-blue);
+  gap: 8px;
+}
+
+.tech-btn--primary:hover {
+  background: var(--tech-blue-hover);
+  border-color: var(--tech-blue-hover);
+  color: #ffffff !important;
+}
+
+.tech-btn__arrow {
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.tech-btn--primary:hover .tech-btn__arrow {
+  transform: translateX(3px);
+}
+
+.tech-btn--secondary {
+  background: #ffffff;
+  color: #1e293b !important;
+  border: 1px solid #d1d5db;
+}
+
+.tech-btn--secondary:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.tech-section-eyebrow {
+  display: inline-block;
+  font-family: var(--tech-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--tech-blue);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+

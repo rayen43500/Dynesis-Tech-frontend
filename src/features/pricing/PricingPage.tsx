@@ -10,16 +10,18 @@ export function PricingPage() {
   const { t } = useTranslation();
 
   return (
-    <div className="pricing-page">
-      <header className="andela-hero-top pricing-hero">
-        <div className="andela-hero-headline">
-          <h1 className="andela-h1">
-            <span className="andela-h1__line1">{t('pricing.header.titleLine1')}</span>
-            <span className="andela-h1__line2">{t('pricing.header.titleLine2')}</span>
+    <div className="pricing-page tech-page">
+      <div className="tech-services__container" style={{ paddingTop: '108px', paddingBottom: '20px' }}>
+        <header className="tech-services__header">
+          <span className="tech-section-eyebrow">(01) — {t('pricing.header.eyebrow', 'SERVICES & OFFRES')}</span>
+          <h1 className="tech-section-title">
+            {t('pricing.header.titleLine1')} {t('pricing.header.titleLine2')}
           </h1>
-          <p className="andela-hero-sub">{t('pricing.header.subtitle')}</p>
-        </div>
-      </header>
+          <p className="tech-section-sub">
+            {t('pricing.header.subtitle')}
+          </p>
+        </header>
+      </div>
 
       <HomePricingSection showHeader={false} />
     </div>

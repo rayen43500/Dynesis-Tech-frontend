@@ -267,7 +267,19 @@ export const endpoints = {
       list: (params?: Record<string, unknown>) => http.get('/api/v1/admin/faq')
     },
     blog: {
-      list: (params?: Record<string, unknown>) => http.get('/api/v1/admin/blog')
+      list: (params?: { page?: number; limit?: number; published?: boolean }) => {
+        const search = new URLSearchParams();
+        if (params?.page) search.set('page', String(params.page));
+        if (params?.limit) search.set('limit', String(params.limit));
+        if (typeof params?.published === 'boolean') search.set('published', String(params.published));
+        const qs = search.toString();
+        return http.get(qs ? `/api/v1/admin/blog?${qs}` : '/api/v1/admin/blog');
+      },
+      getById: (id: string) => http.get(`/api/v1/admin/blog/${id}`),
+      create: (payload: Record<string, unknown>) => http.post('/api/v1/admin/blog', payload),
+      update: (id: string, payload: Record<string, unknown>) => http.patch(`/api/v1/admin/blog/${id}`, payload),
+      setMain: (id: string, payload?: { isMain?: boolean }) => http.post(`/api/v1/admin/blog/${id}/set-main`, payload || {}),
+      remove: (id: string) => http.delete(`/api/v1/admin/blog/${id}`)
     },
     homepage: {
       get: () => http.get('/api/v1/admin/homepage')

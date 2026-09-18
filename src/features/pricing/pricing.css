@@ -4,9 +4,9 @@
    ============================================================ */
 
 .pricing-page {
-  padding: 68px 0 100px;
+  padding: 0 0 80px;
   min-height: 100vh;
-  background: hsl(var(--color-bg));
+  background: var(--tech-bg, #ffffff);
 }
 
 .pricing-page__inner {

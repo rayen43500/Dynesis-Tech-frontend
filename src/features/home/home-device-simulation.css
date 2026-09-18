@@ -1,0 +1,1175 @@
+/* =========================================================
+   HOME DEVICE SIMULATION (BROWSER + ANDROID + 3D FOLDER CARD)
+   ========================================================= */
+
+.h-sim-root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Selector Tabs */
+.h-sim-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 999px;
+  padding: 5px;
+  width: fit-content;
+  margin: 0 auto 24px;
+}
+
+.h-sim-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.h-sim-tab-btn:hover {
+  color: #0f172a;
+}
+
+.h-sim-tab-btn--active {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+}
+
+.h-sim-tab-btn--active:hover {
+  color: #ffffff;
+}
+
+/* Stage Layout */
+.h-sim-stage {
+  position: relative;
+  width: 100%;
+}
+
+.h-sim-stage--both {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+}
+
+.h-sim-stage--browser .h-sim-browser {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.h-sim-stage--android {
+  display: flex;
+  justify-content: center;
+}
+
+/* =========================================================
+   1. BROWSER WINDOW
+   ========================================================= */
+.h-sim-browser {
+  flex: 1;
+  min-width: 0;
+  background: #0d131f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  transition: transform 0.3s ease;
+}
+
+.h-sim-browser__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #090e17;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.h-sim-browser__traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.h-sim-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.h-sim-dot--red { background-color: #ff5f56; }
+.h-sim-dot--yellow { background-color: #ffbd2e; }
+.h-sim-dot--green { background-color: #27c93f; }
+
+.h-sim-browser__tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  margin: 0 14px;
+}
+
+.h-sim-browser__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.h-sim-browser__tab:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.h-sim-browser__tab--active {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+.h-sim-browser__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #34d399;
+}
+
+.h-sim-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+}
+
+/* URL Bar */
+.h-sim-browser__url-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: #0d131f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.h-sim-browser__nav-arrows {
+  display: flex;
+  gap: 8px;
+  color: #64748b;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.h-sim-browser__url-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.76rem;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.h-sim-browser__url-pill:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.h-sim-browser__lock {
+  color: #34d399;
+}
+
+.h-sim-browser__url-text {
+  flex: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.h-sim-browser__copy-tag {
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #94a3b8;
+}
+
+/* Browser Content */
+.h-sim-browser__content {
+  padding: 20px;
+  min-height: 380px;
+}
+
+/* Dashboard view */
+.h-sim-dash__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.h-sim-kpi-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.h-sim-kpi-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.h-sim-kpi-lbl {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.h-sim-kpi-ico--blue { color: #60a5fa; }
+.h-sim-kpi-ico--cyan { color: #38bdf8; }
+.h-sim-kpi-ico--green { color: #34d399; }
+
+.h-sim-kpi-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.h-sim-kpi-trend {
+  font-size: 0.7rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.h-sim-trend-badge {
+  color: #34d399;
+  font-weight: 700;
+}
+
+/* Dashboard Lower: Split Pipeline & 3D Folder Card */
+.h-sim-dash__lower {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+}
+
+.h-sim-pipeline-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.h-sim-pipeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.h-sim-box-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.h-sim-box-sub {
+  font-size: 0.7rem;
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+.h-sim-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.h-sim-bar-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: #cbd5e1;
+  margin-bottom: 5px;
+}
+
+.h-sim-progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.h-sim-progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  border-radius: 999px;
+}
+
+.h-sim-progress__fill--cyan {
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+}
+
+.h-sim-progress__fill--purple {
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+}
+
+/* Folder Showcase Mount inside Browser */
+.h-sim-folder-showcase {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px dashed rgba(96, 165, 250, 0.35);
+  border-radius: 10px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.h-sim-folder-showcase__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #93c5fd;
+  margin-bottom: 38px;
+}
+
+.h-sim-folder-mount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 130px;
+  padding-bottom: 10px;
+}
+
+/* Terminal Tab */
+.h-sim-terminal {
+  background: #05080f;
+  border-radius: 8px;
+  padding: 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.h-sim-terminal__line {
+  margin-bottom: 4px;
+}
+
+.h-sim-t-green { color: #34d399; }
+.h-sim-t-blue { color: #60a5fa; }
+.h-sim-t-cyan { color: #38bdf8; }
+.h-sim-t-muted { color: #64748b; }
+.h-sim-t-bold { color: #f8fafc; font-weight: 700; }
+
+.h-sim-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: #60a5fa;
+  vertical-align: middle;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Assets Tab */
+.h-sim-assets-tab {
+  padding: 24px;
+  text-align: center;
+}
+
+.h-sim-assets-heading h4 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: #ffffff;
+}
+
+.h-sim-assets-heading p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  max-width: 500px;
+  margin: 0 auto 44px;
+}
+
+.h-sim-assets-folder-center {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* =========================================================
+   2. ANDROID SMARTPHONE SIMULATION
+   ========================================================= */
+.h-sim-android-wrap {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+.h-sim-android {
+  background: #05080f;
+  border: 10px solid #1e293b;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 2px rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.8);
+  color: #f8fafc;
+  position: relative;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.h-sim-android__bezel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+}
+
+/* Android Punch-Hole Camera */
+.h-sim-android__camera {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #000000;
+  border: 1.5px solid #1e293b;
+  z-index: 10;
+}
+
+/* Android Status Bar */
+.h-sim-android__status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px 4px;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 700;
+  z-index: 5;
+}
+
+.h-sim-android__status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.h-sim-android__5g {
+  font-size: 9px;
+  font-weight: 800;
+  color: #34d399;
+}
+
+/* App Header */
+.h-sim-android__app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.h-sim-android__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.h-sim-android__brand-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.h-sim-android__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.h-sim-android__app-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.h-sim-android__app-status {
+  font-size: 0.65rem;
+  color: #34d399;
+  font-weight: 600;
+}
+
+.h-sim-android__notif-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.h-sim-android__notif-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ea2b2b;
+}
+
+/* Android Screen Body */
+.h-sim-android__screen {
+  padding: 14px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.h-sim-android__card {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.h-sim-android__card-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 6px;
+}
+
+.h-sim-android__card-chip {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 8px;
+  color: #ffffff;
+}
+
+.h-sim-android__card-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.h-sim-android__card-sub {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 12px;
+}
+
+.h-sim-android__quick-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.h-sim-android__action-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.h-sim-android__action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Android Files Section (Folder Card) */
+.h-sim-android__files-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.h-sim-android__section-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 34px;
+  text-align: center;
+}
+
+.h-sim-android__folder-holder {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 16px;
+}
+
+/* Activity List */
+.h-sim-android__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.h-sim-android__list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.h-sim-android__list-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.h-sim-android__list-dot--green { background: #34d399; }
+.h-sim-android__list-dot--blue { background: #60a5fa; }
+
+.h-sim-android__list-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.h-sim-android__list-title {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-sim-android__list-time {
+  font-size: 0.62rem;
+  color: #64748b;
+}
+
+.h-sim-android__list-arrow {
+  color: #64748b;
+}
+
+/* Bottom Nav */
+.h-sim-android__bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #05080f;
+}
+
+.h-sim-android__nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.62rem;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.h-sim-android__nav-item--active {
+  color: #60a5fa;
+}
+
+/* Gesture bar */
+.h-sim-android__gesture-bar {
+  width: 72px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  margin: 6px auto 4px;
+}
+
+
+/* =========================================================
+   3. UIVERSE.IO 3D FOLDER CARD STYLES
+   ========================================================= */
+
+.folder-card {
+  width: 170px;
+  height: 130px;
+  perspective: 1200px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.folder-toggle {
+  display: none;
+}
+
+/* hint text */
+.hint-wrapper {
+  position: absolute;
+  top: -40px;
+  right: -50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  z-index: 100;
+  animation: floatHint 2.5s ease-in-out infinite;
+}
+
+.hint-text {
+  font-family: "Inter", -apple-system, sans-serif;
+  color: #60a5fa;
+  font-size: 10px;
+  font-weight: 900;
+  text-decoration: underline;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  position: relative;
+  right: -25px;
+  top: 10px;
+  transform: rotate(45deg);
+}
+
+.hint-arrow {
+  height: 35px;
+  width: 35px;
+}
+
+@keyframes floatHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.folder-toggle:checked ~ .hint-wrapper {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* folder card logics are here */
+.folder-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.folder-toggle:checked ~ .folder-container {
+  transform: rotateX(10deg) rotateY(-5deg);
+}
+
+.folder-back {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+}
+
+.folder-front-wrapper {
+  position: absolute;
+  bottom: -7px;
+  width: 100%;
+  z-index: 90;
+  transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 12px;
+}
+
+.folder-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+/* this counts files */
+.counter {
+  position: absolute;
+  top: -95px;
+  right: -75px;
+  background-color: #a18cd1;
+  padding: 4px 8px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transform: scale(0) translateY(20px);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.folder-toggle:checked ~ .folder-container .counter {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: #34d399;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 10px #34d399;
+}
+
+.status-dot::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #34d399;
+  border-radius: 50%;
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.counter-label {
+  font-family: "Inter", sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  color: black;
+  text-transform: capitalize;
+}
+
+.counter-number {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.counter:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #60a5fa;
+  transform: scale(1.1) translateY(-5px) !important;
+  cursor: help;
+}
+
+.counter:hover .counter-number {
+  color: #60a5fa;
+  transition: color 0.3s ease;
+}
+
+/* files */
+.file {
+  position: absolute;
+  bottom: 5px;
+  left: 10%;
+  width: 80%;
+  height: 85px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 0;
+}
+
+.file-1 { background: #ff5f6d; z-index: 25; transition-delay: 0.15s; }
+.file-2 { background: #ffc371; z-index: 24; transition-delay: 0.1s; }
+.file-3 { background: #4facfe; z-index: 23; transition-delay: 0.05s; }
+.file-4 { background: #00f2fe; z-index: 22; transition-delay: 0.02s; }
+.file-5 { background: #a18cd1; z-index: 21; transition-delay: 0s; }
+
+.shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  transition: none;
+}
+
+.folder-toggle:checked ~ .folder-container .shine {
+  left: 150%;
+  transition: left 0.8s ease-in-out;
+  transition-delay: 0.3s;
+}
+
+.file-text {
+  font-family: "Inter", sans-serif;
+  font-size: 9px;
+  color: white;
+  padding: 12px;
+  font-weight: 800;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.3s ease 0.4s;
+}
+
+.folder-toggle:checked ~ .folder-container .file-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* active state (click on card folder) */
+.folder-toggle:checked ~ .folder-container .folder-front-wrapper {
+  transform: rotateX(-50deg);
+}
+
+.folder-toggle:checked ~ .folder-container .file-1 {
+  transform: translateY(-70px) rotate(-10deg) translateX(-15px) translateZ(20px);
+}
+.folder-toggle:checked ~ .folder-container .file-2 {
+  transform: translateY(-55px) rotate(8deg) translateX(18px) translateZ(10px);
+}
+.folder-toggle:checked ~ .folder-container .file-3 {
+  transform: translateY(-40px) rotate(-15deg) translateX(-8px);
+}
+.folder-toggle:checked ~ .folder-container .file-4 {
+  transform: translateY(-25px) rotate(12deg) translateX(12px);
+}
+.folder-toggle:checked ~ .folder-container .file-5 {
+  transform: translateY(-10px) rotate(-5deg);
+}
+
+/* Hover Interaction */
+.folder-toggle:checked ~ .folder-container .file:hover {
+  cursor: pointer;
+  filter: brightness(1.1);
+}
+
+.folder-toggle:checked ~ .folder-container .file-1:hover {
+  transform: translateY(-80px) rotate(-10deg) translateX(-15px) translateZ(20px);
+}
+.folder-toggle:checked ~ .folder-container .file-2:hover {
+  transform: translateY(-65px) rotate(8deg) translateX(18px) translateZ(10px);
+}
+.folder-toggle:checked ~ .folder-container .file-3:hover {
+  transform: translateY(-50px) rotate(-15deg) translateX(-8px);
+}
+.folder-toggle:checked ~ .folder-container .file-4:hover {
+  transform: translateY(-35px) rotate(12deg) translateX(12px);
+}
+.folder-toggle:checked ~ .folder-container .file-5:hover {
+  transform: translateY(-20px) rotate(-5deg);
+}
+
+.file-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 14px;
+  height: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.3s ease;
+}
+
+.file-tag {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 7px;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.folder-toggle:checked ~ .folder-container .file:hover .file-icon {
+  color: rgba(255, 255, 255, 0.9);
+}
+.folder-toggle:checked ~ .folder-container .file-tag {
+  opacity: 1;
+}
+
+/* search bar */
+.folder-search {
+  position: absolute;
+  top: -40px;
+  left: 10%;
+  width: 30px;
+  height: 25px;
+  background-color: #60a5fa;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  opacity: 0;
+  z-index: 100;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 9px;
+  margin-left: 8px;
+  outline: none;
+  transition: width 0.4s ease;
+  width: 0;
+}
+.search-input::placeholder {
+  color: #ffffff;
+}
+
+.folder-toggle:checked ~ .folder-container .folder-search {
+  opacity: 1;
+  top: -80px;
+  width: 80%;
+}
+
+.folder-toggle:checked ~ .folder-container .folder-search:focus-within {
+  width: 90%;
+  background-color: #ff3b30;
+}
+
+.folder-toggle:checked ~ .folder-container .folder-search:focus-within .search-input {
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .h-sim-stage--both {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .h-sim-android-wrap {
+    width: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .h-sim-selector {
+    flex-wrap: wrap;
+    border-radius: 12px;
+  }
+
+  .h-sim-dash__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .h-sim-dash__lower {
+    grid-template-columns: 1fr;
+  }
+
+  .h-sim-browser__tabs {
+    display: none;
+  }
+}

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../app/providers/AuthProvider';
 import { getRoleHomePath } from '../../shared/constants/roles';
-import { openPageInNewWindow } from '../../shared/utils/openPageInNewWindow';
 import { LanguageSwitcher } from '../../shared/ui/navigation/LanguageSwitcher';
 import { useBrandingContent } from '../../shared/hooks/useSiteContent';
+import './andela-home.css';
 
 type DropdownId = 'developers' | 'services';
 
@@ -127,12 +127,11 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useRef<number | null>(null);
 
-  function handleLoginClick(e: React.MouseEvent) {
-    if (pathname === '/') {
-      e.preventDefault();
-      openPageInNewWindow('/login');
-    }
-  }
+  const isDevelopersActive = pathname.startsWith('/developers');
+  const isServicesActive = pathname.startsWith('/services') || pathname === '/pricing';
+  const isBlogActive = pathname.startsWith('/blog');
+  const isDevisActive = pathname === '/work-with-us';
+  const isContactActive = pathname === '/contact';
 
   const open = (id: DropdownId) => {
     if (closeTimer.current) {
@@ -158,7 +157,7 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
       aria-label={t('nav.primaryAria')}
     >
       <div className="andela-nav__bar">
-        <Link to={logoTo} className="andela-nav__logo" aria-label={t('footer.brand.homeAria')}>
+        <Link to={logoTo} className="andela-nav__logo" aria-label={t('footer.brand.homeAria')} onClick={closeMenus}>
           {branding.logoUrl ? (
             <img src={branding.logoUrl} alt={branding.siteName || ''} className="andela-nav__logo-img" />
           ) : (
@@ -167,7 +166,6 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
               <span className="andela-nav__logo-text">{branding.siteName}</span>
             </>
           )}
-          <span className="andela-nav__badge-status">ACTIF</span>
         </Link>
 
         <div className="andela-nav__center">
@@ -176,7 +174,11 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
             onMouseEnter={() => open('developers')}
             onMouseLeave={scheduleClose}
           >
-            <Link to="/developers" className="andela-nav__link">
+            <Link
+              to="/developers"
+              className={`andela-nav__link${isDevelopersActive ? ' andela-nav__link--active' : ''}`}
+              onClick={closeMenus}
+            >
               {t('nav.developers')}
             </Link>
           </div>
@@ -186,15 +188,35 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
             onMouseEnter={() => open('services')}
             onMouseLeave={scheduleClose}
           >
-            <Link to="/services" className="andela-nav__link">
+            <Link
+              to="/services"
+              className={`andela-nav__link${isServicesActive ? ' andela-nav__link--active' : ''}`}
+              onClick={closeMenus}
+            >
               {t('nav.services')}
             </Link>
           </div>
 
-          <Link to="/work-with-us" className="andela-nav__link">
-            Devis
+          <Link
+            to="/blog"
+            className={`andela-nav__link${isBlogActive ? ' andela-nav__link--active' : ''}`}
+            onClick={closeMenus}
+          >
+            {t('nav.blog', 'Blog')}
           </Link>
-          <Link to="/contact" className="andela-nav__link">
+
+          <Link
+            to="/work-with-us"
+            className={`andela-nav__link andela-nav__link--devis${isDevisActive ? ' andela-nav__link--active' : ''}`}
+            onClick={closeMenus}
+          >
+            {t('nav.quote', 'Devis')}
+          </Link>
+          <Link
+            to="/contact"
+            className={`andela-nav__link${isContactActive ? ' andela-nav__link--active' : ''}`}
+            onClick={closeMenus}
+          >
             {t('nav.contact')}
           </Link>
 
@@ -204,7 +226,7 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
         </div>
 
         <div className="andela-nav__right">
-          <Link to="/login" className="andela-nav__btn andela-nav__btn--login" onClick={handleLoginClick}>
+          <Link to="/login" className="andela-nav__btn andela-nav__btn--login" onClick={closeMenus}>
             CONNEXION
           </Link>
 
@@ -233,25 +255,45 @@ export function AndelaNavbar({ variant = 'default' }: AndelaNavbarProps) {
       ) : null}
 
       <div className={`andela-nav__mobile ${mobileOpen ? 'andela-nav__mobile--open' : ''}`}>
-        <Link to="/developers" onClick={() => setMobileOpen(false)}>
+        <Link
+          to="/developers"
+          className={isDevelopersActive ? 'andela-nav__mobile-link--active' : ''}
+          onClick={closeMenus}
+        >
           {t('nav.developers')}
         </Link>
-        <Link to="/services" onClick={() => setMobileOpen(false)}>
+        <Link
+          to="/services"
+          className={isServicesActive ? 'andela-nav__mobile-link--active' : ''}
+          onClick={closeMenus}
+        >
           {t('nav.services')}
         </Link>
-        <Link to="/work-with-us" onClick={() => setMobileOpen(false)}>
-          Devis
+        <Link
+          to="/blog"
+          className={isBlogActive ? 'andela-nav__mobile-link--active' : ''}
+          onClick={closeMenus}
+        >
+          {t('nav.blog', 'Blog')}
         </Link>
-        <Link to="/contact" onClick={() => setMobileOpen(false)}>
+        <Link
+          to="/work-with-us"
+          className={isDevisActive ? 'andela-nav__mobile-link--active' : ''}
+          onClick={closeMenus}
+        >
+          {t('nav.quote', 'Devis')}
+        </Link>
+        <Link
+          to="/contact"
+          className={isContactActive ? 'andela-nav__mobile-link--active' : ''}
+          onClick={closeMenus}
+        >
           {t('nav.contact')}
         </Link>
         <Link
           to="/login"
           className="andela-nav__btn andela-nav__btn--login andela-nav__btn--mobile-login"
-          onClick={(e) => {
-            handleLoginClick(e);
-            setMobileOpen(false);
-          }}
+          onClick={closeMenus}
         >
           CONNEXION
         </Link>

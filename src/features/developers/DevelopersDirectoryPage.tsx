@@ -32,8 +32,13 @@ export function DevelopersDirectoryPage() {
     <div className="dev-directory">
       <div className="dev-directory__layout">
         <aside className="dev-directory__left">
+          <span className="tech-section-eyebrow">(A) — TALENTS & DÉVELOPPEURS</span>
           <h1 className="dev-directory__headline">{t('developers.directory.title')}</h1>
           <p className="dev-directory__subtext">{t('developers.directory.subtitle')}</p>
+          <Link to="/contact" className="dev-directory__cta">
+            <span>{t('nav.bookDiscovery', 'RÉSERVER UN APPEL DÉCOUVERTE')}</span>
+            <span aria-hidden="true">→</span>
+          </Link>
         </aside>
 
         <div className="dev-directory__right">

@@ -326,6 +326,7 @@ export function WorkWithUsPage() {
     <div className="wwu-page">
       <section className="andela-hero-top wwu-hero" aria-label={t('nav.workWithUs')}>
         <div className="andela-hero-headline">
+          <span className="tech-section-eyebrow">(A) — DEMANDE DE DEVIS & PROJET</span>
           <h1 className="andela-h1">
             <span className="andela-h1__line1">{t('workWithUs.hero.title1')}</span>
             <span className="andela-h1__line2">{t('workWithUs.hero.title2')}</span>
