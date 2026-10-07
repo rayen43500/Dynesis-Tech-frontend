@@ -1,35 +1,54 @@
 /* ══════════════════════════════════════════════════════════════════
-   Dynesis Tech - High-Fidelity Pure Light Splash Screen
-   Exact visual match with central 3D emblem, spaced motto,
-   gradient progress bar, percentage indicator, and 'CHARGEMENT...'
+   Dynesis Tech — Expert UI/UX Splash Screen (High-Tech Luxury Edition)
+   Creative True 3D Rotating Glass Cube (Avant / Gauche / Arrière)
+   Featuring Quantum Singularity Core, Gyroscopic Orbital Rings,
+   Dynamic Multi-Axis Tumbling, and Non-Linear Progress Meter.
    ══════════════════════════════════════════════════════════════════ */
 
 .dynesis-splash-root {
   position: fixed;
   inset: 0;
-  z-index: 999999;
+  z-index: 9999999;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #ffffff;
-  background: radial-gradient(circle at 50% 45%, #ffffff 0%, #f7faff 60%, #eef6ff 100%);
+  background: radial-gradient(circle at 50% 45%, #ffffff 0%, #f6faff 50%, #ebf4fe 100%);
+  color: #0f172a;
   overflow: hidden;
   user-select: none;
-  opacity: 1;
-  padding: 24px;
+  cursor: default;
+  padding: 32px 24px;
   box-sizing: border-box;
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  font-family: var(--tech-font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', system-ui, sans-serif;
 }
 
+/* Exit state: smooth dissolve */
 .dynesis-splash-root--exiting {
   opacity: 0;
-  transform: scale(1.05);
+  transform: scale(1.04);
+  filter: blur(10px);
   pointer-events: none;
 }
 
-/* ── Background Subtle Light Waves ── */
-.dynesis-splash-bg {
+/* ── Dark Mode Harmony ── */
+:root.dark .dynesis-splash-root,
+.dark .dynesis-splash-root {
+  background: #090d16;
+  background: radial-gradient(circle at 50% 45%, #0f172a 0%, #090d16 65%, #05080e 100%);
+  color: #f1f5f9;
+}
+
+/* ── Ambient Auroras & Background Mesh ── */
+.dynesis-splash-backdrop {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -37,60 +56,70 @@
   z-index: 0;
 }
 
-.dynesis-splash-glow-center {
+.dynesis-splash-aurora-1 {
   position: absolute;
-  top: 42%;
+  top: 36%;
   left: 50%;
-  width: 600px;
-  height: 600px;
+  width: 580px;
+  height: 580px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(0, 140, 255, 0.12) 0%, rgba(0, 210, 255, 0.04) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.16) 0%, rgba(56, 189, 248, 0.08) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(75px);
+  animation: splashAuroraPulse 4s ease-in-out infinite alternate;
+}
+
+.dynesis-splash-aurora-2 {
+  position: absolute;
+  bottom: -10%;
+  right: -5%;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(0, 102, 204, 0.08) 0%, transparent 65%);
   border-radius: 50%;
   filter: blur(60px);
-  animation: splashPulseGlow 3.5s ease-in-out infinite alternate;
 }
 
-.dynesis-splash-curve-bottom-left {
+.dynesis-splash-grid-mesh {
   position: absolute;
-  bottom: -15%;
-  left: -15%;
-  width: 65%;
-  height: 65%;
-  background: radial-gradient(ellipse at center, rgba(0, 128, 255, 0.06) 0%, rgba(0, 200, 255, 0.02) 60%, transparent 80%);
-  border-radius: 50% 50% 0 0;
-  filter: blur(40px);
-  transform: rotate(-15deg);
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(2, 132, 199, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(2, 132, 199, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
 }
 
-.dynesis-splash-curve-top-right {
-  position: absolute;
-  top: -10%;
-  right: -10%;
-  width: 50%;
-  height: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 150, 255, 0.05) 0%, transparent 70%);
-  border-radius: 50%;
-  filter: blur(40px);
+@keyframes splashAuroraPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
 }
 
-/* ── Center Main Stage ── */
-.dynesis-splash-stage {
+/* ── Centerpiece Stage ── */
+.dynesis-splash-centerpiece {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  max-width: 480px;
   width: 100%;
-  max-width: 520px;
   text-align: center;
-  animation: splashStageEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: splashFadeEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes splashStageEntrance {
+@keyframes splashFadeEntrance {
   0% {
     opacity: 0;
-    transform: translateY(16px) scale(0.96);
+    transform: translateY(18px) scale(0.97);
   }
   100% {
     opacity: 1;
@@ -98,165 +127,576 @@
   }
 }
 
-/* ── Brand Logo & 3D Symbol ── */
-.dynesis-splash-brand-wrap {
+/* ══════════════════════════════════════════════════════════════════
+   3D CREATIVE ROTATING CUBE ARCHITECTURE (TRUE CSS 3D)
+   ══════════════════════════════════════════════════════════════════ */
+
+.dynesis-cube-viewport {
   position: relative;
+  width: 200px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 38px;
+  margin-bottom: 24px;
 }
 
-.dynesis-splash-logo-glow {
+/* ── Dynamic 3D Floor Shadow ── */
+.dynesis-cube-floor-shadow {
   position: absolute;
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle, rgba(0, 128, 255, 0.18) 0%, transparent 70%);
+  bottom: 8px;
+  width: 110px;
+  height: 24px;
   border-radius: 50%;
-  filter: blur(35px);
-  z-index: 0;
-  pointer-events: none;
-  animation: logoGlowBreathe 3s ease-in-out infinite alternate;
-}
-
-.dynesis-splash-logo-img {
-  position: relative;
+  background: radial-gradient(ellipse at center, rgba(2, 132, 199, 0.32) 0%, rgba(2, 132, 199, 0.1) 50%, transparent 75%);
+  filter: blur(8px);
   z-index: 1;
-  max-width: 320px;
-  height: auto;
-  max-height: 140px;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 12px 30px rgba(0, 128, 255, 0.18));
-  animation: logoFloat 4s ease-in-out infinite alternate;
+  animation: floorShadowSync 3.8s ease-in-out infinite alternate;
 }
 
-@keyframes logoFloat {
+@keyframes floorShadowSync {
   0% {
-    transform: translateY(0px) scale(1);
-  }
-  100% {
-    transform: translateY(-5px) scale(1.015);
-  }
-}
-
-@keyframes logoGlowBreathe {
-  0% {
+    transform: scale(0.85);
     opacity: 0.6;
-    transform: scale(0.95);
   }
   100% {
+    transform: scale(1.15);
     opacity: 1;
-    transform: scale(1.1);
   }
 }
 
-/* ── Catchphrase Motto (DES IDÉES AU IMPACT) ── */
-.dynesis-splash-motto {
-  font-family: var(--tech-font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: #4a6382;
-  margin: 0 0 46px 0;
-  padding-left: 0.32em; /* optical balance */
-  opacity: 0.95;
-}
-
-/* ── Progress Bar System ── */
-.dynesis-splash-progress-container {
+/* ── Gyroscopic Orbital Rings ── */
+.dynesis-orbital-system {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dynesis-orbital-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(56, 189, 248, 0.3);
+  box-sizing: border-box;
+}
+
+.dynesis-orbital-ring--primary {
+  width: 150px;
+  height: 150px;
+  transform: rotateX(68deg) rotateY(18deg);
+  animation: orbitRingPrimary 12s linear infinite;
+}
+
+.dynesis-orbital-ring--secondary {
+  width: 170px;
+  height: 170px;
+  transform: rotateX(-52deg) rotateY(32deg);
+  animation: orbitRingSecondary 16s linear infinite reverse;
+}
+
+@keyframes orbitRingPrimary {
+  0% {
+    transform: rotateX(68deg) rotateY(18deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(68deg) rotateY(18deg) rotateZ(360deg);
+  }
+}
+
+@keyframes orbitRingSecondary {
+  0% {
+    transform: rotateX(-52deg) rotateY(32deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(-52deg) rotateY(32deg) rotateZ(360deg);
+  }
+}
+
+.dynesis-orbital-photon {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dynesis-orbital-photon--cyan {
+  background: #ffffff;
+  box-shadow: 0 0 8px 3px #38bdf8, 0 0 16px #0284c7;
+}
+
+.dynesis-orbital-photon--blue {
+  background: #bae6fd;
+  box-shadow: 0 0 8px 3px #0284c7, 0 0 14px #0066cc;
+}
+
+/* ── 3D Perspective Stage ── */
+.dynesis-cube-stage {
+  perspective: 900px;
+  width: 84px;
+  height: 84px;
+  position: relative;
+  transform-style: preserve-3d;
+  z-index: 3;
+}
+
+/* ── Levitation Pivot ── */
+.dynesis-cube-levitator {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  animation: cubeLevitateFloat 3.8s ease-in-out infinite alternate;
+}
+
+@keyframes cubeLevitateFloat {
+  0% {
+    transform: translateY(4px);
+  }
+  100% {
+    transform: translateY(-8px);
+  }
+}
+
+/* ── Creative 3D Tumbler (Avant / Gauche / Arrière) ── */
+.dynesis-cube-tumbler {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  /* Rotation fluide avant, gauche, arrière, multi-axes créatif */
+  animation: cubeCreativeTumble 8.5s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+@keyframes cubeCreativeTumble {
+  0% {
+    /* 0% : Angle isométrique dynamique de départ */
+    transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg);
+  }
+  22% {
+    /* AVANT & GAUCHE : Bascule vers l'avant (pitch positif) et tourne vers la gauche (yaw négatif) */
+    transform: rotateX(28deg) rotateY(-80deg) rotateZ(-8deg);
+  }
+  48% {
+    /* ARRIÈRE : Continue la rotation vers la gauche, expose la face arrière et son noyau */
+    transform: rotateX(-16deg) rotateY(-180deg) rotateZ(10deg);
+  }
+  72% {
+    /* CRÉATIF : Plongée avant-gauche avec inclinaison latérale pour sublimer la réfraction */
+    transform: rotateX(32deg) rotateY(-270deg) rotateZ(-12deg);
+  }
+  88% {
+    /* Transition de retour lissée */
+    transform: rotateX(-12deg) rotateY(-330deg) rotateZ(5deg);
+  }
+  100% {
+    /* Boucle 360° parfaite sans à-coups */
+    transform: rotateX(-20deg) rotateY(-360deg) rotateZ(0deg);
+  }
+}
+
+/* ── 6 Outer Glass Faces (84px x 84px - translateZ: 42px) ── */
+.dynesis-face {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  box-sizing: border-box;
+  backface-visibility: visible;
+  overflow: hidden;
+
+  /* Translucent Crystal Glass */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(186, 230, 253, 0.35) 45%, rgba(2, 132, 199, 0.28) 100%);
+  border: 1.5px solid rgba(125, 211, 252, 0.85);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 18px rgba(56, 189, 248, 0.35),
+    inset 0 0 35px rgba(2, 132, 199, 0.15),
+    0 0 14px rgba(56, 189, 248, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+:root.dark .dynesis-face,
+.dark .dynesis-face {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.35) 0%, rgba(2, 132, 199, 0.25) 50%, rgba(15, 23, 42, 0.65) 100%);
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow:
+    inset 0 0 20px rgba(56, 189, 248, 0.4),
+    0 0 16px rgba(2, 132, 199, 0.4);
+}
+
+/* 3D Face Offsets */
+.dynesis-face--front  { transform: rotateY(0deg) translateZ(42px); }
+.dynesis-face--back   { transform: rotateY(180deg) translateZ(42px); }
+.dynesis-face--right  { transform: rotateY(90deg) translateZ(42px); }
+.dynesis-face--left   { transform: rotateY(-90deg) translateZ(42px); }
+.dynesis-face--top    { transform: rotateX(90deg) translateZ(42px); }
+.dynesis-face--bottom { transform: rotateX(-90deg) translateZ(42px); }
+
+/* Glass Specular Flare */
+.dynesis-face-glass-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+/* Tech Crosshair / Micro Reticle */
+.dynesis-face-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dynesis-face-crosshair::before,
+.dynesis-face-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.dynesis-face-crosshair::before {
+  top: 50%;
+  left: -4px;
+  right: -4px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.dynesis-face-crosshair::after {
+  left: 50%;
+  top: -4px;
+  bottom: -4px;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+/* Tech Corner Nodes */
+.dynesis-face-node {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 1px;
+  box-shadow: 0 0 4px #38bdf8;
+}
+
+.dynesis-face-node.tl { top: 4px; left: 4px; }
+.dynesis-face-node.tr { top: 4px; right: 4px; }
+.dynesis-face-node.bl { bottom: 4px; left: 4px; }
+.dynesis-face-node.br { bottom: 4px; right: 4px; }
+
+/* ── Inner Quantum Singularity Core ── */
+.dynesis-cube-core-anchor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+/* Glowing Energy Flare Orb */
+.dynesis-core-energy-orb {
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #38bdf8 45%, #0284c7 80%, transparent 100%);
+  filter: blur(4px);
+  box-shadow:
+    0 0 25px 8px rgba(56, 189, 248, 0.85),
+    0 0 45px 16px rgba(2, 132, 199, 0.5);
+  animation: coreEnergyPulse 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes coreEnergyPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Counter-Spinning Inner Crystal Cube (36px x 36px - translateZ: 18px) */
+.dynesis-inner-crystal {
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  width: 36px;
+  height: 36px;
+  transform-style: preserve-3d;
+  animation: innerCrystalCounterSpin 6s linear infinite;
+}
+
+@keyframes innerCrystalCounterSpin {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg);
+  }
+}
+
+.dynesis-inner-face {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(56, 189, 248, 0.5) 100%);
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.75);
+}
+
+.dynesis-inner-face.in-front  { transform: rotateY(0deg) translateZ(18px); }
+.dynesis-inner-face.in-back   { transform: rotateY(180deg) translateZ(18px); }
+.dynesis-inner-face.in-right  { transform: rotateY(90deg) translateZ(18px); }
+.dynesis-inner-face.in-left   { transform: rotateY(-90deg) translateZ(18px); }
+.dynesis-inner-face.in-top    { transform: rotateX(90deg) translateZ(18px); }
+.dynesis-inner-face.in-bottom { transform: rotateX(-90deg) translateZ(18px); }
+
+/* ══════════════════════════════════════════════════════════════════
+   TYPOGRAPHY & PROGRESS SYSTEM
+   ══════════════════════════════════════════════════════════════════ */
+
+.dynesis-splash-brand-heading {
+  margin-bottom: 34px;
+}
+
+.dynesis-splash-brand-title {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.dynesis-splash-brand-name {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+:root.dark .dynesis-splash-brand-name,
+.dark .dynesis-splash-brand-name {
+  color: #ffffff;
+}
+
+.dynesis-splash-brand-highlight {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #0284c7 0%, #0066cc 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dynesis-splash-brand-motto {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #64748b;
+  padding-left: 0.34em; /* Optical alignment */
+}
+
+:root.dark .dynesis-splash-brand-motto,
+.dark .dynesis-splash-brand-motto {
+  color: #94a3b8;
+}
+
+/* ── High-Tech Progress Meter ── */
+.dynesis-splash-meter-wrapper {
   width: 100%;
   max-width: 380px;
-  margin: 0 auto 28px;
+  margin: 0 auto;
 }
 
-.dynesis-splash-progress-rail {
+.dynesis-splash-meter-rail {
   position: relative;
-  flex: 1;
-  height: 9px;
-  background: rgba(226, 232, 240, 0.85);
-  border-radius: 999px;
+  width: 100%;
+  height: 6px;
+  background: rgba(226, 232, 240, 0.8);
+  border-radius: 9999px;
   overflow: visible;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.dynesis-splash-progress-fill {
+:root.dark .dynesis-splash-meter-rail,
+.dark .dynesis-splash-meter-rail {
+  background: rgba(30, 41, 59, 0.85);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dynesis-splash-meter-fill {
   position: relative;
   height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #0052cc 0%, #0080ff 65%, #00d2ff 100%);
-  box-shadow: 
-    0 0 14px rgba(0, 150, 255, 0.65), 
-    0 0 24px rgba(0, 128, 255, 0.35);
-  transition: width 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #0369a1 0%, #0284c7 45%, #0099ff 80%, #38bdf8 100%);
+  box-shadow:
+    0 0 12px rgba(56, 189, 248, 0.65),
+    0 0 24px rgba(2, 132, 199, 0.35);
+  transition: width 0.08s linear;
 }
 
-.dynesis-splash-progress-glow-tip {
+.dynesis-splash-meter-lead {
   position: absolute;
   right: -3px;
   top: 50%;
   transform: translateY(-50%);
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 0 10px 2px #00d2ff;
+  box-shadow:
+    0 0 8px 2px #38bdf8,
+    0 0 16px 4px rgba(2, 132, 199, 0.6);
 }
 
-.dynesis-splash-progress-pct {
-  font-family: var(--tech-font-mono, 'JetBrains Mono', monospace);
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #475569;
-  min-width: 38px;
-  text-align: right;
-}
-
-/* ── Bottom Loading Label (C H A R G E M E N T . . .) ── */
-.dynesis-splash-loading-text {
-  font-family: var(--tech-font-mono, 'JetBrains Mono', monospace);
+/* Status Text & Percentage Row */
+.dynesis-splash-meter-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
   font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.38em;
+}
+
+.dynesis-splash-meter-status {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #64748b;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+:root.dark .dynesis-splash-meter-status,
+.dark .dynesis-splash-meter-status {
+  color: #94a3b8;
+}
+
+.dynesis-splash-meter-pct {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  color: #0284c7;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+:root.dark .dynesis-splash-meter-pct,
+.dark .dynesis-splash-meter-pct {
+  color: #38bdf8;
+}
+
+/* ── Bottom Submark / System Chip ── */
+.dynesis-splash-footer {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dynesis-splash-footer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  border-radius: 9999px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #8da4be;
-  text-align: center;
-  padding-left: 0.38em; /* optical alignment */
+  color: #64748b;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
-/* ── Background Pulse Keyframe ── */
-@keyframes splashPulseGlow {
-  0% {
-    opacity: 0.7;
-    transform: translate(-50%, -50%) scale(0.92);
+:root.dark .dynesis-splash-footer-badge,
+.dark .dynesis-splash-footer-badge {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(51, 65, 85, 0.6);
+  color: #94a3b8;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dynesis-splash-footer-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #0284c7;
+  box-shadow: 0 0 6px #38bdf8;
+  animation: splashFooterDotBlink 2s ease-in-out infinite;
+}
+
+@keyframes splashFooterDotBlink {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.85);
   }
-  100% {
+  50% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.08);
+    transform: scale(1.15);
   }
 }
 
-/* ── Responsive Mobile Adjustments ── */
+/* ── Mobile Optimization ── */
 @media (max-width: 640px) {
-  .dynesis-splash-logo-img {
-    max-width: 250px;
+  .dynesis-splash-root {
+    padding: 20px 16px;
   }
-  .dynesis-splash-motto {
-    font-size: 12px;
-    letter-spacing: 0.24em;
-    margin-bottom: 36px;
+  .dynesis-cube-viewport {
+    width: 170px;
+    height: 155px;
   }
-  .dynesis-splash-progress-container {
-    max-width: 300px;
-    gap: 12px;
+  .dynesis-splash-brand-name,
+  .dynesis-splash-brand-highlight {
+    font-size: 24px;
   }
-  .dynesis-splash-loading-text {
+  .dynesis-splash-brand-motto {
     font-size: 10px;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.26em;
+  }
+  .dynesis-splash-meter-wrapper {
+    max-width: 290px;
+  }
+  .dynesis-splash-meter-stats {
+    font-size: 10.5px;
+  }
+  .dynesis-splash-footer-badge {
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
   }
 }

@@ -54,9 +54,7 @@ export function PublicRoutes() {
         index
         element={
           <Suspense fallback={<LoadingState />}>
-            <AuthenticatedRedirect>
-              <AndelaHomePage />
-            </AuthenticatedRedirect>
+            <AndelaHomePage />
           </Suspense>
         }
       />

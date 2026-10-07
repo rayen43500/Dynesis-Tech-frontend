@@ -17,7 +17,8 @@ export function configureAuthTokenHandlers(handlers: { getToken: AccessTokenProv
 
 export const http = axios.create({
   baseURL,
-  withCredentials: true
+  withCredentials: true,
+  timeout: 15000
 });
 
 let isRefreshing = false;

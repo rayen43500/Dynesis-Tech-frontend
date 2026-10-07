@@ -8,7 +8,6 @@ import { getRoleHomePath } from '../../shared/constants/roles';
 export function AuthenticatedRedirect({ children }: { children: React.ReactElement }) {
   const { status, user } = useAuth();
 
-  if (status === 'loading') return null;
   if (status === 'authenticated' && user) {
     return <Navigate to={getRoleHomePath(user.role)} replace />;
   }
