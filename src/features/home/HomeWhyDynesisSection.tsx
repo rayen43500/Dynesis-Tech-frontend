@@ -39,26 +39,26 @@ const PILLAR_CARDS: PillarCard[] = [
   {
     number: '01',
     icon: Gauge,
-    title: 'PERFORMANCE',
-    description: 'Des produits rapides et optimisés pour une expérience fluide.'
+    title: 'PERFORMANCE ABSOLUE',
+    description: 'Des produits véloces et optimisés pour offrir une fluidité instantanée et maximiser l’engagement.'
   },
   {
     number: '02',
     icon: Gem,
-    title: 'QUALITÉ',
-    description: 'Une architecture propre, testée et maintenable dans le temps.'
+    title: 'EXCELLENCE DU CODE',
+    description: 'Une architecture propre, modulaire et couverte par des tests rigoureux, pensée pour durer.'
   },
   {
     number: '03',
     icon: ShieldCheck,
-    title: 'SÉCURITÉ',
-    description: 'La sécurité intégrée à chaque étape du développement.'
+    title: 'SÉCURITÉ & RÉSILIENCE',
+    description: 'La sécurité intégrée dès la conception (Security by Design) et une conformité rigoureuse aux standards industriels.'
   },
   {
     number: '04',
     icon: TrendingUp,
-    title: 'ÉVOLUTIVITÉ',
-    description: 'Des solutions prêtes à grandir avec vos ambitions.'
+    title: 'ÉVOLUTIVITÉ SANS LIMITE',
+    description: 'Des systèmes modulaires et hautement scalables, capables de grandir harmonieusement avec vos ambitions.'
   }
 ];
 
@@ -120,14 +120,14 @@ export function HomeWhyDynesisSection({ backgroundImage, backgroundVideo }: Home
             </h2>
 
             <p className="tech-why__sub">
-              Nous ne nous contentons pas de développer des fonctionnalités. Nous construisons des produits numériques rapides, fiables et conçus pour évoluer avec votre entreprise.
+              Nous ne nous contentons pas de livrer du code. Nous forgeons des architectures pérennes, des interfaces sans friction et des infrastructures conçues pour soutenir durablement votre croissance.
             </p>
 
             <Link to="/services" className="tech-why__cta-link">
               <span className="tech-why__play-circle" aria-hidden="true">
                 <Play size={11} className="tech-why__play-icon" />
               </span>
-              <span className="tech-why__cta-text">DÉCOUVRIR NOTRE APPROCHE</span>
+              <span className="tech-why__cta-text">DÉCOUVRIR NOTRE SAVOIR-FAIRE</span>
               <ArrowRight size={15} className="tech-why__arrow-icon" />
             </Link>
           </div>
@@ -429,12 +429,12 @@ export function HomeWhyDynesisSection({ backgroundImage, backgroundVideo }: Home
         <div className="tech-why__footer-bar" aria-hidden="true">
           <div className="tech-why__footer-line" />
           <span className="tech-why__footer-phrase">
-            DES SOLUTIONS AUJOURD'HUI. UN IMPACT DEMAIN.
+            DES SOLUTIONS AUJOURD'HUI. UN IMPACT DURABLE.
           </span>
           <div className="tech-why__footer-line" />
           <div className="tech-why__footer-badge">
             <span className="tech-why__footer-dot" />
-            <span className="tech-why__footer-tagline">CONSTRUIRE L’AVENIR ENSEMBLE</span>
+            <span className="tech-why__footer-tagline">FORGER L’AVENIR ENSEMBLE</span>
           </div>
         </div>
       </div>

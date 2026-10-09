@@ -30,11 +30,11 @@ interface MicroserviceNode {
 }
 
 const DEFAULT_NODES: MicroserviceNode[] = [
-  { id: 'gw', name: 'Auth & Zero-Trust Gateway', type: 'Security', status: 'healthy', latency: 8, ops: '1.4k req/s' },
-  { id: 'ai', name: 'Neural AI Inference Engine', type: 'IA Core', status: 'healthy', latency: 12, ops: '4.8k ops/s' },
-  { id: 'db', name: 'PostgreSQL & Redis Cache Cluster', type: 'Database', status: 'healthy', latency: 4, ops: '99.999% sync' },
-  { id: 'cdn', name: 'Global Anycast CDN Workers', type: 'Edge Network', status: 'healthy', latency: 6, ops: '18 régions' },
-  { id: 'w3', name: 'Smart Contract & API Relay', type: 'Web3 & API', status: 'healthy', latency: 15, ops: 'Zéro coupure' }
+  { id: 'gw', name: 'Passerelle Zero-Trust & Auth OIDC', type: 'Sécurité', status: 'healthy', latency: 8, ops: '1.4k req/s' },
+  { id: 'ai', name: 'Moteur d’Inférence IA & Agents LLM', type: 'Core IA', status: 'healthy', latency: 12, ops: '4.8k ops/s' },
+  { id: 'db', name: 'Cluster PostgreSQL & Redis Distribué', type: 'Données', status: 'healthy', latency: 4, ops: '99.999% sync' },
+  { id: 'cdn', name: 'Réseau Edge Mondial Anycast CDN', type: 'Réseau Edge', status: 'healthy', latency: 6, ops: '18 régions' },
+  { id: 'w3', name: 'Relais Smart Contracts & APIs Web3', type: 'Web3 & API', status: 'healthy', latency: 15, ops: 'Zéro coupure' }
 ];
 
 export function DynesisCloudShowcase() {
@@ -44,11 +44,11 @@ export function DynesisCloudShowcase() {
   const [isLoadTesting, setIsLoadTesting] = useState(false);
   const [requestsCount, setRequestsCount] = useState(48290);
   const [logs, setLogs] = useState<string[]>([
-    '[SYSTEM]    Dynesis Cloud Core v4.2 — initialisé',
-    '[NETWORK]   18 nœuds Edge Anycast — synchronisés',
-    '[SECURITY]  Bouclier WAF actif — 0 menace détectée',
-    '[DATABASE]  PostgreSQL & Redis — actifs (0 ms lag)',
-    '[AUTOSCALE] Équilibrage de charge adaptatif — actif'
+    '[SYSTÈME]    Dynesis Cloud Core — initialisé avec succès',
+    '[RÉSEAU]     18 nœuds Edge Anycast — synchronisés',
+    '[SÉCURITÉ]   Pare-feu applicatif WAF actif — 0 menace',
+    '[DONNÉES]    Cluster PostgreSQL & Redis — 99.999% sync',
+    '[SCALING]    Équilibrage adaptatif de charge — actif'
   ]);
 
   // Live request counter increment
@@ -108,12 +108,12 @@ export function DynesisCloudShowcase() {
           </div>
 
           <h2 className="dyn-cloud-sec__title">
-            Une infrastructure Cloud complète, <br />
-            pilotée pour <span className="dyn-cloud-sec__title-accent">l'excellence.</span>
+            Une infrastructure Cloud de pointe, <br />
+            taillée pour <span className="dyn-cloud-sec__title-accent">l'excellence opérationnelle.</span>
           </h2>
 
           <p className="dyn-cloud-sec__sub">
-            Découvrez la puissance et la robustesse de nos déploiements : architecture distribuée, temps de réponse sous les 10ms, sécurité renforcée et observabilité temps réel.
+            Découvrez la robustesse de nos déploiements à haute disponibilité : architecture distribuée multi-régions, latence sous les 10 ms, résilience Zero-Trust et observabilité en temps réel.
           </p>
         </header>
 
@@ -315,10 +315,10 @@ export function DynesisCloudShowcase() {
         {/* Action Buttons below the simulation */}
         <div className="dyn-cloud-sec__bottom-actions">
           <Link to="/contact" className="tech-btn tech-btn--primary">
-            DÉMARRER MON PROJET CLOUD <span className="tech-btn__arrow">→</span>
+            DÉPLOYER MON PROJET CLOUD <span className="tech-btn__arrow">→</span>
           </Link>
           <Link to="/services" className="tech-btn tech-btn--secondary">
-            DÉCOUVRIR NOS ARCHITECTURES
+            EXPLORER NOS ARCHITECTURES
           </Link>
         </div>
       </div>

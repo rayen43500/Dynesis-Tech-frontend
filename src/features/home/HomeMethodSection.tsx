@@ -39,31 +39,31 @@ const METHOD_STEPS: MethodStep[] = [
     number: '01',
     icon: Lightbulb,
     title: 'STRATÉGIE',
-    bullets: ['Analyse de vos besoins', 'Cadrage du projet', 'Conseil technologique']
+    bullets: ['Immersion & cadrage des besoins', 'Architecture & faisabilité technique', 'Alignement stratégique & roadmap']
   },
   {
     number: '02',
     icon: Pencil,
-    title: 'DESIGN',
-    bullets: ['Expérience utilisateur', 'Interface moderne', 'Prototypage rapide']
+    title: 'DESIGN & UX',
+    bullets: ['Parcours utilisateur sans friction', 'Système de design moderne & cohérent', 'Prototypage interactif haute-fidélité']
   },
   {
     number: '03',
     icon: Code2,
     title: 'DÉVELOPPEMENT',
-    bullets: ['Architecture robuste', 'Code de qualité', 'Intégration continue']
+    bullets: ['Architecture modulaire & robuste', 'Code épuré & typage strict', 'Intégration continue & revues rigoureuses']
   },
   {
     number: '04',
     icon: ShieldCheck,
     title: 'TEST & SÉCURITÉ',
-    bullets: ['Tests approfondis', 'Sécurité intégrée', 'Performance optimisée']
+    bullets: ['Couverture de tests automatisés', 'Sécurité Zero-Trust & conformité', 'Optimisation des performances']
   },
   {
     number: '05',
     icon: BarChart3,
     title: 'DÉPLOIEMENT & SCALE',
-    bullets: ['Mise en production', 'Suivi et maintenance', 'Accompagnement de la croissance']
+    bullets: ['Mise en production sans coupure', 'Monitoring proactif & observabilité 24/7', 'Accompagnement continu de la croissance']
   }
 ];
 
@@ -129,17 +129,17 @@ export function HomeMethodSection({ backgroundImage, backgroundVideo }: HomeMeth
           <div className="tech-method__copy">
             {/* Tag / Eyebrow with extending blue line */}
             <div className="tech-method__tag-wrapper">
-              <span className="tech-method__tag">(B) — NOTRE MÉTHODE</span>
+              <span className="tech-method__tag">(B) — NOTRE MÉTHODOLOGIE</span>
               <div className="tech-method__tag-line" aria-hidden="true" />
             </div>
 
             <h2 className="tech-method__title">
-              De l’idée au produit, <br />
-              avec une <span className="tech-method__title-accent">méthode claire.</span>
+              De l’idée initiale au produit d’exception, <br />
+              avec une <span className="tech-method__title-accent">rigueur absolue.</span>
             </h2>
 
             <p className="tech-method__sub">
-              Nous combinons stratégie, design et ingénierie pour transformer chaque idée en solution numérique performante, fiable et évolutive.
+              Nous conjuguons vision stratégique, design d’expérience et ingénierie de pointe pour forger des solutions numériques résilientes, véloces et taillées pour la montée en charge.
             </p>
           </div>
 
@@ -580,7 +580,7 @@ export function HomeMethodSection({ backgroundImage, backgroundVideo }: HomeMeth
           <div className="tech-method__footer-line" />
           <div className="tech-method__footer-badge">
             <span className="tech-method__footer-dot" />
-            <span className="tech-method__footer-tagline">DE L’IDÉE À DEMAIN</span>
+            <span className="tech-method__footer-tagline">DE LA VISION AU SUCCÈS DIGITAL</span>
           </div>
         </div>
       </div>

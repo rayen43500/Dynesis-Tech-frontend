@@ -23,16 +23,16 @@ const DEFAULT_PLANS: PricingPlan[] = [
   {
     _id: 'default-plan-1',
     category: 'vitrine',
-    name: 'Site Vitrine',
-    description: 'Idéal pour présenter votre activité en ligne avec un site professionnel, rapide et responsive.',
+    name: 'Site Vitrine & Expérience Digitale',
+    description: 'Une présence en ligne d’exception pour valoriser votre marque avec élégance, rapidité et fluidité sur tous les écrans.',
     price: '990€',
     priceNote: '/projet',
     features: [
-      { label: 'Design moderne & responsive', included: true },
-      { label: "Jusqu'à 8 pages", included: true },
-      { label: 'Formulaire de contact', included: true },
-      { label: 'SEO de base', included: true },
-      { label: '3 mois de support', included: true }
+      { label: 'Design sur mesure, immersif et responsive', included: true },
+      { label: "Jusqu'à 8 pages optimisées pour la conversion", included: true },
+      { label: 'Formulaire interactif & capture de leads qualifiés', included: true },
+      { label: 'Optimisation SEO technique & performance Lighthouse', included: true },
+      { label: '3 mois de support dédié & maintenance préventive', included: true }
     ],
     highlighted: false,
     badgeLabel: '',
@@ -45,18 +45,18 @@ const DEFAULT_PLANS: PricingPlan[] = [
   {
     _id: 'default-plan-2',
     category: 'blockchain',
-    name: 'Blockchain & Web3',
-    description: 'Pour les projets nécessitant traçabilité, smart contracts et intégration Web3.',
+    name: 'Blockchain & Protocoles Web3',
+    description: 'L’excellence décentralisée : smart contracts sécurisés, protocoles audités et intégrations Web3 de pointe.',
     price: '2 900€',
     priceNote: '/projet',
     highlighted: true,
     badgeLabel: 'RECOMMANDÉ',
     features: [
-      { label: 'Smart contracts Solidity', included: true },
-      { label: 'Intégration Ethereum / Polygon', included: true },
-      { label: 'Tableau de bord blockchain', included: true },
-      { label: 'Authentification Web3', included: true },
-      { label: 'Audit de sécurité smart contract', included: true }
+      { label: 'Smart contracts Solidity audités & optimisés', included: true },
+      { label: 'Intégration multi-chaînes (Ethereum, Polygon, L2)', included: true },
+      { label: 'Tableau de bord décentralisé & flux en direct', included: true },
+      { label: 'Authentification Web3 & connexion de portefeuilles', included: true },
+      { label: 'Audit de sécurité approfondi & zéro vulnérabilité', included: true }
     ],
     ctaLabel: 'DISCUTER DE MON PROJET',
     ctaHref: '/contact',
@@ -67,18 +67,18 @@ const DEFAULT_PLANS: PricingPlan[] = [
   {
     _id: 'default-plan-3',
     category: 'custom',
-    name: 'Application sur mesure',
-    description: 'Plateformes SaaS, applications mobiles, APIs complexes — nous construisons votre vision.',
+    name: 'Application Sur Mesure & SaaS',
+    description: 'Plateformes SaaS d’envergure, applications mobiles natives et architectures distribuées pour concrétiser votre vision.',
     price: 'Sur devis',
     priceNote: '',
     highlighted: false,
     badgeLabel: '',
     features: [
-      { label: 'Architecture sur mesure', included: true },
-      { label: 'Application web / mobile', included: true },
-      { label: 'API REST / GraphQL', included: true },
-      { label: 'Intégration IA & automatisation', included: true },
-      { label: 'Support dédié & SLA personnalisé', included: true }
+      { label: 'Architecture cloud modulaire & ultra-évolutive', included: true },
+      { label: 'Applications web & mobiles haute performance', included: true },
+      { label: 'APIs RESTful & GraphQL à haute disponibilité', included: true },
+      { label: 'Intégration d’agents IA & automatisation métier', included: true },
+      { label: 'Garantie SLA personnalisée & accompagnement continu', included: true }
     ],
     ctaLabel: 'OBTENIR UN DEVIS',
     ctaHref: '/work-with-us',
@@ -90,25 +90,25 @@ const DEFAULT_PLANS: PricingPlan[] = [
 
 const DEFAULT_TESTIMONIALS = [
   {
-    quote: '« Dynesis a apporté structure et sérénité à une feuille de route complexe. Nous avons livré dans les délais avec une qualité remarquée par nos parties prenantes. »',
+    quote: '« Dynesis a insufflé une rigueur exceptionnelle et une clarté totale à notre roadmap. Nous avons déployé notre produit dans les délais, avec un niveau de finition plébiscité par nos parties prenantes. »',
     name: 'Olivia M.',
     role: 'LEAD PRODUIT • SAAS',
     initial: 'O'
   },
   {
-    quote: '« Communication claire, exécution design solide et rigueur technique. Le processus a été de niveau entreprise dès le premier jour. »',
+    quote: '« Une communication limpide, une culture de l’excellence et une rigueur technique sans faille. L’expérience a atteint un standard d’ingénierie digne des plus grands leaders technologiques dès le premier jour. »',
     name: 'Daniel R.',
     role: 'CTO • FINTECH',
     initial: 'D'
   },
   {
-    quote: '« Ils nous ont permis d\'aller vite sans sacrifier la maintenabilité. La passation a été propre et la base de code est un plaisir à faire évoluer. »',
+    quote: '« Ils nous ont permis d\'accélérer notre mise sur le marché sans jamais compromettre la pérennité architecturale. Le passage de témoin s’est fait en toute fluidité, et la base de code demeure exemplaire. »',
     name: 'Sofia A.',
     role: 'ENGINEERING MANAGER • B2B',
     initial: 'S'
   },
   {
-    quote: '« Un partenaire premium. La phase de cadrage était précise, les estimations transparentes et la livraison constante semaine après semaine. »',
+    quote: '« Un partenaire stratégique rare. Cadrage millimétré, transparence absolue et livraisons d\'une qualité constante semaine après semaine. Notre retour sur investissement a été immédiat. »',
     name: 'Michael T.',
     role: 'FONDATEUR • STARTUP',
     initial: 'M'
@@ -119,7 +119,7 @@ const ROTATING_WORDS = [
   'croissance.',
   'performance.',
   'innovation.',
-  'évolution.',
+  'excellence.',
   'succès.'
 ];
 
@@ -143,7 +143,7 @@ export function AndelaHomePage() {
 
   const rawHeadline1 = content.headline1 || 'Logiciel premium,';
   const rawHeadline2 = content.headline2 || 'conçu pour votre croissance.';
-  const heroDescription = content.subheading || 'Nous transformons vos idées en produits numériques rapides, fiables et prêts à évoluer — du premier prototype à la mise en production.';
+  const heroDescription = content.subheading || 'Nous concevons des produits numériques de haute précision, rapides, fiables et taillés pour l’échelle — du cadrage stratégique au déploiement en production.';
 
   const heroBgVideo = content.heroBackgroundVideo || (isVideoUrl(content.heroBackgroundImage) ? content.heroBackgroundImage : '');
   const heroBgImage = isVideoUrl(content.heroBackgroundImage) ? '' : content.heroBackgroundImage;
@@ -218,7 +218,7 @@ export function AndelaHomePage() {
                   {content.button1 || 'RÉSERVER UN APPEL DÉCOUVERTE'} <span className="tech-btn__arrow">→</span>
                 </Link>
                 <Link to={content.button2Href || '/services'} className="tech-btn tech-btn--secondary">
-                  {content.button2 || 'EXPLORER NOTRE PLATEFORME'}
+                  {content.button2 || 'EXPLORER NOTRE EXPERTISE'}
                 </Link>
               </div>
             </div>
@@ -230,15 +230,15 @@ export function AndelaHomePage() {
           <div className="tech-stats__container">
             <div className="tech-stat-col">
               <span className="tech-stat-val">50+</span>
-              <span className="tech-stat-lbl">CLIENTS SATISFAITS</span>
+              <span className="tech-stat-lbl">CLIENTS ACCOMPAGNÉS</span>
             </div>
             <div className="tech-stat-col">
               <span className="tech-stat-val">100+</span>
-              <span className="tech-stat-lbl">PROJETS RÉALISÉS</span>
+              <span className="tech-stat-lbl">PROJETS DÉPLOYÉS</span>
             </div>
             <div className="tech-stat-col">
-              <span className="tech-stat-val">3+</span>
-              <span className="tech-stat-lbl">ANNÉES D'EXPÉRIENCE</span>
+              <span className="tech-stat-val">5+</span>
+              <span className="tech-stat-lbl">ANNÉES D’EXPERTISE</span>
             </div>
             <div className="tech-stat-col tech-stat-col--highlight">
               <span className="tech-stat-val tech-stat-val--blue">99%</span>
@@ -263,8 +263,8 @@ export function AndelaHomePage() {
 
         {/* (D) FEATURED NEWS & BLOG */}
         <FeaturedNewsBlog
-          sectionTitle="Featured News"
-          recentlyPublishedLabel="Recently Published"
+          sectionTitle="Actualités & Analyses Technologiques"
+          recentlyPublishedLabel="Consulter tous les articles"
           recentlyPublishedHref="/blog"
         />
 
@@ -274,7 +274,7 @@ export function AndelaHomePage() {
             <header className="tech-testimonials__header">
               <span className="tech-section-eyebrow">(E) — TÉMOIGNAGES & CONFIANCE</span>
               <h2 className="tech-section-title">
-                {content.testimonialsHeading || 'Ils nous font confiance pour avancer avec clarté'}
+                {content.testimonialsHeading || 'La confiance de nos partenaires, le reflet de notre exigence'}
               </h2>
             </header>
 
@@ -391,10 +391,10 @@ export function HomePricingSection({ showHeader = true }: { showHeader?: boolean
       <div className="tech-services__container">
         {showHeader ? (
           <header className="tech-services__header">
-            <span className="tech-section-eyebrow">(C) — NOS SERVICES</span>
-            <h2 className="tech-section-title">Des solutions adaptées à chaque projet</h2>
+            <span className="tech-section-eyebrow">(C) — NOS SOLUTIONS & SERVICES</span>
+            <h2 className="tech-section-title">Des solutions d’ingénierie calibrées pour chaque ambition</h2>
             <p className="tech-section-sub">
-              Du site vitrine à la plateforme blockchain, nous couvrons chaque étape de votre transformation numérique.
+              De l’expérience digitale immersive aux plateformes décentralisées et architectures cloud, nous couvrons l’intégralité de votre cycle technologique.
             </p>
           </header>
         ) : null}
@@ -408,13 +408,13 @@ export function HomePricingSection({ showHeader = true }: { showHeader?: boolean
         {/* Bottom banner for custom complex projects */}
         <div className="tech-services__banner">
           <div className="tech-services__banner-text">
-            <h4 className="tech-services__banner-title">Votre projet est plus élaboré ?</h4>
+            <h4 className="tech-services__banner-title">Vous avez un projet d’envergure ou hautement spécifique ?</h4>
             <p className="tech-services__banner-desc">
-              Applications métier, IA sur mesure, plateformes enterprise — discutons-en.
+              Systèmes critiques, modèles IA propriétaires, architectures d’entreprise : nos architectes conçoivent votre solution sur mesure.
             </p>
           </div>
           <Link to="/work-with-us" id="home-svc-custom-cta" className="tech-services__banner-btn">
-            OBTENIR UN DEVIS →
+            OBTENIR UN DEVIS PERSONNALISÉ →
           </Link>
         </div>
       </div>
