@@ -13,6 +13,9 @@
   # Output directory (Vite default)
   publish = "dist"
 
+[functions]
+  directory = "netlify/functions"
+
 [build.environment]
   # Node version — pin to LTS
   NODE_VERSION = "20"

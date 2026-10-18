@@ -16,13 +16,16 @@
     "i18next": "^23.14.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.16.0",
+    "nodemailer": "^10.1.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.0.1",
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
+    "@netlify/functions": "^6.0.2",
     "@types/leaflet": "^1.9.21",
+    "@types/nodemailer": "^8.0.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.1",
