@@ -49,9 +49,17 @@ export const handler: Handler = async (event) => {
 
     const host = process.env.SMTP_HOST || 'smtp.gmail.com';
     const port = Number(process.env.SMTP_PORT) || 587;
-    const user = process.env.SMTP_USER || 'contact@dynesistech.fr';
-    const pass = (process.env.SMTP_PASS || 'dyol cxgi yiks kylk').replace(/\s+/g, '');
-    const defaultFrom = process.env.SMTP_FROM || `Dynesis Tech <${user}>`;
+    const user = process.env.SMTP_USER || '';
+    const pass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
+    const defaultFrom = process.env.SMTP_FROM || (user ? `Dynesis Tech <${user}>` : 'Dynesis Tech');
+
+    if (!user || !pass) {
+      return {
+        statusCode: 500,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Server misconfiguration: SMTP_USER or SMTP_PASS environment variables are missing on Netlify' })
+      };
+    }
 
     // Connect via port 587 (unblocked on Netlify/AWS)
     const transporter = nodemailer.createTransport({
