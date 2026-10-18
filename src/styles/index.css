@@ -138,4 +138,40 @@ html.page-fade-out body {
   margin-bottom: 12px;
 }
 
+/* Unified Section Header Tag with Trailing Blue Line */
+.tech-section-tag-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.tech-section-tag {
+  font-family: var(--tech-font-mono, 'JetBrains Mono', 'SF Mono', monospace);
+  font-size: 13px;
+  font-weight: 800;
+  color: #0080ff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tech-section-tag-line {
+  width: 180px;
+  max-width: 28vw;
+  height: 2px;
+  background: #0080ff;
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+@media (max-width: 640px) {
+  .tech-section-tag {
+    font-size: 11.5px;
+  }
+  .tech-section-tag-line {
+    width: 60px;
+  }
+}
+
 

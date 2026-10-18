@@ -119,9 +119,9 @@ export function HomeSecuritySimulation() {
         
         {/* Harmonious Header */}
         <header className="dyn-sec-lap__header">
-          <div className="dyn-sec-lap__eyebrow">
-            <span className="dyn-sec-lap__pulse-dot" />
-            <span>(CYBER-DÉFENSE) — TERMINAL ZERO-TRUST EN DIRECT</span>
+          <div className="tech-section-tag-wrapper">
+            <span className="tech-section-tag">(E) — CYBER-SÉCURITÉ ZERO-TRUST & TERMINAL</span>
+            <div className="tech-section-tag-line" aria-hidden="true" />
           </div>
           <h2 className="dyn-sec-lap__title">
             Console de Sécurité & Riposte en Millisecondes

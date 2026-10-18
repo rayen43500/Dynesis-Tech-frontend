@@ -209,15 +209,23 @@ export function FeaturedNewsBlog({
       <div className="featured-news-container">
         {showSectionHeader && (
           <header className="featured-news-header">
-            <h2 className="featured-news-header__title">{titleText}</h2>
-            <Link to={recentlyPublishedHref} className="featured-news-header__link">
-              <span>{recentText}</span>
-              <span className="featured-news-header__arrow-circle" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-            </Link>
+            <div className="featured-news-header__tag-row">
+              <div className="tech-section-tag-wrapper">
+                <span className="tech-section-tag">(H) — ACTUALITÉS & ANALYSES TECHNOLOGIQUES</span>
+                <div className="tech-section-tag-line" aria-hidden="true" />
+              </div>
+            </div>
+            <div className="featured-news-header__content-row">
+              <h2 className="featured-news-header__title">{titleText}</h2>
+              <Link to={recentlyPublishedHref} className="featured-news-header__link">
+                <span>{recentText}</span>
+                <span className="featured-news-header__arrow-circle" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </Link>
+            </div>
           </header>
         )}
 

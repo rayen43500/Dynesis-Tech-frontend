@@ -21,9 +21,19 @@
 /* Header */
 .featured-news-header {
   display: flex;
+  flex-direction: column;
+  margin-bottom: 32px;
+  gap: 12px;
+}
+
+.featured-news-header__tag-row {
+  display: flex;
+}
+
+.featured-news-header__content-row {
+  display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 32px;
   gap: 20px;
 }
 

@@ -146,9 +146,9 @@ export function HomeAISimulation() {
         
         {/* Harmonious Header */}
         <header className="dyn-ai-holo__header">
-          <div className="dyn-ai-holo__eyebrow">
-            <span className="dyn-ai-holo__pulse-dot" />
-            <span>(SIMULATION IA) — AGENT HOLOGRAPHIQUE & GÉNÉRATION MULTI-ÉCRANS</span>
+          <div className="tech-section-tag-wrapper">
+            <span className="tech-section-tag">(D) — INTELLIGENCE ARTIFICIELLE & AGENT HOLOGRAPHIQUE</span>
+            <div className="tech-section-tag-line" aria-hidden="true" />
           </div>
           <h2 className="dyn-ai-holo__title">
             Agent IA Autonome & Déploiement en Temps Réel

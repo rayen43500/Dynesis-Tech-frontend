@@ -249,7 +249,10 @@ export function AndelaHomePage() {
           </div>
         </section>
 
-        {/* (B) NOTRE MÉTHODE */}
+        {/* (A) NOS SOLUTIONS & SERVICES */}
+        <HomePricingSection />
+
+        {/* (B) NOTRE MÉTHODOLOGIE */}
         <HomeMethodSection
           backgroundImage={showcaseBgImage}
           backgroundVideo={showcaseBgVideo}
@@ -264,23 +267,17 @@ export function AndelaHomePage() {
         {/* (E) SIMULATION CYBER-SÉCURITÉ ZERO-TRUST */}
         <HomeSecuritySimulation />
 
-        <DynamicCustomSections />
+        {/* (F) DYNESIS CLOUD SHOWCASE */}
+        <DynesisCloudShowcase />
 
-        {/* (C) NOS SERVICES */}
-        <HomePricingSection />
-
-        {/* (D) FEATURED NEWS & BLOG */}
-        <FeaturedNewsBlog
-          sectionTitle="Actualités & Analyses Technologiques"
-          recentlyPublishedLabel="Consulter tous les articles"
-          recentlyPublishedHref="/blog"
-        />
-
-        {/* (E) TÉMOIGNAGES & CONFIANCE */}
+        {/* (G) TÉMOIGNAGES & CONFIANCE */}
         <section className="tech-testimonials" id="avis" aria-label="Témoignages & Confiance">
           <div className="tech-testimonials__container">
             <header className="tech-testimonials__header">
-              <span className="tech-section-eyebrow">(E) — TÉMOIGNAGES & CONFIANCE</span>
+              <div className="tech-section-tag-wrapper">
+                <span className="tech-section-tag">(G) — TÉMOIGNAGES & CONFIANCE</span>
+                <div className="tech-section-tag-line" aria-hidden="true" />
+              </div>
               <h2 className="tech-section-title">
                 {content.testimonialsHeading || 'La confiance de nos partenaires, le reflet de notre exigence'}
               </h2>
@@ -311,8 +308,14 @@ export function AndelaHomePage() {
           </div>
         </section>
 
-        {/* (F) DYNESIS CLOUD SHOWCASE */}
-        <DynesisCloudShowcase />
+        {/* (H) FEATURED NEWS & BLOG */}
+        <FeaturedNewsBlog
+          sectionTitle="Actualités & Analyses Technologiques"
+          recentlyPublishedLabel="Consulter tous les articles"
+          recentlyPublishedHref="/blog"
+        />
+
+        <DynamicCustomSections />
       </main>
     </div>
   );
@@ -399,7 +402,10 @@ export function HomePricingSection({ showHeader = true }: { showHeader?: boolean
       <div className="tech-services__container">
         {showHeader ? (
           <header className="tech-services__header">
-            <span className="tech-section-eyebrow">(C) — NOS SOLUTIONS & SERVICES</span>
+            <div className="tech-section-tag-wrapper">
+              <span className="tech-section-tag">(A) — NOS SOLUTIONS & SERVICES</span>
+              <div className="tech-section-tag-line" aria-hidden="true" />
+            </div>
             <h2 className="tech-section-title">Des solutions d’ingénierie calibrées pour chaque ambition</h2>
             <p className="tech-section-sub">
               De l’expérience digitale immersive aux plateformes décentralisées et architectures cloud, nous couvrons l’intégralité de votre cycle technologique.

@@ -65,9 +65,9 @@ export function DynesisCloudShowcase() {
         
         {/* Header - Clean, Harmonious and Compact */}
         <header className="dyn-cloud-smart__header">
-          <div className="dyn-cloud-smart__eyebrow">
-            <span className="dyn-cloud-smart__pulse" />
-            <span>(ARCHITECTURE CLOUD) — NUAGE & BASES DE DONNÉES EN DIRECT</span>
+          <div className="tech-section-tag-wrapper">
+            <span className="tech-section-tag">(F) — ARCHITECTURE CLOUD & BASES DISTRIBUÉES</span>
+            <div className="tech-section-tag-line" aria-hidden="true" />
           </div>
           <h2 className="dyn-cloud-smart__title">
             Écosystème Cloud & Données Distribuées
