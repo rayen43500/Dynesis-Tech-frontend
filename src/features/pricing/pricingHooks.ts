@@ -50,7 +50,10 @@ export function useCreatePricingPlan() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (payload: Record<string, unknown>) => endpoints.admin.pricing.create(payload),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'pricing'] })
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['admin', 'pricing'] });
+      qc.invalidateQueries({ queryKey: ['public', 'pricing'] });
+    }
   });
 }
 

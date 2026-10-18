@@ -23,7 +23,16 @@ export function LoginPage() {
     const params = new URLSearchParams(window.location.search);
     const emailParam = params.get('email');
     if (emailParam) setEmail(emailParam);
-  }, []);
+    const registeredParam = params.get('registered');
+    if (registeredParam) {
+      setActivationNotice(
+        t(
+          'auth.login.newAccountCheckEmail',
+          'Compte créé avec succès ! Un e-mail de confirmation vous a été envoyé. Vous devez impérativement cliquer sur le lien reçu dans votre boîte de réception pour activer votre compte avant de pouvoir vous connecter.'
+        )
+      );
+    }
+  }, [t]);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

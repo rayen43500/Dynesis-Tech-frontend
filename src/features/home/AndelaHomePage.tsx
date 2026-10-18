@@ -400,7 +400,7 @@ export function HomePricingSection({ showHeader = true }: { showHeader?: boolean
         ) : null}
 
         <div className="tech-services__grid">
-          {plans.slice(0, 3).map((plan, index) => (
+          {plans.filter((p) => p.visible !== false).map((plan, index) => (
             <ServiceCard key={plan._id || index} plan={plan} index={index} />
           ))}
         </div>

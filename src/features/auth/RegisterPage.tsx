@@ -94,11 +94,7 @@ export function RegisterPage() {
     setLoading(true);
     try {
       await endpoints.auth.register({ name: fullName, email, password });
-      if (quoteParams) {
-        setRegistrationSuccess(true);
-      } else {
-        redirectToClientDashboard();
-      }
+      setRegistrationSuccess(true);
     } catch (err: any) {
       if (err?.response?.status === 409) {
         setEmailError(t('auth.register.error.emailTaken'));
@@ -109,6 +105,14 @@ export function RegisterPage() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (!registrationSuccess) return;
+    const timer = setTimeout(() => {
+      window.location.href = `/login?registered=1&email=${encodeURIComponent(email)}`;
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, [registrationSuccess, email]);
 
   return (
     <div className="auth-page auth-page--register">
@@ -129,6 +133,48 @@ export function RegisterPage() {
                     })}
                   </p>
                   <p className="auth-quote-banner__text">{t('auth.register.welcome.text')}</p>
+                </div>
+              ) : null}
+
+              {registrationSuccess ? (
+                <div className="auth-activation-card" style={{ textAlign: 'center', marginTop: '16px', padding: '24px 16px' }}>
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '50%',
+                      background: 'rgba(8, 124, 240, 0.1)',
+                      color: 'var(--color-green, #087cf0)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 16px',
+                      fontSize: '26px'
+                    }}
+                  >
+                    ✓
+                  </div>
+                  <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '10px', color: 'var(--color-dark, #1a1a1a)' }}>
+                    {t('auth.register.success.title')}
+                  </h2>
+                  <p style={{ fontSize: '14px', color: '#666', lineHeight: 1.6, marginBottom: '14px' }}>
+                    {t('auth.register.success.message', { email })}
+                  </p>
+                  <p style={{ fontSize: '13px', color: '#087cf0', fontWeight: 500, marginBottom: '20px' }}>
+                    {t('auth.register.redirectNotice', 'Redirection vers la page de connexion dans quelques instants…')}
+                  </p>
+                  <Link
+                    to={`/login?registered=1&email=${encodeURIComponent(email)}`}
+                    className="auth-submit"
+                    style={{
+                      display: 'block',
+                      textDecoration: 'none',
+                      textAlign: 'center',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    {t('auth.register.signInLink')}
+                  </Link>
                 </div>
               ) : null}
 

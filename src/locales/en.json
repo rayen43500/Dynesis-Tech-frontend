@@ -79,6 +79,7 @@
   "auth.login.forgotPassword": "Forgot Password?",
   "auth.login.error.invalidCredentials": "Invalid email or password. Please try again.",
   "auth.login.error.activationRequired": "Please activate your account first. Check your email.",
+  "auth.login.newAccountCheckEmail": "Account created successfully! A confirmation email has been sent to you. You must click the link received in your inbox to activate your account before you can log in.",
   "auth.login.submit": "Sign In",
   "auth.login.submitting": "Signing in…",
   "auth.login.resend": "Resend →",
@@ -108,6 +109,9 @@
   "auth.register.error.generic": "Unable to create account right now. Please try again.",
   "auth.register.submit": "Create Account",
   "auth.register.submitting": "Creating Account…",
+  "auth.register.success.title": "Account created successfully!",
+  "auth.register.success.message": "An activation email has been sent to {{email}}. Please click the link in your email to activate your account before logging in.",
+  "auth.register.redirectNotice": "Redirecting to sign-in page in a few moments…",
   "auth.register.hasAccount": "Already have an account?",
   "auth.register.signInLink": "Sign In",
 

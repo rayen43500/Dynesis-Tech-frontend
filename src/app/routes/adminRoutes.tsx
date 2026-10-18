@@ -33,8 +33,7 @@ export function AdminRoutes() {
     >
       <Route index element={<AdminOverviewPage />} />
       <Route path="developers" element={<DevelopersAdminListPage />} />
-      <Route path="portfolios" element={<PortfoliosAdminPage />} />
-      <Route path="services" element={<ServicesAdminPage />} />
+      <Route path="services" element={<PricingAdminPage />} />
       <Route path="homepage" element={<RoutePlaceholder nameKey="admin.routes.homepage" />} />
       <Route path="inquiries" element={<InquiriesAdminPage />} />
       <Route path="quotes" element={<QuotesAdminPage />} />

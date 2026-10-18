@@ -79,6 +79,7 @@
   "auth.login.forgotPassword": "Mot de passe oublié ?",
   "auth.login.error.invalidCredentials": "E-mail ou mot de passe incorrect. Veuillez réessayer.",
   "auth.login.error.activationRequired": "Veuillez d'abord activer votre compte. Vérifiez votre e-mail.",
+  "auth.login.newAccountCheckEmail": "Compte créé avec succès ! Un e-mail de confirmation vous a été envoyé. Vous devez impérativement cliquer sur le lien reçu dans votre boîte de réception pour activer votre compte avant de pouvoir vous connecter.",
   "auth.login.submit": "Se connecter",
   "auth.login.submitting": "Connexion…",
   "auth.login.resend": "Renvoyer →",
@@ -108,6 +109,9 @@
   "auth.register.error.generic": "Impossible de créer le compte pour le moment. Veuillez réessayer.",
   "auth.register.submit": "Créer un compte",
   "auth.register.submitting": "Création du compte…",
+  "auth.register.success.title": "Compte créé avec succès !",
+  "auth.register.success.message": "Un e-mail d'activation a été envoyé à {{email}}. Veuillez cliquer sur le lien reçu pour activer votre compte avant de vous connecter.",
+  "auth.register.redirectNotice": "Redirection vers la page de connexion dans quelques instants…",
   "auth.register.hasAccount": "Vous avez déjà un compte ?",
   "auth.register.signInLink": "Se connecter",
 
