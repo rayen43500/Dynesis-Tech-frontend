@@ -1,19 +1,19 @@
 /* =========================================================================
-   (D) DYNESIS AI VIDEO SHOWCASE & HIGH-TECH FRAME
+   (D) DYNESIS AI VIDEO SHOWCASE & COMPACT LIGHT FRAME
    ========================================================================= */
 
 .dyn-ai-video-sec {
   position: relative;
   width: 100%;
   background: #ffffff;
-  padding: 68px 24px 76px;
+  padding: 60px 24px 72px;
   overflow: hidden;
   border-top: 1px solid #f1f5f9;
   border-bottom: 1px solid #f1f5f9;
 }
 
 .dyn-ai-video-sec__container {
-  max-width: 1240px;
+  max-width: 880px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -21,61 +21,62 @@
 
 /* Section Header */
 .dyn-ai-video-sec__header {
-  margin-bottom: 34px;
-  max-width: 820px;
+  margin-bottom: 26px;
 }
 
 .dyn-ai-video-sec__title {
   font-family: var(--tech-font-sans, system-ui, -apple-system, sans-serif);
-  font-size: clamp(28px, 3.4vw, 42px);
+  font-size: clamp(26px, 3.2vw, 38px);
   font-weight: 900;
   color: #0f172a;
   line-height: 1.15;
   letter-spacing: -0.035em;
-  margin: 0 0 14px;
+  margin: 0 0 12px;
 }
 
 .dyn-ai-video-sec__subtitle {
-  font-size: clamp(14.5px, 1.25vw, 16px);
+  font-size: clamp(14px, 1.2vw, 15.5px);
   color: #475569;
   line-height: 1.6;
   margin: 0;
+  max-width: 760px;
 }
 
-/* ── The High-Tech Video Frame ─────────────────────────────────────────── */
+/* ── The Compact High-Tech Video Frame (Site Light Aesthetic) ──────────── */
 .dyn-ai-frame {
-  background: #0f172a;
-  border-radius: 16px;
-  border: 1px solid #1e293b;
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.06);
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 10px 32px rgba(15, 23, 42, 0.06), 0 2px 8px rgba(15, 23, 42, 0.03);
   overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .dyn-ai-frame:hover {
-  box-shadow: 0 24px 60px rgba(0, 102, 255, 0.15), 0 4px 16px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 102, 255, 0.1), 0 4px 12px rgba(15, 23, 42, 0.04);
+  border-color: #cbd5e1;
 }
 
-/* Top Window Titlebar */
+/* Top Window Titlebar (Clean Light Style) */
 .dyn-ai-frame__topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
-  background: #1e293b;
-  border-bottom: 1px solid #334155;
+  padding: 10px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
   gap: 12px;
 }
 
 .dyn-ai-frame__dots {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
 }
 
 .dyn-ai-frame__dot {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
 
@@ -87,21 +88,21 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 4px 14px;
-  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 3px 12px;
+  border-radius: 16px;
   font-family: var(--tech-font-mono, monospace);
   font-size: 11px;
-  color: #94a3b8;
-  max-width: 380px;
+  color: #475569;
+  max-width: 340px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .dyn-ai-frame__url-icon {
-  color: #00f0ff;
+  color: #0284c7;
   flex-shrink: 0;
 }
 
@@ -109,14 +110,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  color: #34d399;
-  font-size: 10.5px;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  font-size: 10px;
   font-family: var(--tech-font-mono, monospace);
   font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 20px;
+  padding: 3px 9px;
+  border-radius: 16px;
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
@@ -140,10 +141,13 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  max-height: 600px;
-  background: #000000;
+  max-height: 480px;
+  background: #0f172a;
   cursor: pointer;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dyn-ai-player__video {
@@ -153,38 +157,14 @@
   display: block;
 }
 
-/* Tech HUD Corners Overlay */
+/* Tech HUD Overlay */
 .dyn-ai-player__hud-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: 
-    linear-gradient(to right, rgba(0, 102, 255, 0.04) 1px, transparent 1px) 0 0 / 40px 40px,
-    linear-gradient(to bottom, rgba(0, 102, 255, 0.04) 1px, transparent 1px) 0 0 / 40px 40px;
-}
-
-/* Friendly Hint Badge */
-.dyn-ai-player__waiting-hint {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 240, 255, 0.4);
-  color: #e2e8f0;
-  font-size: 12px;
-  padding: 8px 16px;
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  z-index: 5;
-}
-
-.dyn-ai-player__waiting-hint strong {
-  color: #00f0ff;
+    linear-gradient(to right, rgba(0, 102, 255, 0.03) 1px, transparent 1px) 0 0 / 36px 36px,
+    linear-gradient(to bottom, rgba(0, 102, 255, 0.03) 1px, transparent 1px) 0 0 / 36px 36px;
 }
 
 /* Central Play Button Overlay */
@@ -193,24 +173,24 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 64px;
-  height: 64px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: rgba(0, 102, 255, 0.85);
+  background: rgba(0, 102, 255, 0.88);
   backdrop-filter: blur(8px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
+  box-shadow: 0 0 24px rgba(0, 102, 255, 0.45);
   transition: transform 0.2s ease, background 0.2s ease;
   pointer-events: none;
 }
 
 .dyn-ai-player:hover .dyn-ai-player__center-play {
   transform: translate(-50%, -50%) scale(1.08);
-  background: #0080ff;
+  background: #0070f3;
 }
 
 .dyn-ai-player__play-icon {
@@ -220,17 +200,17 @@
 /* ── Floating Controls Bar ─────────────────────────────────────────────── */
 .dyn-ai-controls {
   position: absolute;
-  bottom: 14px;
-  left: 18px;
-  right: 18px;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 14px;
-  border-radius: 12px;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 12px;
+  border-radius: 10px;
   z-index: 6;
   opacity: 0.9;
   transition: opacity 0.2s ease;
@@ -249,19 +229,19 @@
   justify-content: center;
   cursor: pointer;
   padding: 4px;
-  border-radius: 6px;
+  border-radius: 5px;
   transition: color 0.15s ease, background 0.15s ease;
 }
 
 .dyn-ai-controls__btn:hover {
-  color: #00f0ff;
-  background: rgba(255, 255, 255, 0.1);
+  color: #38bdf8;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .dyn-ai-controls__progress-wrap {
   flex: 1;
   height: 4px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
   border-radius: 2px;
   overflow: hidden;
   cursor: pointer;
@@ -269,82 +249,82 @@
 
 .dyn-ai-controls__progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #0066ff, #00f0ff);
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
   border-radius: 2px;
   transition: width 0.1s linear;
 }
 
 .dyn-ai-controls__time-tag {
   font-family: var(--tech-font-mono, monospace);
-  font-size: 11px;
+  font-size: 10.5px;
   color: #94a3b8;
   white-space: nowrap;
 }
 
-/* ── Bottom Telemetry & CTA Bar ────────────────────────────────────────── */
+/* ── Bottom Telemetry & CTA Bar (Light Theme) ───────────────────────────── */
 .dyn-ai-frame__bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
-  background: #111827;
-  border-top: 1px solid #1f2937;
+  padding: 12px 18px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
 }
 
 .dyn-ai-frame__chips {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
 .dyn-ai-frame__chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   font-size: 12px;
-  color: #cbd5e1;
+  color: #475569;
 }
 
 .dyn-ai-frame__chip-icon {
-  color: #00f0ff;
+  color: #0284c7;
 }
 
 .dyn-ai-frame__chip-lbl {
-  color: #94a3b8;
+  color: #64748b;
 }
 
 .dyn-ai-frame__chip-val {
-  color: #ffffff;
+  color: #0f172a;
   font-weight: 700;
 }
 
 .dyn-ai-frame__cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #0066ff 0%, #0080ff 100%);
+  gap: 6px;
+  padding: 7px 14px;
+  background: linear-gradient(135deg, #0284c7 0%, #0066ff 100%);
   color: #ffffff;
-  border-radius: 8px;
-  font-size: 11.5px;
+  border-radius: 7px;
+  font-size: 11px;
   font-weight: 800;
   text-decoration: none;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dyn-ai-frame__cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 102, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
 }
 
 /* ── Responsive adjustments ────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .dyn-ai-video-sec {
-    padding: 48px 16px 56px;
+    padding: 44px 16px 52px;
   }
 
   .dyn-ai-frame__url-bar {
@@ -359,7 +339,7 @@
   .dyn-ai-frame__chips {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 6px;
   }
 
   .dyn-ai-frame__cta {
