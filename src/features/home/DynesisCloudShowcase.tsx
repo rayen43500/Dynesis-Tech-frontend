@@ -1,326 +1,260 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { 
-  Server, 
-  Cpu, 
-  ShieldCheck, 
+  Cloud, 
+  Database, 
   Zap, 
-  Activity, 
-  Layers, 
-  Globe, 
+  ArrowRight, 
+  RefreshCw, 
+  Lock, 
+  ShieldCheck, 
   CheckCircle2, 
-  Terminal, 
-  Copy, 
-  Check, 
-  RefreshCw,
-  ArrowRight,
-  TrendingUp,
-  HardDrive
+  Layers, 
+  Server, 
+  Activity, 
+  HardDrive,
+  Copy,
+  Check
 } from 'lucide-react';
-import { useBrandingContent } from '../../shared/hooks/useSiteContent';
 import './dynesis-cloud-showcase.css';
 
-interface MicroserviceNode {
-  id: string;
-  name: string;
-  type: string;
-  status: 'healthy' | 'scaling' | 'optimizing';
-  latency: number;
-  ops: string;
+interface TransmissionBatch {
+  id: number;
+  time: string;
+  source: string;
+  target: string;
+  packets: string;
+  speed: string;
+  status: string;
 }
 
-const DEFAULT_NODES: MicroserviceNode[] = [
-  { id: 'gw', name: 'Passerelle Zero-Trust & Auth OIDC', type: 'Sécurité', status: 'healthy', latency: 8, ops: '1.4k req/s' },
-  { id: 'ai', name: 'Moteur d’Inférence IA & Agents LLM', type: 'Core IA', status: 'healthy', latency: 12, ops: '4.8k ops/s' },
-  { id: 'db', name: 'Cluster PostgreSQL & Redis Distribué', type: 'Données', status: 'healthy', latency: 4, ops: '99.999% sync' },
-  { id: 'cdn', name: 'Réseau Edge Mondial Anycast CDN', type: 'Réseau Edge', status: 'healthy', latency: 6, ops: '18 régions' },
-  { id: 'w3', name: 'Relais Smart Contracts & APIs Web3', type: 'Web3 & API', status: 'healthy', latency: 15, ops: 'Zéro coupure' }
-];
-
 export function DynesisCloudShowcase() {
-  const branding = useBrandingContent();
+  const [isTransmitting, setIsTransmitting] = useState(false);
+  const [dataSpeed, setDataSpeed] = useState('1.8 GB/s');
+  const [syncStatus, setSyncStatus] = useState('99.999% Synchronisé');
+  const [totalTransferredGB, setTotalTransferredGB] = useState(482.4);
   const [copied, setCopied] = useState(false);
-  const [selectedNode, setSelectedNode] = useState<MicroserviceNode>(DEFAULT_NODES[0]);
-  const [isLoadTesting, setIsLoadTesting] = useState(false);
-  const [requestsCount, setRequestsCount] = useState(48290);
-  const [logs, setLogs] = useState<string[]>([
-    '[SYSTÈME]    Dynesis Cloud Core — initialisé avec succès',
-    '[RÉSEAU]     18 nœuds Edge Anycast — synchronisés',
-    '[SÉCURITÉ]   Pare-feu applicatif WAF actif — 0 menace',
-    '[DONNÉES]    Cluster PostgreSQL & Redis — 99.999% sync',
-    '[SCALING]    Équilibrage adaptatif de charge — actif'
+
+  const [batches, setBatches] = useState<TransmissionBatch[]>([
+    { id: 1, time: '18:42:01', source: 'Nuage Cloud Anycast (Paris)', target: 'Base PostgreSQL Cluster', packets: '50 000 reqs', speed: '2.1 GB/s', status: 'Transmis' },
+    { id: 2, time: '18:42:02', source: 'Cluster DB Réplique (Francfort)', target: 'Cache Redis Distribué', packets: '12 800 ops', speed: '1.4 GB/s', status: 'Répliqué' },
+    { id: 3, time: '18:42:03', source: 'Passerelle Zero-Trust', target: 'Nuage Edge Global', packets: '24 000 flux', speed: '1.9 GB/s', status: 'Chiffré' }
   ]);
 
-  // Live request counter increment
+  // Live counter for total data transferred
   useEffect(() => {
     const interval = setInterval(() => {
-      setRequestsCount((prev) => prev + Math.floor(Math.random() * 18) + 8);
+      setTotalTransferredGB((prev) => +(prev + 0.3).toFixed(1));
     }, 1200);
     return () => clearInterval(interval);
   }, []);
 
-  function handleCopyEndpoint() {
-    navigator.clipboard?.writeText('https://cloud.dynesis.tech/v1/cluster');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
+  const triggerDataTransmission = () => {
+    if (isTransmitting) return;
+    setIsTransmitting(true);
+    setDataSpeed('3.4 GB/s');
 
-  function handleTriggerLoadTest() {
-    if (isLoadTesting) return;
-    setIsLoadTesting(true);
-    
-    const time = new Date().toLocaleTimeString('fr-FR');
-    setLogs((prev) => [
-      `[${time}] [LOAD]      Test de charge : +5 000 req simulées...`,
-      `[${time}] [SCALING]   Auto-scaling : +4 workers GPU alloués`,
-      ...prev.slice(0, 4)
-    ]);
+    const now = new Date().toLocaleTimeString('fr-FR');
+    const newBatch: TransmissionBatch = {
+      id: Date.now(),
+      time: now,
+      source: 'Nuage Cloud Multi-Régions',
+      target: 'Base de Données Shardée & Cache',
+      packets: '100 000 paquets',
+      speed: '3.4 GB/s',
+      status: 'Transfert Ultra-Véloce'
+    };
+
+    setBatches((prev) => [newBatch, ...prev.slice(0, 3)]);
 
     setTimeout(() => {
-      const finishTime = new Date().toLocaleTimeString('fr-FR');
-      setLogs((prev) => [
-        `[${finishTime}] [OK]        100 % des requêtes traitées (8.4 ms)`,
-        ...prev.slice(0, 5)
-      ]);
-      setIsLoadTesting(false);
-    }, 2000);
-  }
+      setIsTransmitting(false);
+      setDataSpeed('1.8 GB/s');
+    }, 1800);
+  };
 
-  function handlePingCluster() {
-    const time = new Date().toLocaleTimeString('fr-FR');
-    const newLatency = Math.floor(Math.random() * 6) + 4;
-    setLogs((prev) => [
-      `[${time}] [PING]      EU-Paris — ${newLatency} ms — PONG OK`,
-      ...prev.slice(0, 5)
-    ]);
-  }
+  const copyEndpoint = () => {
+    navigator.clipboard?.writeText('https://cloud.dynesis.tech/v1/data-stream');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <section className="dyn-cloud-sec" id="cloud-infrastructure" aria-label="Plateforme Cloud Dynesis">
-      <div className="dyn-cloud-sec__glow" aria-hidden="true" />
-
-      <div className="dyn-cloud-sec__container">
-        {/* Section Header */}
-        <header className="dyn-cloud-sec__header">
-          <div className="dyn-cloud-sec__tag-wrapper">
-            <span className="dyn-cloud-sec__tag">(F) — INFRASTRUCTURE CLOUD & ÉCOSYSTÈME IA</span>
-            <div className="dyn-cloud-sec__tag-line" aria-hidden="true" />
+    <section className="dyn-cloud-sim" id="cloud-infrastructure" aria-label="Simulation Nuage et Base de Données">
+      <div className="dyn-cloud-sim__container">
+        
+        {/* Harmonious Header */}
+        <header className="dyn-cloud-sim__header">
+          <div className="dyn-cloud-sim__eyebrow">
+            <span className="dyn-cloud-sim__pulse-dot" />
+            <span>(INFRASTRUCTURE CLOUD) — SIMULATION NUAGE & BASE DE DONNÉES</span>
           </div>
-
-          <h2 className="dyn-cloud-sec__title">
-            Une infrastructure Cloud de pointe, <br />
-            taillée pour <span className="dyn-cloud-sec__title-accent">l'excellence opérationnelle.</span>
+          <h2 className="dyn-cloud-sim__title">
+            Transmission de Données Nuage & Base Distribuée
           </h2>
-
-          <p className="dyn-cloud-sec__sub">
-            Découvrez la robustesse de nos déploiements à haute disponibilité : architecture distribuée multi-régions, latence sous les 10 ms, résilience Zero-Trust et observabilité en temps réel.
+          <p className="dyn-cloud-sim__subtitle">
+            Visualisez le flux continu de données entre nos clusters Cloud Anycast et nos bases PostgreSQL & Redis shartées : réplication multi-régions instantanée, zéro latence et intégrité totale.
           </p>
         </header>
 
-        {/* Master Cloud Simulation Window */}
-        <div className="dyn-cloud-win">
-          {/* Window Chrome Titlebar */}
-          <div className="dyn-cloud-win__titlebar">
-            <div className="dyn-cloud-win__traffic-lights">
-              <span className="dyn-cloud-win__dot dyn-cloud-win__dot--red" />
-              <span className="dyn-cloud-win__dot dyn-cloud-win__dot--yellow" />
-              <span className="dyn-cloud-win__dot dyn-cloud-win__dot--green" />
+        {/* Master Simulation Sandbox in Clear Light Style */}
+        <div className="dyn-cloud-sim__card">
+          
+          {/* Top Window Bar */}
+          <div className="dyn-cloud-sim__topbar">
+            <div className="dyn-cloud-sim__dots">
+              <span className="dyn-cloud-sim__dot dyn-cloud-sim__dot--red" />
+              <span className="dyn-cloud-sim__dot dyn-cloud-sim__dot--yellow" />
+              <span className="dyn-cloud-sim__dot dyn-cloud-sim__dot--green" />
             </div>
 
-            {/* Brand Logo & Name */}
-            <div className="dyn-cloud-win__brand">
-              <img 
-                src={branding.logoUrl || '/images/dynesistech.png'} 
-                alt="Dynesis" 
-                className="dyn-cloud-win__logo-img" 
-                onError={(e) => { e.currentTarget.src = '/images/dynesistech.png'; }}
-              />
-              <span className="dyn-cloud-win__brand-text">Dynesis Cloud Core</span>
+            <div className="dyn-cloud-sim__cluster-id">
+              <Cloud size={14} color="#0284c7" />
+              <span>dynesis://cloud-data-pipe • 18 Régions Anycast</span>
             </div>
 
-            {/* Address & Fast Copy */}
-            <div className="dyn-cloud-win__address-bar">
-              <span className="dyn-cloud-win__address-text">cluster: eu-west-paris-1 (AWS & Edge)</span>
-              <button 
-                type="button" 
-                className="dyn-cloud-win__copy-btn"
-                onClick={handleCopyEndpoint}
-                title="Copier l'URL de l'API"
+            <button
+              type="button"
+              onClick={copyEndpoint}
+              className="dyn-cloud-sim__endpoint-btn"
+              title="Copier l'endpoint de streaming"
+            >
+              {copied ? <Check size={12} color="#10b981" /> : <Copy size={12} />}
+              <span>{copied ? 'Endpoint Copié' : 'Endpoint API'}</span>
+            </button>
+          </div>
+
+          {/* Core Interactive Simulation Arena */}
+          <div className="dyn-cloud-sim__arena">
+            
+            {/* 1. NUAGE CLOUD COMPONENT */}
+            <div className="dyn-cloud-sim__node dyn-cloud-sim__node--cloud">
+              <div className="dyn-cloud-sim__cloud-icon-wrap">
+                <Cloud size={48} className="dyn-cloud-sim__cloud-icon" />
+                <span className="dyn-cloud-sim__cloud-pulse" />
+              </div>
+              <h3 className="dyn-cloud-sim__node-title">Nuage Cloud Dynesis</h3>
+              <span className="dyn-cloud-sim__node-badge">18 Régions Edge Anycast</span>
+              
+              <div className="dyn-cloud-sim__specs">
+                <div className="dyn-cloud-sim__spec-item">
+                  <span className="dyn-cloud-sim__spec-k">Throughput :</span>
+                  <strong className="dyn-cloud-sim__spec-v">142,000 req/s</strong>
+                </div>
+                <div className="dyn-cloud-sim__spec-item">
+                  <span className="dyn-cloud-sim__spec-k">Latence :</span>
+                  <strong className="dyn-cloud-sim__spec-v dyn-cloud-sim__spec-v--cyan">3.2 ms</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. TRANSMISSION DE DONNÉES EN DIRECT (STREAMING BEAM) */}
+            <div className="dyn-cloud-sim__transmission-pipe">
+              
+              <div className="dyn-cloud-sim__pipe-header">
+                <span className="dyn-cloud-sim__pipe-title">Faisceau de Transmission en Direct</span>
+                <span className="dyn-cloud-sim__pipe-speed">{dataSpeed}</span>
+              </div>
+
+              {/* Animated Particle Tube */}
+              <div className="dyn-cloud-sim__tube">
+                <div className={`dyn-cloud-sim__stream-line ${isTransmitting ? 'dyn-cloud-sim__stream-line--fast' : ''}`} />
+                <div className="dyn-cloud-sim__particle dyn-cloud-sim__particle--1" />
+                <div className="dyn-cloud-sim__particle dyn-cloud-sim__particle--2" />
+                <div className="dyn-cloud-sim__particle dyn-cloud-sim__particle--3" />
+                <div className="dyn-cloud-sim__particle dyn-cloud-sim__particle--4" />
+              </div>
+
+              <div className="dyn-cloud-sim__pipe-footer">
+                <div className="dyn-cloud-sim__crypto-tag">
+                  <Lock size={12} color="#10b981" />
+                  <span>Chiffrement TLS 1.3 + ChaCha20</span>
+                </div>
+                <div className="dyn-cloud-sim__crypto-tag">
+                  <ShieldCheck size={12} color="#0284c7" />
+                  <span>0% Perte de Paquets</span>
+                </div>
+              </div>
+
+              {/* Interactive Trigger Button */}
+              <button
+                type="button"
+                disabled={isTransmitting}
+                onClick={triggerDataTransmission}
+                className="dyn-cloud-sim__trans-btn"
               >
-                {copied ? <Check size={11} style={{ color: '#059669' }} /> : <Copy size={11} />}
-                <span>{copied ? 'Copié !' : 'Endpoint'}</span>
+                {isTransmitting ? (
+                  <>
+                    <RefreshCw size={14} className="dyn-cloud-sim__spin" />
+                    Transmission de 100 000 paquets en cours...
+                  </>
+                ) : (
+                  <>
+                    <Zap size={14} fill="currentColor" />
+                    Déclencher Transmission & Synchronisation DB
+                  </>
+                )}
               </button>
+
             </div>
+
+            {/* 3. BASE DE DONNÉES CLUSTER COMPONENT */}
+            <div className="dyn-cloud-sim__node dyn-cloud-sim__node--db">
+              <div className="dyn-cloud-sim__db-icon-wrap">
+                <Database size={44} className="dyn-cloud-sim__db-icon" />
+                <span className="dyn-cloud-sim__db-led" />
+              </div>
+              <h3 className="dyn-cloud-sim__node-title">Cluster Base de Données</h3>
+              <span className="dyn-cloud-sim__node-badge dyn-cloud-sim__node-badge--green">PostgreSQL 16 + Redis</span>
+              
+              <div className="dyn-cloud-sim__specs">
+                <div className="dyn-cloud-sim__spec-item">
+                  <span className="dyn-cloud-sim__spec-k">Shards Actifs :</span>
+                  <strong className="dyn-cloud-sim__spec-v">16 Shards Dédiés</strong>
+                </div>
+                <div className="dyn-cloud-sim__spec-item">
+                  <span className="dyn-cloud-sim__spec-k">Réplication :</span>
+                  <strong className="dyn-cloud-sim__spec-v dyn-cloud-sim__spec-v--green">{syncStatus}</strong>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          {/* Window Body 3-Column Layout */}
-          <div className="dyn-cloud-win__body">
-            {/* COLUMN 1: Microservices Fleet */}
-            <div className="dyn-cloud-win__col dyn-cloud-win__col--fleet">
-              <div className="dyn-cloud-win__col-header">
-                <Server size={13} style={{ color: '#0080ff' }} />
-                <span>NŒUDS & MICROSERVICES</span>
-                <span className="dyn-cloud-win__badge-count">{DEFAULT_NODES.length} actifs</span>
+          {/* Bottom Live Batches Audit Feed */}
+          <div className="dyn-cloud-sim__batches-box">
+            <div className="dyn-cloud-sim__batches-top">
+              <div className="dyn-cloud-sim__batches-label">
+                <Activity size={13} color="#0284c7" />
+                <span>Journal des Paquets Transmis en Temps Réel :</span>
               </div>
-
-              <div className="dyn-cloud-win__nodes-list">
-                {DEFAULT_NODES.map((node) => {
-                  const isSelected = selectedNode.id === node.id;
-                  return (
-                    <button
-                      key={node.id}
-                      type="button"
-                      className={`dyn-cloud-win__node-item ${isSelected ? 'dyn-cloud-win__node-item--active' : ''}`}
-                      onClick={() => setSelectedNode(node)}
-                    >
-                      <div className="dyn-cloud-win__node-main">
-                        <span className="dyn-cloud-win__node-dot" />
-                        <span className="dyn-cloud-win__node-name">{node.name}</span>
-                      </div>
-                      <div className="dyn-cloud-win__node-meta">
-                        <span className="dyn-cloud-win__node-type">{node.type}</span>
-                        <span className="dyn-cloud-win__node-latency">{node.latency}ms</span>
-                      </div>
-                    </button>
-                  );
-                })}
+              <div className="dyn-cloud-sim__total-trans">
+                <span>Volume total transféré :</span>
+                <strong>{totalTransferredGB} Go</strong>
               </div>
             </div>
 
-            {/* COLUMN 2: Architecture Visualizer & Live Metrics */}
-            <div className="dyn-cloud-win__col dyn-cloud-win__col--metrics">
-              <div className="dyn-cloud-win__col-header">
-                <Activity size={13} style={{ color: '#0080ff' }} />
-                <span>MÉTRIQUES & ÉTAT DU CLUSTER</span>
-                <span className="dyn-cloud-win__badge-live">LIVE</span>
-              </div>
-
-              {/* Key Metrics Grid */}
-              <div className="dyn-cloud-win__metrics-grid">
-                <div className="dyn-cloud-win__metric-card">
-                  <span className="dyn-cloud-win__metric-lbl">DISPONIBILITÉ SLA</span>
-                  <span className="dyn-cloud-win__metric-val dyn-cloud-win__metric-val--emerald">99.99%</span>
-                  <span className="dyn-cloud-win__metric-sub">Zéro coupure constatée</span>
-                </div>
-                <div className="dyn-cloud-win__metric-card">
-                  <span className="dyn-cloud-win__metric-lbl">LATENCE GLOBALE</span>
-                  <span className="dyn-cloud-win__metric-val dyn-cloud-win__metric-val--blue">7.4 ms</span>
-                  <span className="dyn-cloud-win__metric-sub">Edge CDN optimisé</span>
-                </div>
-                <div className="dyn-cloud-win__metric-card">
-                  <span className="dyn-cloud-win__metric-lbl">REQUÊTES TOTALES</span>
-                  <span className="dyn-cloud-win__metric-val dyn-cloud-win__metric-val--indigo">{requestsCount.toLocaleString('fr-FR')}</span>
-                  <span className="dyn-cloud-win__metric-sub">+18 req/sec</span>
-                </div>
-                <div className="dyn-cloud-win__metric-card">
-                  <span className="dyn-cloud-win__metric-lbl">NŒUD SÉLECTIONNÉ</span>
-                  <span className="dyn-cloud-win__metric-val dyn-cloud-win__metric-val--purple">{selectedNode.ops}</span>
-                  <span className="dyn-cloud-win__metric-sub">{selectedNode.type}</span>
-                </div>
-              </div>
-
-              {/* Animated Throughput Bars */}
-              <div className="dyn-cloud-win__oscilloscope">
-                <div className="dyn-cloud-win__osc-header">
-                  <span>DÉBIT INSTANTANÉ DES DONNÉES</span>
-                  <strong>3.8 GB/s</strong>
-                </div>
-                <div className="dyn-cloud-win__osc-bars">
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '45%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '70%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '60%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '85%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '65%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '95%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '75%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '90%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '100%' }} />
-                  <div className="dyn-cloud-win__osc-bar" style={{ height: '80%' }} />
-                </div>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="dyn-cloud-win__actions-row">
-                <button
-                  type="button"
-                  className="dyn-cloud-win__action-btn dyn-cloud-win__action-btn--primary"
-                  onClick={handleTriggerLoadTest}
-                  disabled={isLoadTesting}
-                >
-                  <Zap size={12} />
-                  <span>{isLoadTesting ? 'Simulation de charge...' : 'Lancer un Test de Charge'}</span>
-                </button>
-                <button
-                  type="button"
-                  className="dyn-cloud-win__action-btn dyn-cloud-win__action-btn--secondary"
-                  onClick={handlePingCluster}
-                >
-                  <RefreshCw size={12} />
-                  <span>Ping Cluster</span>
-                </button>
-              </div>
-            </div>
-
-            {/* COLUMN 3: Live Cloud Terminal & Logs */}
-            <div className="dyn-cloud-win__col dyn-cloud-win__col--terminal">
-              <div className="dyn-cloud-win__col-header">
-                <Terminal size={13} style={{ color: '#059669' }} />
-                <span>JOURNAL D'ÉVÉNEMENTS CLOUD</span>
-                <span className="dyn-cloud-win__badge-sync">AUTO-SYNC</span>
-              </div>
-
-              <div className="dyn-cloud-win__terminal-output">
-                {logs.map((line, idx) => (
-                  <div key={idx} className="dyn-cloud-win__terminal-line">
-                    {line}
+            <div className="dyn-cloud-sim__batches-list">
+              {batches.map((b) => (
+                <div key={b.id} className="dyn-cloud-sim__batch-row">
+                  <span className="dyn-cloud-sim__batch-time">{b.time}</span>
+                  <div className="dyn-cloud-sim__batch-flow">
+                    <span className="dyn-cloud-sim__batch-src">{b.source}</span>
+                    <ArrowRight size={12} className="dyn-cloud-sim__batch-arrow" />
+                    <span className="dyn-cloud-sim__batch-tgt">{b.target}</span>
                   </div>
-                ))}
-                <div className="dyn-cloud-win__terminal-cursor">
-                  <span className="dyn-cloud-win__prompt-symbol">$</span> dynesis-engine <span className="dyn-cloud-win__blink">_</span>
+                  <span className="dyn-cloud-sim__batch-packets">{b.packets}</span>
+                  <span className="dyn-cloud-sim__batch-speed">{b.speed}</span>
+                  <span className="dyn-cloud-sim__batch-status">
+                    <CheckCircle2 size={12} color="#10b981" />
+                    {b.status}
+                  </span>
                 </div>
-              </div>
-
-              {/* Security Shield Summary */}
-              <div className="dyn-cloud-win__security-box">
-                <ShieldCheck size={16} style={{ color: '#059669', flexShrink: 0 }} />
-                <div className="dyn-cloud-win__sec-details">
-                  <strong>Conformité & Sécurité ISO 27001</strong>
-                  <p>Chiffrement TLS 1.3 de bout en bout • Pare-feu applicatif WAF actif</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Bottom Highlights Proof Bar */}
-          <div className="dyn-cloud-win__footer">
-            <div className="dyn-cloud-win__pill">
-              <CheckCircle2 size={13} style={{ color: '#059669' }} />
-              <span>99.99% SLA Garanti</span>
-            </div>
-            <div className="dyn-cloud-win__pill">
-              <ShieldCheck size={13} style={{ color: '#0080ff' }} />
-              <span>Chiffrement AES-256 E2E</span>
-            </div>
-            <div className="dyn-cloud-win__pill">
-              <Zap size={13} style={{ color: '#d97706' }} />
-              <span>Auto-scaling sans interruption</span>
-            </div>
-            <div className="dyn-cloud-win__pill">
-              <Globe size={13} style={{ color: '#2563eb' }} />
-              <span>18 Régions Edge Déployées</span>
-            </div>
-          </div>
         </div>
 
-        {/* Action Buttons below the simulation */}
-        <div className="dyn-cloud-sec__bottom-actions">
-          <Link to="/contact" className="tech-btn tech-btn--primary">
-            DÉPLOYER MON PROJET CLOUD <span className="tech-btn__arrow">→</span>
-          </Link>
-          <Link to="/services" className="tech-btn tech-btn--secondary">
-            EXPLORER NOS ARCHITECTURES
-          </Link>
-        </div>
       </div>
     </section>
   );

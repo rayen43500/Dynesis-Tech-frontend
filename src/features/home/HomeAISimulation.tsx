@@ -1,269 +1,381 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Bot, 
   Sparkles, 
-  Play, 
-  RotateCcw, 
-  Check, 
-  Copy, 
-  Code2, 
-  Cpu, 
+  Smartphone, 
+  Monitor, 
   Zap, 
-  CheckCircle2,
-  Layers
+  CheckCircle2, 
+  Volume2, 
+  VolumeX, 
+  RotateCcw, 
+  ShieldCheck, 
+  TrendingUp,
+  Cpu,
+  Layers,
+  ArrowRight
 } from 'lucide-react';
 import './home-ai-simulation.css';
 
-interface AIScenario {
+interface DemoAction {
   id: string;
   label: string;
-  badge: string;
-  prompt: string;
-  stages: string[];
-  code: string;
-  summary: string;
-  speed: string;
-  latency: string;
+  speech: string;
+  deviceType: 'mobile' | 'web';
+  mobileScreen: {
+    appTitle: string;
+    badge: string;
+    metricLabel: string;
+    metricVal: string;
+    cardTitle: string;
+    cardDesc: string;
+    status: string;
+  };
+  webScreen: {
+    url: string;
+    title: string;
+    stat1: string;
+    stat2: string;
+    activeAgents: number;
+    log: string;
+  };
 }
 
-const SCENARIOS: AIScenario[] = [
+const DEMO_ACTIONS: DemoAction[] = [
   {
-    id: 'arch',
-    label: 'Auto-Scaling & Sharding',
-    badge: 'Architecture Cloud',
-    prompt: 'Partitionnement dynamique et cache distribué Redis pour absorber 100k req/s.',
-    stages: ['Vectorisation', 'Consensus 3 Agents', 'Génération Schéma SQL', 'Validation Zéro-Défaut'],
-    code: `// Partitionnement dynamique généré par l'IA Dynesis
-export const ShardConfig = {
-  shards: 16,
-  algorithm: 'hash-consistent-crc32',
-  replicationFactor: 3,
-  cachingL1: 'in-memory-lru',
-  cachingL2: 'redis-cluster',
-  throughput: '142,000 ops/s',
-  latencyP99: '3.8ms'
-};`,
-    summary: 'Latence réduite de 64% • Capacité d’absorption ×5 sans surcoût.',
-    speed: '284 tok/s',
-    latency: '11.4 ms'
+    id: 'mobile-app',
+    label: '📱 Déployer Application Mobile',
+    speech: '« Initialisation du bundle mobile React Native. Intégration du composant biométrique et synchronisation hors-ligne activée en 4.2ms. »',
+    deviceType: 'mobile',
+    mobileScreen: {
+      appTitle: 'Dynesis Pay & Crypto',
+      badge: 'v2.4.0 • PRODUCTION',
+      metricLabel: 'Volume Transactions',
+      metricVal: '84 250 €',
+      cardTitle: 'Paiement Instantané ZK',
+      cardDesc: 'Chiffrement de bout en bout validé par agent IA. 0 latence ressentie.',
+      status: 'Synchronisé avec cluster Cloud'
+    },
+    webScreen: {
+      url: 'https://app.dynesis.tech/mobile-bridge',
+      title: 'Console de Relais Mobile & PWA',
+      stat1: '14.2k Utilisateurs Actifs',
+      stat2: '0.01% Taux de Crash',
+      activeAgents: 4,
+      log: 'Passerelle mobile compilée avec succès.'
+    }
   },
   {
-    id: 'web3',
-    label: 'Audit Smart Contract',
-    badge: 'Web3 & Sécurité Formelle',
-    prompt: 'Vérification formelle contre réentrance et flash-loans avec preuve ZK.',
-    stages: ['Décompilation Opcode', 'Fuzzing Sandbox', 'Garde ReentrancyGuard', 'Certification Mathématique'],
-    code: `// Contrat audité & certifié sans vulnérabilité
-contract VaultSecure is ReentrancyGuard, Ownable {
-  using SafeERC20 for IERC20;
-  function executeSwap(uint256 amountIn, uint256 minOut) 
-    external nonReentrant returns (uint256 out) {
-      validateTwapOracle(amountIn, minOut);
-      return _settleSwap(msg.sender, amountIn, minOut);
-  }
-}`,
-    summary: '0 vulnérabilité critique • Protection 100% contre flash-loans.',
-    speed: '310 tok/s',
-    latency: '9.2 ms'
+    id: 'saas-web',
+    label: '💻 Générer Dashboard SaaS Cloud',
+    speech: '« Synthèse du tableau de bord d’entreprise : injection des widgets prédictifs, agrégation GraphQL et rendu SSR ultra-véloce. »',
+    deviceType: 'web',
+    mobileScreen: {
+      appTitle: 'Dynesis Cloud Admin',
+      badge: 'LIVE TELEMETRY',
+      metricLabel: 'Throughput Global',
+      metricVal: '142k ops/s',
+      cardTitle: 'Moteur Analytics B2B',
+      cardDesc: 'Agrégation de données multi-régions avec requêtes optimisées.',
+      status: 'Flux temps réel actif'
+    },
+    webScreen: {
+      url: 'https://admin.dynesis.tech/analytics',
+      title: 'Dashboard Intelligent & Analytics IA',
+      stat1: '142,000 Ops / seconde',
+      stat2: '99.999% SLA Garanti',
+      activeAgents: 8,
+      log: 'Modèle prédictif déployé sur 18 régions Anycast.'
+    }
   },
   {
-    id: 'rag',
-    label: 'Pipeline RAG Temps Réel',
-    badge: 'Big Data & LLM',
-    prompt: 'Indexation hybride vectorielle et détection d’hallucination en continu.',
-    stages: ['Chunking Sémantique', 'Recherche Hybride BM25', 'Filtrage Factuel', 'Streaming Temps Réel'],
-    code: `// Inférence sémantique garantie sans hallucination
-const stream = await dynesisAI.streamInference({
-  contextWindow: '128k',
-  retrievalStrategy: 'hybrid-rerank-v2',
-  factualThreshold: 0.992,
-  accuracy: '99.9%'
-});`,
-    summary: 'Précision supérieure à 99% • Réponses ultra-sourcées vérifiées.',
-    speed: '260 tok/s',
-    latency: '14.1 ms'
+    id: 'ai-smart',
+    label: '⚡ Optimisation & Smart Contract',
+    speech: '« Audit de sécurité formel déclenché. Aucune faille de réentrance détectée. Preuve mathématique ZK validée sur Ethereum L2. »',
+    deviceType: 'mobile',
+    mobileScreen: {
+      appTitle: 'Web3 Vault Shield',
+      badge: 'AUDITÉ & SÉCURISÉ',
+      metricLabel: 'Liquidité Protégée',
+      metricVal: '1.24 M$',
+      cardTitle: 'Smart Contract DeFi',
+      cardDesc: 'Oracles décentralisés vérifiés. Protection TWAP active.',
+      status: 'Certifié sans vulnérabilité'
+    },
+    webScreen: {
+      url: 'https://web3.dynesis.tech/audit',
+      title: 'Moniteur de Sécurité Web3 & Oracles',
+      stat1: '0 Faille Détectée',
+      stat2: '100% Preuve ZK',
+      activeAgents: 6,
+      log: 'Contrat déployé sur réseau principal sans coupure.'
+    }
   }
 ];
 
 export function HomeAISimulation() {
-  const [selected, setSelected] = useState<AIScenario>(SCENARIOS[0]);
-  const [isRunning, setIsRunning] = useState(false);
-  const [currentStage, setCurrentStage] = useState(4); // All done by default
-  const [streamLength, setStreamLength] = useState(SCENARIOS[0].code.length);
-  const [copied, setCopied] = useState(false);
+  const [selectedAction, setSelectedAction] = useState<DemoAction>(DEMO_ACTIONS[0]);
+  const [viewMode, setViewMode] = useState<'mobile' | 'web'>('mobile');
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [typedSpeech, setTypedSpeech] = useState(DEMO_ACTIONS[0].speech);
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
-  const runSimulation = (scenario: AIScenario = selected) => {
-    if (isRunning) return;
-    setIsRunning(true);
-    setCurrentStage(0);
-    setStreamLength(0);
+  // Trigger speech effect
+  const triggerAction = (action: DemoAction) => {
+    setSelectedAction(action);
+    setViewMode(action.deviceType);
+    setIsSpeaking(true);
+    setTypedSpeech('');
 
-    let stage = 0;
+    let charIdx = 0;
+    const text = action.speech;
     const interval = setInterval(() => {
-      stage++;
-      if (stage <= scenario.stages.length) {
-        setCurrentStage(stage);
-        setStreamLength(Math.floor((stage / scenario.stages.length) * scenario.code.length));
-      } else {
+      charIdx += 2;
+      setTypedSpeech(text.slice(0, charIdx));
+      if (charIdx >= text.length) {
         clearInterval(interval);
-        setStreamLength(scenario.code.length);
-        setIsRunning(false);
+        setTypedSpeech(text);
+        setTimeout(() => setIsSpeaking(false), 800);
       }
-    }, 550);
-  };
-
-  const handleSelect = (sc: AIScenario) => {
-    setSelected(sc);
-    runSimulation(sc);
-  };
-
-  const copyCode = () => {
-    navigator.clipboard?.writeText(selected.code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    }, 25);
   };
 
   return (
-    <section className="dyn-ai-sec" id="simulation-ia" aria-label="Simulation Intelligence Artificielle">
-      <div className="dyn-ai-sec__ambient" aria-hidden="true" />
-      <div className="dyn-ai-sec__container">
+    <section className="dyn-ai-holo" id="simulation-ia" aria-label="Simulation IA et Agent Holographique">
+      <div className="dyn-ai-holo__container">
         
-        {/* Header */}
-        <div className="dyn-ai-sec__header">
-          <div className="dyn-ai-sec__eyebrow">
-            <span className="dyn-ai-sec__pulse" />
-            <span>(LAB IA) — SIMULATION COGNITIVE EN DIRECT</span>
+        {/* Harmonious Header */}
+        <header className="dyn-ai-holo__header">
+          <div className="dyn-ai-holo__eyebrow">
+            <span className="dyn-ai-holo__pulse-dot" />
+            <span>(SIMULATION IA) — AGENT HOLOGRAPHIQUE & GÉNÉRATION MULTI-ÉCRANS</span>
           </div>
-          <h2 className="dyn-ai-sec__title">
-            Moteurs IA & Raisonnement Autonome
+          <h2 className="dyn-ai-holo__title">
+            Agent IA Autonome & Déploiement en Temps Réel
           </h2>
-          <p className="dyn-ai-sec__sub">
-            Testez l’agilité de nos modèles neuronaux : sélectionnez un cas d’usage et observez la chaîne de réflexion multi-agents en temps réel.
+          <p className="dyn-ai-holo__subtitle">
+            Interagissez avec notre agent virtuel : découvrez comment nos modèles d'IA conçoivent, optimisent et projettent instantanément des applications sur mobile et web.
           </p>
-        </div>
+        </header>
 
-        {/* Compact 2-Column Showcase */}
-        <div className="dyn-ai-sec__grid">
+        {/* 2-Column Compact Interactive Showcase */}
+        <div className="dyn-ai-holo__stage">
           
-          {/* Left Column: Interactive Controls */}
-          <div className="dyn-ai-sec__controls">
+          {/* Left Column: Holographic AI Agent & Speech Bubble */}
+          <div className="dyn-ai-holo__agent-card">
             
-            {/* Live Metrics Row */}
-            <div className="dyn-ai-sec__metrics-row">
-              <div className="dyn-ai-sec__metric">
-                <span className="dyn-ai-sec__metric-dot" />
-                <span className="dyn-ai-sec__metric-label">Modèle :</span>
-                <strong className="dyn-ai-sec__metric-val">Dynesis-Titan 128B</strong>
+            {/* Top Toolbar */}
+            <div className="dyn-ai-holo__agent-top">
+              <div className="dyn-ai-holo__agent-status">
+                <span className="dyn-ai-holo__status-led" />
+                <span className="dyn-ai-holo__agent-name">Agent Cognitif Dynesis-Titan</span>
               </div>
-              <div className="dyn-ai-sec__metric">
-                <Zap size={13} className="dyn-ai-sec__metric-icon" />
-                <span className="dyn-ai-sec__metric-label">Vitesse :</span>
-                <strong className="dyn-ai-sec__metric-val">{selected.speed}</strong>
+              <button 
+                type="button" 
+                onClick={() => setSoundEnabled(!soundEnabled)}
+                className="dyn-ai-holo__sound-btn"
+                title={soundEnabled ? 'Synthèse audio active' : 'Audio muet'}
+              >
+                {soundEnabled ? <Volume2 size={14} color="#0284c7" /> : <VolumeX size={14} color="#94a3b8" />}
+                <span>{soundEnabled ? 'Audio On' : 'Muet'}</span>
+              </button>
+            </div>
+
+            {/* The 3D Hologram Projection Core */}
+            <div className="dyn-ai-holo__projection-zone">
+              <div className="dyn-ai-holo__light-beam" />
+              
+              {/* Concentric Holographic Rings */}
+              <div className={`dyn-ai-holo__rings ${isSpeaking ? 'dyn-ai-holo__rings--active' : ''}`}>
+                <div className="dyn-ai-holo__ring dyn-ai-holo__ring--outer" />
+                <div className="dyn-ai-holo__ring dyn-ai-holo__ring--mid" />
+                <div className="dyn-ai-holo__ring dyn-ai-holo__ring--inner" />
               </div>
-              <div className="dyn-ai-sec__metric">
-                <Cpu size={13} className="dyn-ai-sec__metric-icon" />
-                <span className="dyn-ai-sec__metric-label">Latence :</span>
-                <strong className="dyn-ai-sec__metric-val">{selected.latency}</strong>
+
+              {/* Holographic Glowing Avatar */}
+              <div className={`dyn-ai-holo__avatar ${isSpeaking ? 'dyn-ai-holo__avatar--speaking' : ''}`}>
+                <div className="dyn-ai-holo__avatar-core">
+                  <Bot size={40} className="dyn-ai-holo__bot-icon" />
+                  <Sparkles size={18} className="dyn-ai-holo__sparkle-icon" />
+                </div>
+                {/* Hologram Scanlines Overlay */}
+                <div className="dyn-ai-holo__scanlines" />
+              </div>
+
+              {/* Hologram Base Projector Emitter */}
+              <div className="dyn-ai-holo__emitter">
+                <div className="dyn-ai-holo__emitter-disc" />
+                <div className="dyn-ai-holo__emitter-glow" />
+              </div>
+
+              {/* Audio Soundwave Bars */}
+              <div className="dyn-ai-holo__soundwave">
+                <span className={`dyn-ai-holo__bar ${isSpeaking ? 'dyn-ai-holo__bar--anim' : ''}`} />
+                <span className={`dyn-ai-holo__bar ${isSpeaking ? 'dyn-ai-holo__bar--anim' : ''}`} style={{ animationDelay: '0.1s' }} />
+                <span className={`dyn-ai-holo__bar ${isSpeaking ? 'dyn-ai-holo__bar--anim' : ''}`} style={{ animationDelay: '0.2s' }} />
+                <span className={`dyn-ai-holo__bar ${isSpeaking ? 'dyn-ai-holo__bar--anim' : ''}`} style={{ animationDelay: '0.3s' }} />
+                <span className={`dyn-ai-holo__bar ${isSpeaking ? 'dyn-ai-holo__bar--anim' : ''}`} style={{ animationDelay: '0.15s' }} />
               </div>
             </div>
 
-            {/* Scenario Pills */}
-            <div className="dyn-ai-sec__pills">
-              {SCENARIOS.map((sc) => {
-                const isActive = selected.id === sc.id;
+            {/* Dynamic Talking Speech Bubble */}
+            <div className="dyn-ai-holo__speech-bubble">
+              <div className="dyn-ai-holo__bubble-header">
+                <span className="dyn-ai-holo__bubble-badge">MESSAGE DE L'AGENT IA</span>
+                <span className="dyn-ai-holo__bubble-latency">Latence : 4.8ms</span>
+              </div>
+              <p className="dyn-ai-holo__bubble-text">
+                {typedSpeech}
+                {isSpeaking && <span className="dyn-ai-holo__cursor" />}
+              </p>
+            </div>
+
+            {/* Interactive User Commands */}
+            <div className="dyn-ai-holo__actions-label">
+              <span>Sélectionnez une instruction pour l'Agent :</span>
+            </div>
+            <div className="dyn-ai-holo__actions-grid">
+              {DEMO_ACTIONS.map((act) => {
+                const isActive = selectedAction.id === act.id;
                 return (
                   <button
-                    key={sc.id}
+                    key={act.id}
                     type="button"
-                    onClick={() => handleSelect(sc)}
-                    className={`dyn-ai-sec__pill ${isActive ? 'dyn-ai-sec__pill--active' : ''}`}
+                    onClick={() => triggerAction(act)}
+                    className={`dyn-ai-holo__action-btn ${isActive ? 'dyn-ai-holo__action-btn--active' : ''}`}
                   >
-                    <span className="dyn-ai-sec__pill-badge">{sc.badge}</span>
-                    <strong className="dyn-ai-sec__pill-title">{sc.label}</strong>
-                    <span className="dyn-ai-sec__pill-prompt">{sc.prompt}</span>
+                    <span>{act.label}</span>
+                    <ArrowRight size={13} className="dyn-ai-holo__arrow" />
                   </button>
                 );
               })}
             </div>
 
-            {/* Trigger Button */}
-            <div className="dyn-ai-sec__action-bar">
-              <button
-                type="button"
-                disabled={isRunning}
-                onClick={() => runSimulation(selected)}
-                className="dyn-ai-sec__run-btn"
-              >
-                {isRunning ? (
-                  <>
-                    <RotateCcw size={15} className="dyn-ai-sec__spin" />
-                    Raisonnement multi-agents en cours...
-                  </>
-                ) : (
-                  <>
-                    <Play size={14} fill="currentColor" />
-                    Lancer la simulation de synthèse IA
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* Micro 4-Step Chain */}
-            <div className="dyn-ai-sec__chain">
-              {selected.stages.map((st, idx) => {
-                const isPassed = currentStage > idx;
-                const isCurrent = currentStage === idx;
-                return (
-                  <div key={idx} className={`dyn-ai-sec__step ${isPassed ? 'dyn-ai-sec__step--done' : isCurrent ? 'dyn-ai-sec__step--current' : ''}`}>
-                    <div className="dyn-ai-sec__step-bubble">
-                      {isPassed ? <Check size={11} /> : idx + 1}
-                    </div>
-                    <span className="dyn-ai-sec__step-label">{st}</span>
-                  </div>
-                );
-              })}
-            </div>
-
           </div>
 
-          {/* Right Column: Code Streaming & Summary */}
-          <div className="dyn-ai-sec__preview">
-            <div className="dyn-ai-sec__terminal">
-              <div className="dyn-ai-sec__terminal-top">
-                <div className="dyn-ai-sec__dots">
-                  <span className="dyn-ai-sec__dot dyn-ai-sec__dot--red" />
-                  <span className="dyn-ai-sec__dot dyn-ai-sec__dot--yellow" />
-                  <span className="dyn-ai-sec__dot dyn-ai-sec__dot--green" />
-                </div>
-                <div className="dyn-ai-sec__terminal-file">
-                  <Code2 size={13} />
-                  <span>dynesis://ai-output.ts</span>
-                </div>
+          {/* Right Column: Device Simulation (Mobile Smartphone or Web Browser) */}
+          <div className="dyn-ai-holo__device-card">
+            
+            {/* View Mode Switcher */}
+            <div className="dyn-ai-holo__device-toolbar">
+              <span className="dyn-ai-holo__toolbar-title">Projection en Direct de l'Interface</span>
+              <div className="dyn-ai-holo__device-toggles">
                 <button
                   type="button"
-                  onClick={copyCode}
-                  className="dyn-ai-sec__copy-btn"
-                  title="Copier le code"
+                  onClick={() => setViewMode('mobile')}
+                  className={`dyn-ai-holo__toggle-btn ${viewMode === 'mobile' ? 'dyn-ai-holo__toggle-btn--active' : ''}`}
                 >
-                  {copied ? <Check size={12} color="#10b981" /> : <Copy size={12} />}
-                  <span>{copied ? 'Copié' : 'Copier'}</span>
+                  <Smartphone size={13} />
+                  <span>Mobile</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('web')}
+                  className={`dyn-ai-holo__toggle-btn ${viewMode === 'web' ? 'dyn-ai-holo__toggle-btn--active' : ''}`}
+                >
+                  <Monitor size={13} />
+                  <span>Dashboard Web</span>
                 </button>
               </div>
-
-              <div className="dyn-ai-sec__terminal-body">
-                <pre className="dyn-ai-sec__code">
-                  <code>
-                    {selected.code.slice(0, streamLength)}
-                    {isRunning && <span className="dyn-ai-sec__cursor" />}
-                  </code>
-                </pre>
-              </div>
-
-              <div className="dyn-ai-sec__terminal-bottom">
-                <CheckCircle2 size={15} className="dyn-ai-sec__valid-icon" />
-                <span className="dyn-ai-sec__summary-text">{selected.summary}</span>
-              </div>
             </div>
+
+            {/* The Simulation Screen Container */}
+            <div className="dyn-ai-holo__device-screen-mount">
+              
+              {/* 1. MOBILE SMARTPHONE MOCKUP */}
+              {viewMode === 'mobile' && (
+                <div className="dyn-ai-phone">
+                  <div className="dyn-ai-phone__notch">
+                    <div className="dyn-ai-phone__camera" />
+                  </div>
+                  <div className="dyn-ai-phone__status-bar">
+                    <span>9:41</span>
+                    <div className="dyn-ai-phone__icons">5G • 100%</div>
+                  </div>
+
+                  <div className="dyn-ai-phone__content">
+                    <div className="dyn-ai-phone__header">
+                      <div>
+                        <span className="dyn-ai-phone__badge">{selectedAction.mobileScreen.badge}</span>
+                        <h4 className="dyn-ai-phone__title">{selectedAction.mobileScreen.appTitle}</h4>
+                      </div>
+                      <div className="dyn-ai-phone__avatar-mini">
+                        <Bot size={14} color="#0284c7" />
+                      </div>
+                    </div>
+
+                    <div className="dyn-ai-phone__metric-card">
+                      <span className="dyn-ai-phone__metric-lbl">{selectedAction.mobileScreen.metricLabel}</span>
+                      <strong className="dyn-ai-phone__metric-num">{selectedAction.mobileScreen.metricVal}</strong>
+                      <div className="dyn-ai-phone__trend">
+                        <TrendingUp size={12} color="#10b981" />
+                        <span>+18.4% ce mois</span>
+                      </div>
+                    </div>
+
+                    <div className="dyn-ai-phone__feature-box">
+                      <div className="dyn-ai-phone__feature-icon">
+                        <Zap size={15} color="#0284c7" />
+                      </div>
+                      <div>
+                        <strong className="dyn-ai-phone__feat-title">{selectedAction.mobileScreen.cardTitle}</strong>
+                        <p className="dyn-ai-phone__feat-desc">{selectedAction.mobileScreen.cardDesc}</p>
+                      </div>
+                    </div>
+
+                    <div className="dyn-ai-phone__footer-status">
+                      <CheckCircle2 size={13} color="#10b981" />
+                      <span>{selectedAction.mobileScreen.status}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 2. WEB BROWSER MOCKUP */}
+              {viewMode === 'web' && (
+                <div className="dyn-ai-web">
+                  <div className="dyn-ai-web__browser-bar">
+                    <div className="dyn-ai-web__dots">
+                      <span className="dyn-ai-web__dot dyn-ai-web__dot--red" />
+                      <span className="dyn-ai-web__dot dyn-ai-web__dot--yellow" />
+                      <span className="dyn-ai-web__dot dyn-ai-web__dot--green" />
+                    </div>
+                    <div className="dyn-ai-web__url-bar">
+                      <span>{selectedAction.webScreen.url}</span>
+                    </div>
+                  </div>
+
+                  <div className="dyn-ai-web__content">
+                    <div className="dyn-ai-web__top">
+                      <h4 className="dyn-ai-web__title">{selectedAction.webScreen.title}</h4>
+                      <span className="dyn-ai-web__status-pill">● Opérationnel</span>
+                    </div>
+
+                    <div className="dyn-ai-web__kpi-grid">
+                      <div className="dyn-ai-web__kpi-card">
+                        <span className="dyn-ai-web__kpi-label">Débit Validé</span>
+                        <strong className="dyn-ai-web__kpi-val">{selectedAction.webScreen.stat1}</strong>
+                      </div>
+                      <div className="dyn-ai-web__kpi-card">
+                        <span className="dyn-ai-web__kpi-label">Fiabilité Système</span>
+                        <strong className="dyn-ai-web__kpi-val">{selectedAction.webScreen.stat2}</strong>
+                      </div>
+                      <div className="dyn-ai-web__kpi-card">
+                        <span className="dyn-ai-web__kpi-label">Agents Actifs</span>
+                        <strong className="dyn-ai-web__kpi-val">{selectedAction.webScreen.activeAgents} workers</strong>
+                      </div>
+                    </div>
+
+                    <div className="dyn-ai-web__console">
+                      <span className="dyn-ai-web__console-prefix">[IA CLUSTER]</span>
+                      <span className="dyn-ai-web__console-msg">{selectedAction.webScreen.log}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+
           </div>
 
         </div>

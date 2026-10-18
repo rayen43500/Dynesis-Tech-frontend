@@ -3,291 +3,393 @@ import {
   ShieldCheck, 
   ShieldAlert, 
   Lock, 
+  Zap, 
   Terminal, 
   RotateCcw, 
-  Zap, 
   Radio, 
   Flame, 
-  CheckCircle2 
+  CheckCircle2,
+  Cpu,
+  Globe
 } from 'lucide-react';
 import './home-security-simulation.css';
 
-interface SecurityAttack {
+interface AttackScenario {
   id: string;
   name: string;
-  type: string;
   badge: string;
+  intensity: string;
   vector: string;
   mitigationTime: string;
-  logs: { tag: string; msg: string; status: 'alert' | 'isolate' | 'ok' }[];
+  logs: { step: string; detail: string; status: 'alert' | 'isolate' | 'ok' }[];
   summary: string;
 }
 
-const ATTACKS: SecurityAttack[] = [
+const ATTACK_SCENARIOS: AttackScenario[] = [
   {
     id: 'ddos',
     name: 'Attaque DDoS L7 (650k req/s)',
-    type: 'HTTP/2 Rapid Reset & Flood SYN',
-    badge: 'Critique',
-    vector: '84 000 IPs botnets distribuées mondialement',
+    badge: 'CRITIQUE',
+    intensity: '650 000 req/s',
+    vector: 'Botnets mondiaux (84k IPs ciblées)',
     mitigationTime: '8.4 ms',
     logs: [
-      { tag: 'WAF', msg: 'Pic anormal +4,200% détecté sur passerelle Anycast', status: 'alert' },
-      { tag: 'eBPF', msg: 'Analyse comportementale noyau : empreinte botnet isolée', status: 'isolate' },
-      { tag: 'SHIELD', msg: 'Challenge cryptographique injecté : 648k bots bloqués', status: 'ok' },
-      { tag: 'STATUS', msg: '0 paquet légitime perdu • Uptime 100% préservé', status: 'ok' }
+      { step: '01. Détection WAF', detail: 'Pic anormal +4,200% intercepté sur passerelle Anycast', status: 'alert' },
+      { step: '02. Filtre eBPF', detail: 'Empreinte de botnet isolée directement au niveau noyau', status: 'isolate' },
+      { step: '03. Challenge JS', detail: 'Défi cryptographique silencieux validé sur trafic légitime', status: 'ok' },
+      { step: '04. Mitigation', detail: '648 912 bots bloqués • Uptime 100% préservé', status: 'ok' }
     ],
-    summary: '648 912 requêtes malveillantes bloquées en 8.4 ms sans impact utilisateur.'
+    summary: 'Attaque volumétrique neutralisée en 8.4 ms. 0 ralentissement utilisateur.'
   },
   {
     id: 'sqli',
     name: 'Injection SQL Zero-Day',
-    type: 'Bypass WAF & Tentative d’Exfiltration',
-    badge: 'Élevée',
-    vector: 'Payload hexadécimal obfusqué sur route d’authentification',
+    badge: 'ÉLEVÉE',
+    intensity: 'Bypass WAF',
+    vector: 'Payload hexadécimal sur route /api/auth',
     mitigationTime: '4.2 ms',
     logs: [
-      { tag: 'WAF', msg: 'Caractères suspects interceptés sur /api/v1/auth/login', status: 'alert' },
-      { tag: 'KERNEL', msg: 'Tentative d’altération de requête SQL neutralisée', status: 'isolate' },
-      { tag: 'SANDBOX', msg: 'Attaquant dérouté vers un Honeypot éphémère', status: 'ok' },
-      { tag: 'STATUS', msg: '0 octet exfiltré • IP bannie sur 18 régions Edge', status: 'ok' }
+      { step: '01. Interception', detail: 'Caractères hexadécimaux anormaux détectés dans les paramètres', status: 'alert' },
+      { step: '02. Analyse IA', detail: 'Signature d’élévation de privilèges confirmée (99.9%)', status: 'isolate' },
+      { step: '03. Déroutement', detail: 'Attaquant redirigé vers un conteneur Honeypot isolé', status: 'ok' },
+      { step: '04. Bannissement', detail: 'IP bannie sur l’ensemble du CDN • 0 octet exfiltré', status: 'ok' }
     ],
-    summary: 'Exfiltration empêchée • Intégrité de la base de données garantie à 100%.'
+    summary: 'Intégrité de la base de données préservée à 100%. Aucune fuite de données.'
   },
   {
-    id: 'auth',
+    id: 'jwt',
     name: 'Brute-Force & Vol de Tokens',
-    type: 'Credential Stuffing & Falsification JWT',
-    badge: 'Moyenne',
-    vector: 'Rotation de 300 proxys résidentiels et manipulation d’en-têtes',
+    badge: 'MOYENNE',
+    intensity: 'Stuffing JWT',
+    vector: '300 proxys résidentiels et manipulation RS256',
     mitigationTime: '5.6 ms',
     logs: [
-      { tag: 'AUTH', msg: '1 200 échecs de connexion simultanés détectés', status: 'alert' },
-      { tag: 'CRYPTO', msg: 'Tentative d’algorithme JWT non autorisé (None/HMAC)', status: 'isolate' },
-      { tag: 'MFA', msg: 'Défi biométrique WebAuthn / Passkey imposé', status: 'ok' },
-      { tag: 'STATUS', msg: 'Comptes sécurisés • 0 compromission de session', status: 'ok' }
+      { step: '01. Vélocité', detail: '1 200 échecs de connexion coordonnés identifiés', status: 'alert' },
+      { step: '02. Contrôle Clé', detail: 'Tentative d’algorithme JWT falsifié (None/HMAC) rejetée', status: 'isolate' },
+      { step: '03. Passkey MFA', detail: 'Défi biométrique WebAuthn imposé automatiquement', status: 'ok' },
+      { step: '04. Clôture', detail: 'Comptes sécurisés avec succès • 0 accès illégitime', status: 'ok' }
     ],
-    summary: 'Protection adaptative activée • Comptes protégés avec succès.'
+    summary: 'Sécurité adaptative activée. Tous les comptes clients protégés.'
   }
 ];
 
 export function HomeSecuritySimulation() {
-  const [selected, setSelected] = useState<SecurityAttack>(ATTACKS[0]);
+  const [selectedAttack, setSelectedAttack] = useState<AttackScenario>(ATTACK_SCENARIOS[0]);
   const [isSimulating, setIsSimulating] = useState(false);
-  const [phaseIndex, setPhaseIndex] = useState(4); // All resolved by default
-  const [radarState, setRadarState] = useState<'normal' | 'alert' | 'defended'>('defended');
+  const [logStep, setLogStep] = useState(4); // All done by default
+  const [radarStatus, setRadarStatus] = useState<'normal' | 'alert' | 'defended'>('defended');
 
-  // Live blocked requests ticker
-  const [blockedCount, setBlockedCount] = useState(648912);
+  // Live blocked count incrementer
+  const [blockedReqs, setBlockedReqs] = useState(648912);
   useEffect(() => {
     const t = setInterval(() => {
-      setBlockedCount((prev) => prev + Math.floor(Math.random() * 18) + 4);
-    }, 1500);
+      setBlockedReqs((prev) => prev + Math.floor(Math.random() * 22) + 5);
+    }, 1400);
     return () => clearInterval(t);
   }, []);
 
-  const runAttackSimulation = (attack: SecurityAttack = selected) => {
+  const runSimulation = (scenario: AttackScenario = selectedAttack) => {
     if (isSimulating) return;
     setIsSimulating(true);
-    setPhaseIndex(0);
-    setRadarState('alert');
+    setLogStep(0);
+    setRadarStatus('alert');
 
-    let p = 0;
+    let step = 0;
     const interval = setInterval(() => {
-      p++;
-      if (p < attack.logs.length) {
-        setPhaseIndex(p);
+      step++;
+      if (step < scenario.logs.length) {
+        setLogStep(step);
       } else {
         clearInterval(interval);
-        setPhaseIndex(attack.logs.length);
+        setLogStep(scenario.logs.length);
         setIsSimulating(false);
-        setRadarState('defended');
+        setRadarStatus('defended');
       }
     }, 600);
   };
 
-  const handleSelect = (att: SecurityAttack) => {
-    setSelected(att);
-    runAttackSimulation(att);
+  const handleSelect = (sc: AttackScenario) => {
+    setSelectedAttack(sc);
+    runSimulation(sc);
   };
 
   return (
-    <section className="dyn-sec-sim" id="simulation-securite" aria-label="Simulation Cyber-Sécurité">
-      <div className="dyn-sec-sim__ambient" aria-hidden="true" />
-      <div className="dyn-sec-sim__container">
+    <section className="dyn-sec-lap" id="simulation-securite" aria-label="Simulation Cyber-Sécurité Laptop">
+      <div className="dyn-sec-lap__container">
         
-        {/* Header */}
-        <div className="dyn-sec-sim__header">
-          <div className="dyn-sec-sim__eyebrow">
-            <span className="dyn-sec-sim__pulse" />
-            <span>(CYBER-DÉFENSE) — BOUCLIER ZERO-TRUST EN DIRECT</span>
+        {/* Harmonious Header */}
+        <header className="dyn-sec-lap__header">
+          <div className="dyn-sec-lap__eyebrow">
+            <span className="dyn-sec-lap__pulse-dot" />
+            <span>(CYBER-DÉFENSE) — TERMINAL ZERO-TRUST EN DIRECT</span>
           </div>
-          <h2 className="dyn-sec-sim__title">
-            Riposte & Neutralisation d'Attaques en Millisecondes
+          <h2 className="dyn-sec-lap__title">
+            Console de Sécurité & Riposte en Millisecondes
           </h2>
-          <p className="dyn-sec-sim__sub">
-            Testez la résistance de notre architecture : injectez un scénario d'attaque critique et constatez la vitesse d'isolation de nos sentinelles eBPF.
+          <p className="dyn-sec-lap__subtitle">
+            Prenez les commandes du terminal de défense : simulez une intrusion critique sur le laptop et observez le filtrage instantané par nos sentinelles eBPF.
           </p>
-        </div>
+        </header>
 
-        {/* Compact 2-Column Showcase */}
-        <div className="dyn-sec-sim__grid">
+        {/* 2-Column Compact Stage */}
+        <div className="dyn-sec-lap__stage">
           
-          {/* Left Column: Attack Selectors */}
-          <div className="dyn-sec-sim__controls">
+          {/* Left Column: Interactive Attack Controls */}
+          <div className="dyn-sec-lap__controls">
             
             {/* Status Bar */}
-            <div className="dyn-sec-sim__status-row">
-              <div className="dyn-sec-sim__status-item">
-                <span className="dyn-sec-sim__status-dot" />
-                <span className="dyn-sec-sim__status-label">Bouclier :</span>
-                <strong className="dyn-sec-sim__status-val">WAF + eBPF Kernel</strong>
+            <div className="dyn-sec-lap__status-bar">
+              <div className="dyn-sec-lap__status-chip">
+                <span className="dyn-sec-lap__status-led" />
+                <span className="dyn-sec-lap__status-label">Bouclier :</span>
+                <strong className="dyn-sec-lap__status-val">WAF Anycast + eBPF</strong>
               </div>
-              <div className="dyn-sec-sim__status-item">
-                <Lock size={13} className="dyn-sec-sim__status-icon" />
-                <span className="dyn-sec-sim__status-label">Chiffrement :</span>
-                <strong className="dyn-sec-sim__status-val">Post-Quantique</strong>
+              <div className="dyn-sec-lap__status-chip">
+                <Lock size={13} className="dyn-sec-lap__chip-icon" />
+                <span className="dyn-sec-lap__status-label">Chiffrement :</span>
+                <strong className="dyn-sec-lap__status-val">Post-Quantique</strong>
               </div>
-              <div className="dyn-sec-sim__status-item">
-                <Zap size={13} className="dyn-sec-sim__status-icon" />
-                <span className="dyn-sec-sim__status-label">Mitigation :</span>
-                <strong className="dyn-sec-sim__status-val">{selected.mitigationTime}</strong>
+              <div className="dyn-sec-lap__status-chip">
+                <Zap size={13} className="dyn-sec-lap__chip-icon" />
+                <span className="dyn-sec-lap__status-label">Mitigation :</span>
+                <strong className="dyn-sec-lap__status-val">{selectedAttack.mitigationTime}</strong>
               </div>
             </div>
 
             {/* Attack Cards */}
-            <div className="dyn-sec-sim__pills">
-              {ATTACKS.map((att) => {
-                const isActive = selected.id === att.id;
+            <div className="dyn-sec-lap__attacks-label">
+              <span>Sélectionnez un scénario d’attaque à injecter :</span>
+            </div>
+            <div className="dyn-sec-lap__attacks-list">
+              {ATTACK_SCENARIOS.map((sc) => {
+                const isActive = selectedAttack.id === sc.id;
                 return (
                   <button
-                    key={att.id}
+                    key={sc.id}
                     type="button"
-                    onClick={() => handleSelect(att)}
-                    className={`dyn-sec-sim__pill ${isActive ? 'dyn-sec-sim__pill--active' : ''}`}
+                    onClick={() => handleSelect(sc)}
+                    className={`dyn-sec-lap__attack-btn ${isActive ? 'dyn-sec-lap__attack-btn--active' : ''}`}
                   >
-                    <div className="dyn-sec-sim__pill-top">
-                      <span className="dyn-sec-sim__pill-badge">{att.badge}</span>
-                      <span className="dyn-sec-sim__pill-type">{att.type}</span>
+                    <div className="dyn-sec-lap__btn-top">
+                      <span className="dyn-sec-lap__btn-badge">{sc.badge}</span>
+                      <span className="dyn-sec-lap__btn-intensity">{sc.intensity}</span>
                     </div>
-                    <strong className="dyn-sec-sim__pill-name">{att.name}</strong>
-                    <span className="dyn-sec-sim__pill-vector">Vecteur : {att.vector}</span>
+                    <strong className="dyn-sec-lap__btn-name">{sc.name}</strong>
+                    <span className="dyn-sec-lap__btn-vector">{sc.vector}</span>
                   </button>
                 );
               })}
             </div>
 
-            {/* Action Button */}
-            <div className="dyn-sec-sim__action-bar">
+            {/* Action Trigger */}
+            <div className="dyn-sec-lap__action-wrap">
               <button
                 type="button"
                 disabled={isSimulating}
-                onClick={() => runAttackSimulation(selected)}
-                className="dyn-sec-sim__run-btn"
+                onClick={() => runSimulation(selectedAttack)}
+                className="dyn-sec-lap__run-btn"
               >
                 {isSimulating ? (
                   <>
-                    <RotateCcw size={15} className="dyn-sec-sim__spin" />
+                    <RotateCcw size={15} className="dyn-sec-lap__spin" />
                     Attaque en cours • Bouclier en riposte...
                   </>
                 ) : (
                   <>
-                    <ShieldAlert size={14} />
-                    Simuler l’attaque & tester la riposte immédiate
+                    <ShieldAlert size={15} />
+                    Simuler l’attaque sur le Laptop
                   </>
                 )}
               </button>
             </div>
 
-            {/* Live Counter Badge */}
-            <div className="dyn-sec-sim__counter-bar">
-              <Radio size={13} color="#10b981" />
+            {/* Live Ticker Banner */}
+            <div className="dyn-sec-lap__ticker">
+              <Radio size={14} color="#10b981" />
               <span>Menaces neutralisées en direct :</span>
-              <strong>{blockedCount.toLocaleString()} reqs</strong>
+              <strong className="dyn-sec-lap__ticker-count">{blockedReqs.toLocaleString()} reqs</strong>
             </div>
 
           </div>
 
-          {/* Right Column: Cyber Radar & Live Audit Logs */}
-          <div className="dyn-sec-sim__preview">
-            <div className="dyn-sec-sim__radar-card">
+          {/* Right Column: Realistic Miniature Laptop Mockup */}
+          <div className="dyn-sec-lap__laptop-container">
+            
+            {/* The Laptop Device */}
+            <div className="dyn-laptop">
               
-              <div className="dyn-sec-sim__radar-top">
-                <div className="dyn-sec-sim__radar-status">
-                  <span className={`dyn-sec-sim__radar-dot dyn-sec-sim__radar-dot--${radarState}`} />
-                  <span className="dyn-sec-sim__radar-state-text">
-                    {isSimulating ? 'ALERTE : ATTAQUE DÉTECTÉE' : 'BOUCLIER ACTIF — 100% PROTÉGÉ'}
-                  </span>
+              {/* Laptop Display Top Lid */}
+              <div className="dyn-laptop__screen-lid">
+                {/* Webcam & Ambient light sensor */}
+                <div className="dyn-laptop__webcam">
+                  <span className="dyn-laptop__cam-lens" />
                 </div>
-                <span className="dyn-sec-sim__radar-time">{selected.mitigationTime}</span>
-              </div>
 
-              {/* Concentric Compact Radar Visual */}
-              <div className="dyn-sec-sim__radar-box">
-                <svg viewBox="0 0 160 160" className="dyn-sec-sim__radar-svg">
-                  <circle cx="80" cy="80" r="70" className="dyn-sec-sim__radar-ring" />
-                  <circle cx="80" cy="80" r="45" className="dyn-sec-sim__radar-ring" />
-                  <circle cx="80" cy="80" r="20" className="dyn-sec-sim__radar-ring" />
-                  <line x1="80" y1="10" x2="80" y2="150" className="dyn-sec-sim__radar-cross" />
-                  <line x1="10" y1="80" x2="150" y2="80" className="dyn-sec-sim__radar-cross" />
+                {/* Inner High-Def Screen (Clear Style) */}
+                <div className="dyn-laptop__display">
                   
-                  {/* Sweeping Beam */}
-                  <g className={`dyn-sec-sim__radar-beam-wrap ${isSimulating ? 'dyn-sec-sim__radar-beam-wrap--fast' : ''}`}>
-                    <line x1="80" y1="80" x2="150" y2="80" className="dyn-sec-sim__radar-line" />
-                    <path d="M 80 80 L 150 80 A 70 70 0 0 0 130 30 Z" className="dyn-sec-sim__radar-cone" />
-                  </g>
-
-                  {/* Threat Blips */}
-                  <circle cx="115" cy="50" r="3" className="dyn-sec-sim__blip dyn-sec-sim__blip--red" />
-                  <circle cx="50" cy="110" r="2.5" className="dyn-sec-sim__blip dyn-sec-sim__blip--green" />
-                  <circle cx="110" cy="115" r="3" className="dyn-sec-sim__blip dyn-sec-sim__blip--blue" />
-                </svg>
-
-                <div className="dyn-sec-sim__radar-telemetry">
-                  <div className="dyn-sec-sim__telemetry-item">
-                    <span className="dyn-sec-sim__telemetry-num">0.00%</span>
-                    <span className="dyn-sec-sim__telemetry-label">Faux Positifs</span>
+                  {/* Display OS Top Bar */}
+                  <div className="dyn-laptop__display-bar">
+                    <div className="dyn-laptop__display-dots">
+                      <span className="dyn-laptop__dot dyn-laptop__dot--red" />
+                      <span className="dyn-laptop__dot dyn-laptop__dot--yellow" />
+                      <span className="dyn-laptop__dot dyn-laptop__dot--green" />
+                    </div>
+                    <div className="dyn-laptop__display-title">
+                      <ShieldCheck size={12} color="#10b981" />
+                      <span>dynesis-sentinel://live-defense-console</span>
+                    </div>
+                    <span className={`dyn-laptop__threat-tag dyn-laptop__threat-tag--${radarStatus}`}>
+                      {isSimulating ? '● ALERTE : ATTAQUE' : '● SÉCURISÉ'}
+                    </span>
                   </div>
-                  <div className="dyn-sec-sim__telemetry-item">
-                    <span className="dyn-sec-sim__telemetry-num">100%</span>
-                    <span className="dyn-sec-sim__telemetry-label">Uptime Garanti</span>
-                  </div>
-                  <div className="dyn-sec-sim__telemetry-item">
-                    <span className="dyn-sec-sim__telemetry-num">0 Octet</span>
-                    <span className="dyn-sec-sim__telemetry-label">Fuite de Données</span>
-                  </div>
-                </div>
-              </div>
 
-              {/* Tactical Audit Logs */}
-              <div className="dyn-sec-sim__logs">
-                <div className="dyn-sec-sim__logs-title">
-                  <Terminal size={12} />
-                  <span>Journal Kernel eBPF en direct :</span>
-                </div>
-                <div className="dyn-sec-sim__logs-list">
-                  {selected.logs.map((lg, i) => {
-                    const isVisible = phaseIndex >= i;
-                    return (
-                      <div 
-                        key={i} 
-                        className={`dyn-sec-sim__log-row dyn-sec-sim__log-row--${lg.status} ${isVisible ? 'dyn-sec-sim__log-row--show' : 'dyn-sec-sim__log-row--hide'}`}
-                      >
-                        <span className="dyn-sec-sim__log-tag">[{lg.tag}]</span>
-                        <span className="dyn-sec-sim__log-msg">{lg.msg}</span>
+                  {/* Display Main Content: Radar + Live Logs */}
+                  <div className="dyn-laptop__display-body">
+                    
+                    {/* Top Row: Mini Radar + Telemetry */}
+                    <div className="dyn-laptop__telemetry-row">
+                      
+                      {/* Radar */}
+                      <div className="dyn-laptop__radar-wrap">
+                        <svg viewBox="0 0 100 100" className="dyn-laptop__radar-svg">
+                          <circle cx="50" cy="50" r="44" className="dyn-laptop__radar-ring" />
+                          <circle cx="50" cy="50" r="28" className="dyn-laptop__radar-ring" />
+                          <circle cx="50" cy="50" r="12" className="dyn-laptop__radar-ring" />
+                          <line x1="50" y1="6" x2="50" y2="94" className="dyn-laptop__radar-cross" />
+                          <line x1="6" y1="50" x2="94" y2="50" className="dyn-laptop__radar-cross" />
+                          
+                          {/* Beam */}
+                          <g className={`dyn-laptop__radar-sweep ${isSimulating ? 'dyn-laptop__radar-sweep--fast' : ''}`}>
+                            <line x1="50" y1="50" x2="94" y2="50" className="dyn-laptop__radar-line" />
+                            <path d="M 50 50 L 94 50 A 44 44 0 0 0 81 19 Z" className="dyn-laptop__radar-cone" />
+                          </g>
+
+                          <circle cx="72" cy="32" r="2.5" className="dyn-laptop__blip dyn-laptop__blip--red" />
+                          <circle cx="30" cy="70" r="2" className="dyn-laptop__blip dyn-laptop__blip--green" />
+                        </svg>
                       </div>
-                    );
-                  })}
+
+                      {/* Live Telemetry Stats */}
+                      <div className="dyn-laptop__stats">
+                        <div className="dyn-laptop__stat-box">
+                          <span className="dyn-laptop__stat-lbl">Temps Riposte</span>
+                          <strong className="dyn-laptop__stat-val dyn-laptop__stat-val--green">{selectedAttack.mitigationTime}</strong>
+                        </div>
+                        <div className="dyn-laptop__stat-box">
+                          <span className="dyn-laptop__stat-lbl">Faux Positifs</span>
+                          <strong className="dyn-laptop__stat-val">0.00%</strong>
+                        </div>
+                        <div className="dyn-laptop__stat-box">
+                          <span className="dyn-laptop__stat-lbl">Uptime</span>
+                          <strong className="dyn-laptop__stat-val dyn-laptop__stat-val--blue">100%</strong>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Bottom Row: Incident Logs in clean style */}
+                    <div className="dyn-laptop__logs-box">
+                      <div className="dyn-laptop__logs-header">
+                        <Terminal size={11} />
+                        <span>Journal d’Événements Kernel eBPF :</span>
+                      </div>
+                      <div className="dyn-laptop__logs-list">
+                        {selectedAttack.logs.map((lg, i) => {
+                          const isVisible = logStep >= i;
+                          return (
+                            <div 
+                              key={i} 
+                              className={`dyn-laptop__log-item dyn-laptop__log-item--${lg.status} ${isVisible ? 'dyn-laptop__log-item--show' : 'dyn-laptop__log-item--hide'}`}
+                            >
+                              <strong className="dyn-laptop__log-step">{lg.step}</strong>
+                              <span className="dyn-laptop__log-detail">{lg.detail}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Summary Banner inside display */}
+                    <div className="dyn-laptop__summary-banner">
+                      <CheckCircle2 size={13} color="#15803d" />
+                      <span>{selectedAttack.summary}</span>
+                    </div>
+
+                  </div>
+
                 </div>
               </div>
 
-              {/* Bottom Summary Badge */}
-              <div className="dyn-sec-sim__radar-bottom">
-                <CheckCircle2 size={15} color="#10b981" />
-                <span className="dyn-sec-sim__summary-msg">{selected.summary}</span>
+              {/* Laptop Hinge */}
+              <div className="dyn-laptop__hinge" />
+
+              {/* Laptop Keyboard Base & Trackpad */}
+              <div className="dyn-laptop__keyboard-base">
+                
+                {/* Keyboard Layout */}
+                <div className="dyn-laptop__keyboard">
+                  <div className="dyn-laptop__key-row">
+                    <span className="dyn-laptop__key">Esc</span>
+                    <span className="dyn-laptop__key">F1</span>
+                    <span className="dyn-laptop__key">F2</span>
+                    <span className="dyn-laptop__key">F3</span>
+                    <span className="dyn-laptop__key">F4</span>
+                    <span className="dyn-laptop__key">F5</span>
+                    <span className="dyn-laptop__key">F6</span>
+                    <span className="dyn-laptop__key">F7</span>
+                    <span className="dyn-laptop__key">F8</span>
+                    <span className="dyn-laptop__key">Del</span>
+                  </div>
+                  <div className="dyn-laptop__key-row">
+                    <span className="dyn-laptop__key dyn-laptop__key--med">Tab</span>
+                    <span className="dyn-laptop__key">Q</span>
+                    <span className="dyn-laptop__key">W</span>
+                    <span className="dyn-laptop__key">E</span>
+                    <span className="dyn-laptop__key">R</span>
+                    <span className="dyn-laptop__key">T</span>
+                    <span className="dyn-laptop__key">Y</span>
+                    <span className="dyn-laptop__key">U</span>
+                    <span className="dyn-laptop__key">I</span>
+                    <span className="dyn-laptop__key dyn-laptop__key--med">⌫</span>
+                  </div>
+                  <div className="dyn-laptop__key-row">
+                    <span className="dyn-laptop__key dyn-laptop__key--large">Caps</span>
+                    <span className="dyn-laptop__key">A</span>
+                    <span className="dyn-laptop__key">S</span>
+                    <span className="dyn-laptop__key">D</span>
+                    <span className="dyn-laptop__key">F</span>
+                    <span className="dyn-laptop__key">G</span>
+                    <span className="dyn-laptop__key">H</span>
+                    <span className="dyn-laptop__key">J</span>
+                    <span className="dyn-laptop__key dyn-laptop__key--large">Enter</span>
+                  </div>
+                  <div className="dyn-laptop__key-row">
+                    <span className="dyn-laptop__key dyn-laptop__key--xl">Shift</span>
+                    <span className="dyn-laptop__key">Z</span>
+                    <span className="dyn-laptop__key">X</span>
+                    <span className="dyn-laptop__key">C</span>
+                    <span className="dyn-laptop__key">V</span>
+                    <span className="dyn-laptop__key">B</span>
+                    <span className="dyn-laptop__key">N</span>
+                    <span className="dyn-laptop__key dyn-laptop__key--xl">Shift</span>
+                  </div>
+                  <div className="dyn-laptop__key-row">
+                    <span className="dyn-laptop__key">Ctrl</span>
+                    <span className="dyn-laptop__key">Alt</span>
+                    <span className="dyn-laptop__key dyn-laptop__key--space">Space</span>
+                    <span className="dyn-laptop__key">Alt</span>
+                    <span className="dyn-laptop__key">Ctrl</span>
+                  </div>
+                </div>
+
+                {/* Trackpad */}
+                <div className="dyn-laptop__trackpad" />
+
               </div>
 
             </div>
+
           </div>
 
         </div>
