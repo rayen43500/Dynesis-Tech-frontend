@@ -22,6 +22,48 @@ export function HomeAISimulation() {
   const [progress, setProgress] = useState(0);
   const [hasVideo, setHasVideo] = useState(true);
 
+  // IntersectionObserver to auto-play with sound on scroll into view, and pause on scroll away
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // When scrolled into view: start video and audio
+            video.muted = false;
+            setIsMuted(false);
+            const promise = video.play();
+            if (promise !== undefined) {
+              promise
+                .then(() => setIsPlaying(true))
+                .catch(() => {
+                  // Fallback to muted if browser blocks unmuted autoplay without previous user interaction
+                  video.muted = true;
+                  setIsMuted(true);
+                  video.play().then(() => setIsPlaying(true)).catch(() => {});
+                });
+            }
+          } else {
+            // When scrolled away (up or down): pause video
+            video.pause();
+            setIsPlaying(false);
+          }
+        });
+      },
+      {
+        threshold: 0.35
+      }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   // Toggle Play / Pause
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -115,6 +157,7 @@ export function HomeAISimulation() {
               onPause={() => setIsPlaying(false)}
               onError={() => setHasVideo(false)}
             >
+              <source src="/images/dynesis-ai.mp4" type="video/mp4" />
               <source src="/dynesis-ai.mp4" type="video/mp4" />
               <source src="/videos/dynesis-ai.mp4" type="video/mp4" />
               Votre navigateur ne prend pas en charge la lecture vidéo.
