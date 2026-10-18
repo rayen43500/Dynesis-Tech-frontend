@@ -4,13 +4,8 @@ import {
   ShieldAlert, 
   Lock, 
   Zap, 
-  Terminal, 
   RotateCcw, 
-  Radio, 
-  Flame, 
-  CheckCircle2,
-  Cpu,
-  Globe
+  Radio
 } from 'lucide-react';
 import './home-security-simulation.css';
 
@@ -212,184 +207,26 @@ export function HomeSecuritySimulation() {
 
           </div>
 
-          {/* Right Column: Realistic Miniature Laptop Mockup */}
+          {/* Right Column: Realistic 3D Laptop Mockup */}
           <div className="dyn-sec-lap__laptop-container">
-            
-            {/* The Laptop Device */}
-            <div className="dyn-laptop">
-              
-              {/* Laptop Display Top Lid */}
-              <div className="dyn-laptop__screen-lid">
-                {/* Webcam & Ambient light sensor */}
-                <div className="dyn-laptop__webcam">
-                  <span className="dyn-laptop__cam-lens" />
-                </div>
+            <div className="dyn-sec-lap__laptop-3d-wrap">
+              <img 
+                src="/images/dynesis-cyber-laptop.png" 
+                alt="Console de Cyber-Sécurité Live sur Laptop 3D" 
+                className={`dyn-sec-lap__laptop-3d-img ${isSimulating ? 'dyn-sec-lap__laptop-3d-img--simulating' : ''}`}
+                loading="eager"
+              />
 
-                {/* Inner High-Def Screen (Clear Style) */}
-                <div className="dyn-laptop__display">
-                  
-                  {/* Display OS Top Bar */}
-                  <div className="dyn-laptop__display-bar">
-                    <div className="dyn-laptop__display-dots">
-                      <span className="dyn-laptop__dot dyn-laptop__dot--red" />
-                      <span className="dyn-laptop__dot dyn-laptop__dot--yellow" />
-                      <span className="dyn-laptop__dot dyn-laptop__dot--green" />
-                    </div>
-                    <div className="dyn-laptop__display-title">
-                      <ShieldCheck size={12} color="#10b981" />
-                      <span>dynesis-sentinel://live-defense-console</span>
-                    </div>
-                    <span className={`dyn-laptop__threat-tag dyn-laptop__threat-tag--${radarStatus}`}>
-                      {isSimulating ? '● ALERTE : ATTAQUE' : '● SÉCURISÉ'}
-                    </span>
-                  </div>
-
-                  {/* Display Main Content: Radar + Live Logs */}
-                  <div className="dyn-laptop__display-body">
-                    
-                    {/* Top Row: Mini Radar + Telemetry */}
-                    <div className="dyn-laptop__telemetry-row">
-                      
-                      {/* Radar */}
-                      <div className="dyn-laptop__radar-wrap">
-                        <svg viewBox="0 0 100 100" className="dyn-laptop__radar-svg">
-                          <circle cx="50" cy="50" r="44" className="dyn-laptop__radar-ring" />
-                          <circle cx="50" cy="50" r="28" className="dyn-laptop__radar-ring" />
-                          <circle cx="50" cy="50" r="12" className="dyn-laptop__radar-ring" />
-                          <line x1="50" y1="6" x2="50" y2="94" className="dyn-laptop__radar-cross" />
-                          <line x1="6" y1="50" x2="94" y2="50" className="dyn-laptop__radar-cross" />
-                          
-                          {/* Beam */}
-                          <g className={`dyn-laptop__radar-sweep ${isSimulating ? 'dyn-laptop__radar-sweep--fast' : ''}`}>
-                            <line x1="50" y1="50" x2="94" y2="50" className="dyn-laptop__radar-line" />
-                            <path d="M 50 50 L 94 50 A 44 44 0 0 0 81 19 Z" className="dyn-laptop__radar-cone" />
-                          </g>
-
-                          <circle cx="72" cy="32" r="2.5" className="dyn-laptop__blip dyn-laptop__blip--red" />
-                          <circle cx="30" cy="70" r="2" className="dyn-laptop__blip dyn-laptop__blip--green" />
-                        </svg>
-                      </div>
-
-                      {/* Live Telemetry Stats */}
-                      <div className="dyn-laptop__stats">
-                        <div className="dyn-laptop__stat-box">
-                          <span className="dyn-laptop__stat-lbl">Temps Riposte</span>
-                          <strong className="dyn-laptop__stat-val dyn-laptop__stat-val--green">{selectedAttack.mitigationTime}</strong>
-                        </div>
-                        <div className="dyn-laptop__stat-box">
-                          <span className="dyn-laptop__stat-lbl">Faux Positifs</span>
-                          <strong className="dyn-laptop__stat-val">0.00%</strong>
-                        </div>
-                        <div className="dyn-laptop__stat-box">
-                          <span className="dyn-laptop__stat-lbl">Uptime</span>
-                          <strong className="dyn-laptop__stat-val dyn-laptop__stat-val--blue">100%</strong>
-                        </div>
-                      </div>
-
-                    </div>
-
-                    {/* Bottom Row: Incident Logs in clean style */}
-                    <div className="dyn-laptop__logs-box">
-                      <div className="dyn-laptop__logs-header">
-                        <Terminal size={11} />
-                        <span>Journal d’Événements Kernel eBPF :</span>
-                      </div>
-                      <div className="dyn-laptop__logs-list">
-                        {selectedAttack.logs.map((lg, i) => {
-                          const isVisible = logStep >= i;
-                          return (
-                            <div 
-                              key={i} 
-                              className={`dyn-laptop__log-item dyn-laptop__log-item--${lg.status} ${isVisible ? 'dyn-laptop__log-item--show' : 'dyn-laptop__log-item--hide'}`}
-                            >
-                              <strong className="dyn-laptop__log-step">{lg.step}</strong>
-                              <span className="dyn-laptop__log-detail">{lg.detail}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Summary Banner inside display */}
-                    <div className="dyn-laptop__summary-banner">
-                      <CheckCircle2 size={13} color="#15803d" />
-                      <span>{selectedAttack.summary}</span>
-                    </div>
-
-                  </div>
-
-                </div>
+              {/* Dynamic HUD Indicator */}
+              <div className={`dyn-sec-lap__laptop-live-badge ${isSimulating ? 'dyn-sec-lap__laptop-live-badge--alert' : ''}`}>
+                <span className="dyn-sec-lap__badge-pulse" />
+                <span className="dyn-sec-lap__badge-text">
+                  {isSimulating 
+                    ? `● Riposte eBPF en cours : ${selectedAttack.name}` 
+                    : `● Sentinel WAF Actif • Latence : ${selectedAttack.mitigationTime}`}
+                </span>
               </div>
-
-              {/* Laptop Hinge */}
-              <div className="dyn-laptop__hinge" />
-
-              {/* Laptop Keyboard Base & Trackpad */}
-              <div className="dyn-laptop__keyboard-base">
-                
-                {/* Keyboard Layout */}
-                <div className="dyn-laptop__keyboard">
-                  <div className="dyn-laptop__key-row">
-                    <span className="dyn-laptop__key">Esc</span>
-                    <span className="dyn-laptop__key">F1</span>
-                    <span className="dyn-laptop__key">F2</span>
-                    <span className="dyn-laptop__key">F3</span>
-                    <span className="dyn-laptop__key">F4</span>
-                    <span className="dyn-laptop__key">F5</span>
-                    <span className="dyn-laptop__key">F6</span>
-                    <span className="dyn-laptop__key">F7</span>
-                    <span className="dyn-laptop__key">F8</span>
-                    <span className="dyn-laptop__key">Del</span>
-                  </div>
-                  <div className="dyn-laptop__key-row">
-                    <span className="dyn-laptop__key dyn-laptop__key--med">Tab</span>
-                    <span className="dyn-laptop__key">Q</span>
-                    <span className="dyn-laptop__key">W</span>
-                    <span className="dyn-laptop__key">E</span>
-                    <span className="dyn-laptop__key">R</span>
-                    <span className="dyn-laptop__key">T</span>
-                    <span className="dyn-laptop__key">Y</span>
-                    <span className="dyn-laptop__key">U</span>
-                    <span className="dyn-laptop__key">I</span>
-                    <span className="dyn-laptop__key dyn-laptop__key--med">⌫</span>
-                  </div>
-                  <div className="dyn-laptop__key-row">
-                    <span className="dyn-laptop__key dyn-laptop__key--large">Caps</span>
-                    <span className="dyn-laptop__key">A</span>
-                    <span className="dyn-laptop__key">S</span>
-                    <span className="dyn-laptop__key">D</span>
-                    <span className="dyn-laptop__key">F</span>
-                    <span className="dyn-laptop__key">G</span>
-                    <span className="dyn-laptop__key">H</span>
-                    <span className="dyn-laptop__key">J</span>
-                    <span className="dyn-laptop__key dyn-laptop__key--large">Enter</span>
-                  </div>
-                  <div className="dyn-laptop__key-row">
-                    <span className="dyn-laptop__key dyn-laptop__key--xl">Shift</span>
-                    <span className="dyn-laptop__key">Z</span>
-                    <span className="dyn-laptop__key">X</span>
-                    <span className="dyn-laptop__key">C</span>
-                    <span className="dyn-laptop__key">V</span>
-                    <span className="dyn-laptop__key">B</span>
-                    <span className="dyn-laptop__key">N</span>
-                    <span className="dyn-laptop__key dyn-laptop__key--xl">Shift</span>
-                  </div>
-                  <div className="dyn-laptop__key-row">
-                    <span className="dyn-laptop__key">Ctrl</span>
-                    <span className="dyn-laptop__key">Alt</span>
-                    <span className="dyn-laptop__key dyn-laptop__key--space">Space</span>
-                    <span className="dyn-laptop__key">Alt</span>
-                    <span className="dyn-laptop__key">Ctrl</span>
-                  </div>
-                </div>
-
-                {/* Trackpad */}
-                <div className="dyn-laptop__trackpad" />
-
-              </div>
-
             </div>
-
           </div>
 
         </div>
