@@ -9,7 +9,8 @@ import { HomeWhyDynesisSection } from './HomeWhyDynesisSection';
 import { FeaturedNewsBlog } from '../blog/FeaturedNewsBlog';
 import { NeuralTechBackground } from './NeuralTechBackground';
 import { DynesisCloudShowcase } from './DynesisCloudShowcase';
-import { DynesisDualSimulation } from './DynesisDualSimulation';
+import { HomeAISimulation } from './HomeAISimulation';
+import { HomeSecuritySimulation } from './HomeSecuritySimulation';
 
 import './andela-home.css';
 import './home-services.css';
@@ -257,8 +258,11 @@ export function AndelaHomePage() {
         {/* (C) POURQUOI DYNESISTECH */}
         <HomeWhyDynesisSection />
 
-        {/* (SIMULATION INNOVANTE) — LABORATOIRE INTERACTIF IA & CYBER-SÉCURITÉ */}
-        <DynesisDualSimulation />
+        {/* (D) SIMULATION IA INNOVANTE */}
+        <HomeAISimulation />
+
+        {/* (E) SIMULATION CYBER-SÉCURITÉ ZERO-TRUST */}
+        <HomeSecuritySimulation />
 
         <DynamicCustomSections />
 
