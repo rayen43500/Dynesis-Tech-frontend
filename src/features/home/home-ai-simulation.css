@@ -1,769 +1,373 @@
-/* ═════════════════════════════════════════════════════════════════════════
-   DYNESIS HOME AI SIMULATION (LIGHT THEME & TALKING HOLOGRAM)
-   Synchronized perfectly with the site's modern aesthetics
-   ═════════════════════════════════════════════════════════════════════════ */
+/* =========================================================================
+   (D) DYNESIS AI VIDEO SHOWCASE & HIGH-TECH FRAME
+   ========================================================================= */
 
-.dyn-ai-holo {
-  width: 100%;
-  background: #f8fafc;
+.dyn-ai-video-sec {
   position: relative;
-  padding: 72px 0 68px;
+  width: 100%;
+  background: #ffffff;
+  padding: 68px 24px 76px;
   overflow: hidden;
-  border-top: 1px solid rgba(226, 232, 240, 0.8);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  font-family: inherit;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.dyn-ai-holo::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 10%;
-  width: 500px;
-  height: 380px;
-  background: radial-gradient(circle, rgba(2, 132, 199, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.dyn-ai-holo__container {
-  width: 100%;
-  max-width: 1360px;
+.dyn-ai-video-sec__container {
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 36px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* Header */
-.dyn-ai-holo__header {
-  text-align: left;
+/* Section Header */
+.dyn-ai-video-sec__header {
+  margin-bottom: 34px;
   max-width: 820px;
-  margin-bottom: 32px;
 }
 
-.dyn-ai-holo__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--tech-font-mono, 'SF Mono', monospace);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #0284c7;
-  background: rgba(2, 132, 199, 0.08);
-  border: 1px solid rgba(2, 132, 199, 0.22);
-  padding: 5px 14px;
-  border-radius: 9999px;
-  margin-bottom: 14px;
-  text-transform: uppercase;
-}
-
-.dyn-ai-holo__pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #0284c7;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #0284c7;
-  animation: holoPulse 1.6s infinite;
-}
-
-@keyframes holoPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.35; transform: scale(0.85); }
-}
-
-.dyn-ai-holo__title {
-  font-size: clamp(26px, 3.2vw, 36px);
-  font-weight: 700;
+.dyn-ai-video-sec__title {
+  font-family: var(--tech-font-sans, system-ui, -apple-system, sans-serif);
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 900;
   color: #0f172a;
-  margin: 0 0 10px;
-  letter-spacing: -0.02em;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  margin: 0 0 14px;
 }
 
-.dyn-ai-holo__subtitle {
-  font-size: 15.5px;
+.dyn-ai-video-sec__subtitle {
+  font-size: clamp(14.5px, 1.25vw, 16px);
   color: #475569;
   line-height: 1.6;
   margin: 0;
 }
 
-/* 2-Column Stage */
-.dyn-ai-holo__stage {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: stretch;
-}
-
-@media (max-width: 960px) {
-  .dyn-ai-holo__stage {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ── Left Column: Hologram Agent Card ────────────────────────────────── */
-.dyn-ai-holo__agent-card {
-  background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 16px;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04);
-}
-
-.dyn-ai-holo__agent-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-  padding-bottom: 12px;
-}
-
-.dyn-ai-holo__agent-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.dyn-ai-holo__status-led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-}
-
-.dyn-ai-holo__agent-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.dyn-ai-holo__sound-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #f1f5f9;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  font-size: 12px;
-  color: #475569;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.dyn-ai-holo__sound-btn:hover {
-  background: #e2e8f0;
-}
-
-/* The Hologram Chamber */
-.dyn-ai-holo__projection-zone {
-  position: relative;
-  height: 160px;
-  background: radial-gradient(circle at 50% 120%, rgba(2, 132, 199, 0.15) 0%, rgba(14, 165, 233, 0.05) 50%, #ffffff 80%);
-  border: 1px solid rgba(2, 132, 199, 0.15);
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Vertical light beam */
-.dyn-ai-holo__light-beam {
-  position: absolute;
-  top: 0;
-  width: 140px;
-  height: 100%;
-  background: linear-gradient(180deg, rgba(2, 132, 199, 0.12) 0%, rgba(2, 132, 199, 0.02) 100%);
-  clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
-  pointer-events: none;
-}
-
-/* Concentric Rings */
-.dyn-ai-holo__rings {
-  position: absolute;
-  top: 30%;
-  width: 120px;
-  height: 120px;
-  pointer-events: none;
-}
-
-.dyn-ai-holo__ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px dashed rgba(2, 132, 199, 0.3);
-  animation: ringSpin 8s linear infinite;
-}
-
-.dyn-ai-holo__ring--mid {
-  inset: 15px;
-  border-color: rgba(14, 165, 233, 0.4);
-  animation-duration: 5s;
-  animation-direction: reverse;
-}
-
-.dyn-ai-holo__ring--inner {
-  inset: 30px;
-  border-color: rgba(2, 132, 199, 0.5);
-  animation-duration: 3s;
-}
-
-@keyframes ringSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Avatar Core */
-.dyn-ai-holo__avatar {
-  position: relative;
-  z-index: 2;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(14, 165, 233, 0.3) 100%);
-  border: 2px solid #0284c7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 24px rgba(2, 132, 199, 0.35);
-  animation: holoFloat 3s ease-in-out infinite;
-}
-
-.dyn-ai-holo__avatar--speaking {
-  box-shadow: 0 0 35px rgba(2, 132, 199, 0.6);
-  border-color: #0ea5e9;
-}
-
-@keyframes holoFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.dyn-ai-holo__avatar-core {
-  position: relative;
-  color: #0284c7;
-}
-
-.dyn-ai-holo__sparkle-icon {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  color: #0ea5e9;
-  animation: holoPulse 1s infinite;
-}
-
-.dyn-ai-holo__scanlines {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(2, 132, 199, 0.15) 0px,
-    rgba(2, 132, 199, 0.15) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  pointer-events: none;
-}
-
-/* Base Emitter */
-.dyn-ai-holo__emitter {
-  position: absolute;
-  bottom: 6px;
-  width: 100px;
-  height: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dyn-ai-holo__emitter-disc {
-  width: 90px;
-  height: 8px;
-  background: #cbd5e1;
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.dyn-ai-holo__emitter-glow {
-  position: absolute;
-  width: 50px;
-  height: 4px;
-  background: #0284c7;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #0284c7;
-}
-
-/* Soundwave */
-.dyn-ai-holo__soundwave {
-  position: absolute;
-  bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  height: 16px;
-}
-
-.dyn-ai-holo__bar {
-  width: 3px;
-  height: 4px;
-  background: #0284c7;
-  border-radius: 2px;
-  transition: height 0.2s ease;
-}
-
-.dyn-ai-holo__bar--anim {
-  animation: barWave 0.5s ease-in-out infinite alternate;
-}
-
-@keyframes barWave {
-  from { height: 4px; }
-  to { height: 16px; }
-}
-
-/* Speech Bubble */
-.dyn-ai-holo__speech-bubble {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 12px;
-  padding: 12px 16px;
-}
-
-.dyn-ai-holo__bubble-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-.dyn-ai-holo__bubble-badge {
-  font-size: 10.5px;
-  font-weight: 800;
-  color: #15803d;
-  letter-spacing: 0.05em;
-}
-
-.dyn-ai-holo__bubble-latency {
-  font-size: 11px;
-  color: #166534;
-  font-family: monospace;
-}
-
-.dyn-ai-holo__bubble-text {
-  font-size: 13.5px;
-  color: #14532d;
-  line-height: 1.5;
-  margin: 0;
-  font-style: italic;
-  font-weight: 500;
-}
-
-.dyn-ai-holo__cursor {
-  display: inline-block;
-  width: 5px;
-  height: 13px;
-  background: #15803d;
-  margin-left: 2px;
-  animation: holoBlink 0.8s infinite;
-}
-
-@keyframes holoBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* Action Buttons */
-.dyn-ai-holo__actions-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.dyn-ai-holo__actions-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dyn-ai-holo__action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #f8fafc;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #1e293b;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-}
-
-.dyn-ai-holo__action-btn:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateX(2px);
-}
-
-.dyn-ai-holo__action-btn--active {
-  background: #eff6ff;
-  border-color: #0284c7;
-  color: #0284c7;
-  box-shadow: 0 0 10px rgba(2, 132, 199, 0.1);
-}
-
-.dyn-ai-holo__arrow {
-  color: #94a3b8;
-}
-
-.dyn-ai-holo__action-btn--active .dyn-ai-holo__arrow {
-  color: #0284c7;
-}
-
-/* ── Right Column: Device Screen Mount ───────────────────────────────── */
-.dyn-ai-holo__device-card {
-  background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 16px;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04);
-}
-
-.dyn-ai-holo__device-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-  padding-bottom: 12px;
-}
-
-.dyn-ai-holo__toolbar-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.dyn-ai-holo__device-toggles {
-  display: inline-flex;
-  gap: 4px;
-  background: #f1f5f9;
-  padding: 3px;
-  border-radius: 8px;
-}
-
-.dyn-ai-holo__toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 6px;
-  border: none;
-  background: transparent;
-  font-size: 12px;
-  font-weight: 600;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.dyn-ai-holo__toggle-btn--active {
-  background: #ffffff;
-  color: #0284c7;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-}
-
-.dyn-ai-holo__device-screen-mount {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 380px;
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-/* ── Smartphone Mockup ───────────────────────────────────────────────── */
-.dyn-ai-phone {
-  width: 280px;
+/* ── The High-Tech Video Frame ─────────────────────────────────────────── */
+.dyn-ai-frame {
   background: #0f172a;
-  border-radius: 28px;
-  border: 5px solid #1e293b;
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.15);
+  border-radius: 16px;
+  border: 1px solid #1e293b;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.06);
   overflow: hidden;
-  color: #ffffff;
-  font-family: inherit;
+  transition: box-shadow 0.3s ease;
 }
 
-.dyn-ai-phone__notch {
-  height: 20px;
-  background: #0f172a;
+.dyn-ai-frame:hover {
+  box-shadow: 0 24px 60px rgba(0, 102, 255, 0.15), 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+/* Top Window Titlebar */
+.dyn-ai-frame__topbar {
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-
-.dyn-ai-phone__camera {
-  width: 50px;
-  height: 10px;
+  justify-content: space-between;
+  padding: 12px 18px;
   background: #1e293b;
-  border-radius: 10px;
-}
-
-.dyn-ai-phone__status-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 14px 8px;
-  font-size: 11px;
-  color: #94a3b8;
-  font-weight: 600;
-}
-
-.dyn-ai-phone__content {
-  background: #ffffff;
-  color: #0f172a;
-  border-radius: 20px 20px 0 0;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
+  border-bottom: 1px solid #334155;
   gap: 12px;
 }
 
-.dyn-ai-phone__header {
+.dyn-ai-frame__dots {
   display: flex;
-  justify-content: space-between;
+  gap: 6px;
   align-items: center;
 }
 
-.dyn-ai-phone__badge {
-  font-size: 9.5px;
-  font-weight: 800;
-  color: #0284c7;
-  background: #e0f2fe;
-  padding: 2px 6px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-bottom: 2px;
-}
-
-.dyn-ai-phone__title {
-  font-size: 15px;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 0;
-}
-
-.dyn-ai-phone__avatar-mini {
-  width: 26px;
-  height: 26px;
+.dyn-ai-frame__dot {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: #e0f2fe;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.dyn-ai-phone__metric-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 12px;
-}
+.dyn-ai-frame__dot--red { background: #ef4444; }
+.dyn-ai-frame__dot--yellow { background: #f59e0b; }
+.dyn-ai-frame__dot--green { background: #10b981; }
 
-.dyn-ai-phone__metric-lbl {
-  font-size: 11px;
-  color: #64748b;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.dyn-ai-phone__metric-num {
-  font-size: 20px;
-  font-weight: 800;
-  color: #0f172a;
-  display: block;
-}
-
-.dyn-ai-phone__trend {
+.dyn-ai-frame__url-bar {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-family: var(--tech-font-mono, monospace);
   font-size: 11px;
-  color: #10b981;
-  font-weight: 700;
-  margin-top: 4px;
+  color: #94a3b8;
+  max-width: 380px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.dyn-ai-phone__feature-box {
-  display: flex;
-  gap: 10px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.dyn-ai-phone__feature-icon {
-  width: 24px;
-  height: 24px;
-  background: #dcfce7;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.dyn-ai-frame__url-icon {
+  color: #00f0ff;
   flex-shrink: 0;
 }
 
-.dyn-ai-phone__feat-title {
-  font-size: 12.5px;
-  color: #15803d;
-  display: block;
-}
-
-.dyn-ai-phone__feat-desc {
-  font-size: 11px;
-  color: #475569;
-  line-height: 1.4;
-  margin: 2px 0 0;
-}
-
-.dyn-ai-phone__footer-status {
-  display: flex;
+.dyn-ai-frame__badge {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
-  color: #15803d;
-  font-weight: 600;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 8px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-size: 10.5px;
+  font-family: var(--tech-font-mono, monospace);
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
-/* ── Web Browser Mockup ──────────────────────────────────────────────── */
-.dyn-ai-web {
+.dyn-ai-frame__badge-pulse {
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #10b981;
+  animation: aiPulse 1.8s infinite;
+}
+
+@keyframes aiPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ── Main Video Player Viewport ────────────────────────────────────────── */
+.dyn-ai-player {
+  position: relative;
   width: 100%;
-  max-width: 440px;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  aspect-ratio: 16 / 9;
+  max-height: 600px;
+  background: #000000;
+  cursor: pointer;
   overflow: hidden;
 }
 
-.dyn-ai-web__browser-bar {
-  background: #f1f5f9;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.dyn-ai-web__dots {
-  display: flex;
-  gap: 5px;
-}
-
-.dyn-ai-web__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.dyn-ai-web__dot--red { background: #ef4444; }
-.dyn-ai-web__dot--yellow { background: #f59e0b; }
-.dyn-ai-web__dot--green { background: #10b981; }
-
-.dyn-ai-web__url-bar {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  padding: 3px 10px;
-  border-radius: 4px;
-  font-size: 11px;
-  color: #64748b;
-  font-family: monospace;
-  flex-grow: 1;
-}
-
-.dyn-ai-web__content {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.dyn-ai-web__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dyn-ai-web__title {
-  font-size: 14px;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 0;
-}
-
-.dyn-ai-web__status-pill {
-  font-size: 11px;
-  font-weight: 700;
-  color: #10b981;
-}
-
-.dyn-ai-web__kpi-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.dyn-ai-web__kpi-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 8px 10px;
-}
-
-.dyn-ai-web__kpi-label {
-  font-size: 10.5px;
-  color: #64748b;
+.dyn-ai-player__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
-.dyn-ai-web__kpi-val {
-  font-size: 13px;
-  font-weight: 800;
-  color: #0284c7;
+/* Tech HUD Corners Overlay */
+.dyn-ai-player__hud-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    linear-gradient(to right, rgba(0, 102, 255, 0.04) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(to bottom, rgba(0, 102, 255, 0.04) 1px, transparent 1px) 0 0 / 40px 40px;
 }
 
-.dyn-ai-web__console {
-  background: #0f172a;
-  color: #38bdf8;
-  font-family: monospace;
-  font-size: 11px;
-  padding: 8px 10px;
-  border-radius: 6px;
+/* Friendly Hint Badge */
+.dyn-ai-player__waiting-hint {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: #e2e8f0;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+
+.dyn-ai-player__waiting-hint strong {
+  color: #00f0ff;
+}
+
+/* Central Play Button Overlay */
+.dyn-ai-player__center-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 102, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   display: flex;
-  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
+  transition: transform 0.2s ease, background 0.2s ease;
+  pointer-events: none;
 }
 
-.dyn-ai-web__console-prefix {
-  color: #10b981;
+.dyn-ai-player:hover .dyn-ai-player__center-play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: #0080ff;
+}
+
+.dyn-ai-player__play-icon {
+  margin-left: 3px;
+}
+
+/* ── Floating Controls Bar ─────────────────────────────────────────────── */
+.dyn-ai-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 14px;
+  border-radius: 12px;
+  z-index: 6;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.dyn-ai-player:hover .dyn-ai-controls {
+  opacity: 1;
+}
+
+.dyn-ai-controls__btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.dyn-ai-controls__btn:hover {
+  color: #00f0ff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dyn-ai-controls__progress-wrap {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.dyn-ai-controls__progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #0066ff, #00f0ff);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.dyn-ai-controls__time-tag {
+  font-family: var(--tech-font-mono, monospace);
+  font-size: 11px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+/* ── Bottom Telemetry & CTA Bar ────────────────────────────────────────── */
+.dyn-ai-frame__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: #111827;
+  border-top: 1px solid #1f2937;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.dyn-ai-frame__chips {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dyn-ai-frame__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+.dyn-ai-frame__chip-icon {
+  color: #00f0ff;
+}
+
+.dyn-ai-frame__chip-lbl {
+  color: #94a3b8;
+}
+
+.dyn-ai-frame__chip-val {
+  color: #ffffff;
   font-weight: 700;
 }
 
-.dyn-ai-web__console-msg {
-  color: #e2e8f0;
+.dyn-ai-frame__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #0066ff 0%, #0080ff 100%);
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dyn-ai-frame__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 102, 255, 0.4);
+}
+
+/* ── Responsive adjustments ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dyn-ai-video-sec {
+    padding: 48px 16px 56px;
+  }
+
+  .dyn-ai-frame__url-bar {
+    display: none;
+  }
+
+  .dyn-ai-frame__bottom {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dyn-ai-frame__chips {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .dyn-ai-frame__cta {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .dyn-ai-controls__time-tag {
+    display: none;
+  }
 }
